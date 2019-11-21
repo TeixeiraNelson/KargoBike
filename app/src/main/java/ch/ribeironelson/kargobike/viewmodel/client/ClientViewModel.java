@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
+import ch.ribeironelson.kargobike.BaseApp;
 import ch.ribeironelson.kargobike.database.entity.ClientEntity;
 import ch.ribeironelson.kargobike.database.repository.ClientRepository;
 

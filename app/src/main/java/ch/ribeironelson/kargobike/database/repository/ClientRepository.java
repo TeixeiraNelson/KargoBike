@@ -16,6 +16,7 @@ import ch.hevs.aislab.demo.database.firebase.ClientAccountsListLiveData;
 import ch.hevs.aislab.demo.database.firebase.ClientLiveData;
 import ch.hevs.aislab.demo.database.pojo.ClientWithAccounts;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.database.entity.ClientEntity;
 
 public class ClientRepository {
 
