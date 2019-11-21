@@ -2,87 +2,28 @@ package ch.ribeironelson.kargobike.database.entity;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DeliveryEntity {
-    private String idDelivery;
-    private String toCutomer;
-    private String toBundle;
-    private String toPackage;
-    private String toBill;
-    private String toDeliveryStatus;
-    private String description;
-    private String nbProducts;
-    private Date deliverDateTime;
-    private String departurePlace;
-    private String finalDestination;
-    private String signature;
-    private byte[] proofPicture;
+    String description;
+    Long nbPackages;
+    String deliveryDateTime;
+    String departurePlace;
+    String finalDestination;
+    String signatureImageName;
+    String proofPictureName;
 
     public DeliveryEntity(){}
 
-    public DeliveryEntity(String toCutomer, String toBundle, String toPackage, String toBill, String toDeliveryStatus, String description, String nbProducts, Date deliverDateTime, String departurePlace, String finalDestination, String signature) {
-        this.toCutomer = toCutomer;
-        this.toBundle = toBundle;
-        this.toPackage = toPackage;
-        this.toBill = toBill;
-        this.toDeliveryStatus = toDeliveryStatus;
+    public DeliveryEntity(String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName) {
         this.description = description;
-        this.nbProducts = nbProducts;
-        this.deliverDateTime = deliverDateTime;
+        this.nbPackages = nbPackages;
+        this.deliveryDateTime = deliveryDateTime;
         this.departurePlace = departurePlace;
         this.finalDestination = finalDestination;
-        this.signature = signature;
-    }
-
-    public String getIdDelivery() {
-        return idDelivery;
-    }
-
-    public void setIdDelivery(String idDelivery) {
-        this.idDelivery = idDelivery;
-    }
-
-    public String getToCutomer() {
-        return toCutomer;
-    }
-
-    public void setToCutomer(String toCutomer) {
-        this.toCutomer = toCutomer;
-    }
-
-    public String getToBundle() {
-        return toBundle;
-    }
-
-    public void setToBundle(String toBundle) {
-        this.toBundle = toBundle;
-    }
-
-    public String getToPackage() {
-        return toPackage;
-    }
-
-    public void setToPackage(String toPackage) {
-        this.toPackage = toPackage;
-    }
-
-    public String getToBill() {
-        return toBill;
-    }
-
-    public void setToBill(String toBill) {
-        this.toBill = toBill;
-    }
-
-    public String getToDeliveryStatus() {
-        return toDeliveryStatus;
-    }
-
-    public void setToDeliveryStatus(String toDeliveryStatus) {
-        this.toDeliveryStatus = toDeliveryStatus;
+        this.signatureImageName = signatureImageName;
+        this.proofPictureName = proofPictureName;
     }
 
     public String getDescription() {
@@ -93,20 +34,20 @@ public class DeliveryEntity {
         this.description = description;
     }
 
-    public String getNbProducts() {
-        return nbProducts;
+    public Long getNbPackages() {
+        return nbPackages;
     }
 
-    public void setNbProducts(String nbProducts) {
-        this.nbProducts = nbProducts;
+    public void setNbPackages(Long nbPackages) {
+        this.nbPackages = nbPackages;
     }
 
-    public Date getDeliverDateTime() {
-        return deliverDateTime;
+    public String getDeliveryDateTime() {
+        return deliveryDateTime;
     }
 
-    public void setDeliverDateTime(Date deliverDateTime) {
-        this.deliverDateTime = deliverDateTime;
+    public void setDeliveryDateTime(String deliveryDateTime) {
+        this.deliveryDateTime = deliveryDateTime;
     }
 
     public String getDeparturePlace() {
@@ -125,36 +66,38 @@ public class DeliveryEntity {
         this.finalDestination = finalDestination;
     }
 
-    public String getSignature() {
-        return signature;
+    public String getSignatureImageName() {
+        return signatureImageName;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public void setSignatureImageName(String signatureImageName) {
+        this.signatureImageName = signatureImageName;
     }
 
-    public byte[] getProofPicture() {
-        return proofPicture;
+    public String getProofPictureName() {
+        return proofPictureName;
     }
 
-    public void setProofPicture(byte[] proofPicture) {
-        this.proofPicture = proofPicture;
+    public void setProofPictureName(String proofPictureName) {
+        this.proofPictureName = proofPictureName;
+    }
+
+    @Override
+    public String toString() {
+        return description + deliveryDateTime+departurePlace + finalDestination;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("toCustomer", toCutomer);
-        result.put("toBundle", toBundle);
-        result.put("toPackage", toPackage);
-        result.put("toBill", toBill);
-        result.put("toDeliveryStatus", toDeliveryStatus);
         result.put("description", description);
-        result.put("nbProducts", nbProducts);
-        result.put("deliveryDateTime", deliverDateTime);
+        result.put("nbPackages", nbPackages);
+        result.put("deliveryDateTime", deliveryDateTime);
         result.put("departurePlace", departurePlace);
         result.put("finalDestination", finalDestination);
-        result.put("signature", signature);
+        result.put("signatureImageName", signatureImageName);
+        result.put("proofPictureName", proofPictureName);
+
         return result;
     }
 }

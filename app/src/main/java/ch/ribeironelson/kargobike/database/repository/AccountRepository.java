@@ -2,7 +2,7 @@ package ch.ribeironelson.kargobike.database.repository;
 
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
-import ch.ribeironelson.kargobike.database.entity.AccountEntity;
+
 import ch.ribeironelson.kargobike.database.firebase.AccountListLiveData;
 import ch.ribeironelson.kargobike.database.firebase.AccountLiveData;
 
