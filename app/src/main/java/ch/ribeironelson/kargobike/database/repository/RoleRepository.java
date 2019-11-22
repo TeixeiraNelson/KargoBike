@@ -24,7 +24,7 @@ public class RoleRepository {
         }
         return instance;
     }
-
+    /*
     public LiveData<List<RoleEntity>> getAllRoles() {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("roles");
@@ -32,6 +32,8 @@ public class RoleRepository {
         return new RoleListLiveData(reference);
     }
 
+     */
+    /*
     public LiveData<RoleEntity> getRoleByUserId(final UserEntity user){
 
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -41,6 +43,8 @@ public class RoleRepository {
 
         return new RoleLiveData(reference);
     }
+
+     */
 
     public void insert(final RoleEntity role, OnAsyncEventListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance()

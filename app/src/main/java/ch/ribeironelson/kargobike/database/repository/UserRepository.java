@@ -20,13 +20,15 @@ public class UserRepository {
         }
         return instance;
     }
-
+    /*
     public LiveData<UserEntity> getUser(final String userId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(userId);
         return UserLiveDate(reference);
     }
+
+     */
 
     public void insert(final UserEntity userEntity, final OnAsyncEventListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance()

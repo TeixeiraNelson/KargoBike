@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SchedulesEntity {
+    String scheduledId;
     String beginningDateTime;
     String endingDateTime;
     Boolean safetyCheck;
@@ -14,12 +15,21 @@ public class SchedulesEntity {
 
     public SchedulesEntity(){}
 
-    public SchedulesEntity(String beginningDateTime, String endingDateTime, Boolean safetyCheck, Long nbDeliveries, String scheduleType) {
+    public SchedulesEntity(String scheduledId, String beginningDateTime, String endingDateTime, Boolean safetyCheck, Long nbDeliveries, String scheduleType) {
+        this.scheduledId = scheduledId ;
         this.beginningDateTime = beginningDateTime;
         this.endingDateTime = endingDateTime;
         this.safetyCheck = safetyCheck;
         this.nbDeliveries = nbDeliveries;
         this.scheduleType = scheduleType;
+    }
+
+    public String getScheduledId() {
+        return scheduledId;
+    }
+
+    public void setScheduledId(String scheduledId) {
+        this.scheduledId = scheduledId;
     }
 
     public String getBeginningDateTime() {

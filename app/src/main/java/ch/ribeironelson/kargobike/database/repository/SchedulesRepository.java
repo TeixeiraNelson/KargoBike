@@ -3,26 +3,26 @@ package ch.ribeironelson.kargobike.database.repository;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
+import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
-public class SchedulesRepoitory {
-    private static SchedulesRepoitory instance;
+public class SchedulesRepository {
+    private static SchedulesRepository instance;
 
-    private SchedulesRepoitory(){}
+    private SchedulesRepository(){}
 
-    public static SchedulesRepoitory getInstance(){
+    public static SchedulesRepository getInstance(){
         if(instance == null){
             synchronized (WorkingZoneRepository.class){
                 if(instance == null){
-                    instance = new SchedulesRepoitory();
+                    instance = new SchedulesRepository();
                 }
             }
         }
         return instance;
     }
 
+    /*
     public LiveData<SchedulesEntity> getSchedules(final String schedulesId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("schedules")
@@ -36,9 +36,11 @@ public class SchedulesRepoitory {
         return new SchedulesListeLiveData(reference);
     }
 
+     */
+
     public void insertSchedules(final SchedulesEntity schedules, final OnAsyncEventListener callback){
         String id = FirebaseDatabase.getInstance().getReference("schedules").push().getKey();
-        DatabaseReference reference = FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance()
                 .getReference("schedules")
                 .child(id)
                 .setValue(schedules, (databaseError, databaseReference) -> {
@@ -50,12 +52,12 @@ public class SchedulesRepoitory {
                     }
                 });
     }
-}
+
 
     public void updateSchedules(final SchedulesEntity schedules, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
                 .getReference("schedules")
-                .child(schedules.getId())
+                .child(schedules.getScheduledId())
                 .updateChildren(schedules.toMap(), (databaseError, databaseReference) -> {
                     if(databaseError != null){
                         callback.onFailure(databaseError.toException());
@@ -69,7 +71,7 @@ public class SchedulesRepoitory {
     public void deleteSchedules(final SchedulesEntity schedules, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
                 .getReference("schedules")
-                .child(schedules.getId())
+                .child(schedules.getScheduledId())
                 .removeValue(((databaseError, databaseReference) -> {
                     if(databaseError != null){
                         callback.onFailure(databaseError.toException());
