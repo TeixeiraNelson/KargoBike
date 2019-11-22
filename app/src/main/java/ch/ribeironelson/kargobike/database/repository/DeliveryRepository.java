@@ -65,7 +65,29 @@ public class DeliveryRepository {
     }
 
     public void update(final DeliveryEntity delivery, OnAsyncEventListener callback){
+        FirebaseDatabase.getInstance()
+                .getReference("deliveries")
+                .child(delivery.getIdDelivery())
+                .updateChildren(delivery.toMap(),(databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+    }
 
+    public void delete(final DeliveryEntity delivery, OnAsyncEventListener callback){
+        FirebaseDatabase.getInstance()
+                .getReference("deliveries")
+                .child(delivery.getIdDelivery())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
 

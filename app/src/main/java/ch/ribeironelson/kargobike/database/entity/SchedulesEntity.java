@@ -80,6 +80,7 @@ public class SchedulesEntity {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("scheduledId", scheduledId);
         result.put("beginningDateTime", beginningDateTime);
         result.put("endingDateTime", endingDateTime);
         result.put("safetyCheck", safetyCheck);

@@ -34,6 +34,14 @@ public class DeliveryEntity {
 
     public void setIdUser(String idUser) { this.idUser = idUser; }
 
+    public String getIdDelivery() {
+        return idDelivery;
+    }
+
+    public void setIdDelivery(String idDelivery) {
+        this.idDelivery = idDelivery;
+    }
+
     public String getDescription() {
         return description;
     }
