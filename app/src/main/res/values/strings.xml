@@ -7,4 +7,5 @@
     <string name="about">About</string>
     <string name="project_app">Project App</string>
     <string name="info_shopping_mall_com">info@shopping-mall.com</string>
+    <string name="title_activity_todo_list">TodoListActivity</string>
 </resources>
