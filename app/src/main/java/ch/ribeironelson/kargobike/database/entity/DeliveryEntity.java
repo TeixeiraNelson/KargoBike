@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeliveryEntity {
+    String idUser;
+    String idDelivery;
     String description;
     Long nbPackages;
     String deliveryDateTime;
@@ -16,7 +18,9 @@ public class DeliveryEntity {
 
     public DeliveryEntity(){}
 
-    public DeliveryEntity(String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName) {
+    public DeliveryEntity(String idUser, String idDelivery, String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName) {
+        this.idUser = idUser;
+        this.idDelivery = idDelivery;
         this.description = description;
         this.nbPackages = nbPackages;
         this.deliveryDateTime = deliveryDateTime;
@@ -24,6 +28,18 @@ public class DeliveryEntity {
         this.finalDestination = finalDestination;
         this.signatureImageName = signatureImageName;
         this.proofPictureName = proofPictureName;
+    }
+
+    public String getIdUser() { return idUser; }
+
+    public void setIdUser(String idUser) { this.idUser = idUser; }
+
+    public String getIdDelivery() {
+        return idDelivery;
+    }
+
+    public void setIdDelivery(String idDelivery) {
+        this.idDelivery = idDelivery;
     }
 
     public String getDescription() {
@@ -90,6 +106,8 @@ public class DeliveryEntity {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("idDelivery", idDelivery);
+        result.put("idUser", idUser);
         result.put("description", description);
         result.put("nbPackages", nbPackages);
         result.put("deliveryDateTime", deliveryDateTime);

@@ -24,7 +24,7 @@ public class WorkingZoneRepository {
         }
         return instance;
     }
-
+    /*
     public LiveData<WorkingZoneEntity> getWorkingZone(final String workingZoneId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("workingZone")
@@ -80,5 +80,5 @@ public class WorkingZoneRepository {
                         callback.onSuccess();
                     }
                 }));
-    }
+    }*/
 }

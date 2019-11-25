@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:45839024523:android:b4c016adf89a296b812f8e",
+        "mobilesdk_app_id": "1:45839024523:android:de68d062fc2e1972812f8e",
         "android_client_info": {
           "package_name": "ch.ribeironelson.kargobike"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "45839024523-dsvukomnjhijbn4hhb1pn3k7grjvpm6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.ribeironelson.kargobike",
+            "certificate_hash": "ec0514798663a176b64ca5675acde0a52785ab73"
+          }
+        },
         {
           "client_id": "45839024523-rdbp77q408plrrtfkhlnuj56nqgfth5g.apps.googleusercontent.com",
           "client_type": 3

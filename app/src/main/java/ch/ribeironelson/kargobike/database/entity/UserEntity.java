@@ -13,13 +13,15 @@ public class UserEntity {
     private String idUser;
     private String idZone;
     private String idSchedule;
+    private String idRole;
 
     public UserEntity() { }
-    public UserEntity(String firstname, String lastname, String email, String phoneNumber,String idUser, String idZone, String idSchedule) {
+    public UserEntity(String firstname, String lastname, String email, String phoneNumber,String idRole, String idUser, String idZone, String idSchedule) {
         this.firstname=firstname;
         this.lastname=lastname;
         this.email=email;
         this.phoneNumber=phoneNumber;
+        this.idRole=idRole;
         this.idUser=idUser;
         this.idZone=idZone;
         this.idSchedule=idSchedule;
@@ -55,6 +57,10 @@ public class UserEntity {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getIdRole() { return idRole; }
+
+    public void setIdRole(String idRole) { this.idRole = idRole; }
 
     public String getIdUser() {return idUser; }
 
