@@ -3,7 +3,12 @@ package ch.ribeironelson.kargobike.database.repository;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.List;
+
+import androidx.lifecycle.LiveData;
 import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
+import ch.ribeironelson.kargobike.database.firebase.SchedulesListLiveData;
+import ch.ribeironelson.kargobike.database.firebase.SchedulesLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 public class SchedulesRepository {
@@ -22,7 +27,6 @@ public class SchedulesRepository {
         return instance;
     }
 
-    /*
     public LiveData<SchedulesEntity> getSchedules(final String schedulesId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("schedules")
@@ -33,10 +37,8 @@ public class SchedulesRepository {
     public LiveData<List<SchedulesEntity>> getAllSchedules(){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("schedules");
-        return new SchedulesListeLiveData(reference);
+        return new SchedulesListLiveData(reference);
     }
-
-     */
 
     public void insertSchedules(final SchedulesEntity schedules, final OnAsyncEventListener callback){
         String id = FirebaseDatabase.getInstance().getReference("schedules").push().getKey();
@@ -44,15 +46,13 @@ public class SchedulesRepository {
                 .getReference("schedules")
                 .child(id)
                 .setValue(schedules, (databaseError, databaseReference) -> {
-                    if(databaseError != null){
+                    if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
-                    }
-                    else{
+                    } else {
                         callback.onSuccess();
                     }
                 });
     }
-
 
     public void updateSchedules(final SchedulesEntity schedules, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()

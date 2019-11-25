@@ -6,13 +6,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WorkingZoneEntity {
-
+    String workingZoneId;
     String location;
 
     public WorkingZoneEntity(){}
 
-    public WorkingZoneEntity(String location) {
+    public WorkingZoneEntity(String workingZoneId, String location) {
+        this.workingZoneId = workingZoneId;
         this.location = location;
+    }
+
+    public String getWorkingZoneId() {
+        return workingZoneId;
+    }
+
+    public void setWorkingZoneId(String workingZoneId) {
+        this.workingZoneId = workingZoneId;
     }
 
     public String getLocation() {

@@ -7,6 +7,8 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
+import ch.ribeironelson.kargobike.database.firebase.WorkingZoneListLiveData;
+import ch.ribeironelson.kargobike.database.firebase.WorkingZoneLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 public class WorkingZoneRepository {
@@ -24,7 +26,7 @@ public class WorkingZoneRepository {
         }
         return instance;
     }
-    /*
+
     public LiveData<WorkingZoneEntity> getWorkingZone(final String workingZoneId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("workingZone")
@@ -35,29 +37,27 @@ public class WorkingZoneRepository {
     public LiveData<List<WorkingZoneEntity>> getWorkingZones(){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("workingZone");
-        return new WorkingZoneListeLiveData(reference);
+        return new WorkingZoneListLiveData(reference);
     }
 
     public void insertWorkingZone(final WorkingZoneEntity workingZone, final OnAsyncEventListener callback){
         String id = FirebaseDatabase.getInstance().getReference("workingZone").push().getKey();
-        DatabaseReference reference = FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance()
                 .getReference("workingZone")
                 .child(id)
                 .setValue(workingZone, (databaseError, databaseReference) -> {
-                    if(databaseError != null){
+                    if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
-                    }
-                    else{
+                    } else {
                         callback.onSuccess();
                     }
                 });
-        }
     }
 
     public void updateWorkingZone(final WorkingZoneEntity workingZone, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
                 .getReference("workingZone")
-                .child(workingZone.getId())
+                .child(workingZone.getWorkingZoneId())
                 .updateChildren(workingZone.toMap(), (databaseError, databaseReference) -> {
                     if(databaseError != null){
                         callback.onFailure(databaseError.toException());
@@ -71,7 +71,7 @@ public class WorkingZoneRepository {
     public void deleteWorkingZone(final WorkingZoneEntity workingZone, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
                 .getReference("workingZone")
-                .child(workingZone.getId())
+                .child(workingZone.getWorkingZoneId())
                 .removeValue(((databaseError, databaseReference) -> {
                     if(databaseError != null){
                         callback.onFailure(databaseError.toException());
@@ -80,5 +80,5 @@ public class WorkingZoneRepository {
                         callback.onSuccess();
                     }
                 }));
-    }*/
+    }
 }
