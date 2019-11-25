@@ -40,6 +40,7 @@ public class WorkingZoneRepository {
 
     public void insertWorkingZone(final WorkingZoneEntity workingZone, final OnAsyncEventListener callback){
         String id = FirebaseDatabase.getInstance().getReference("workingZone").push().getKey();
+
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("workingZone")
                 .child(id)
@@ -51,7 +52,6 @@ public class WorkingZoneRepository {
                         callback.onSuccess();
                     }
                 });
-        }
     }
 
     public void updateWorkingZone(final WorkingZoneEntity workingZone, OnAsyncEventListener callback){
