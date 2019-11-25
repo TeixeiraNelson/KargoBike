@@ -82,6 +82,8 @@
             android:layout_marginRight="16dp"
             android:ems="10"
             android:hint="Email"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_email_24dp"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -92,10 +94,38 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="0dp"
+            android:drawableStart="@drawable/ic_lock_24dp"
+            android:drawablePadding="10dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/signin_txtview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Register"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/forgotpass_txtview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Forgot Password?"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>
