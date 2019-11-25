@@ -10,10 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".ui.TodoListActivity"
-            android:label="@string/title_activity_todo_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ui.SignInActivity" />
         <activity
             android:name=".ui.LoginActivity"
@@ -25,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.About" />
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.MainActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

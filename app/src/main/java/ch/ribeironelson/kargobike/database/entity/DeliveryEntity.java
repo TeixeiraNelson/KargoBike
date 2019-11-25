@@ -15,10 +15,11 @@ public class DeliveryEntity {
     String finalDestination;
     String signatureImageName;
     String proofPictureName;
+    String idProduct;
 
     public DeliveryEntity(){}
 
-    public DeliveryEntity(String idUser, String idDelivery, String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName) {
+    public DeliveryEntity(String idUser, String idDelivery, String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct) {
         this.idUser = idUser;
         this.idDelivery = idDelivery;
         this.description = description;
@@ -28,8 +29,16 @@ public class DeliveryEntity {
         this.finalDestination = finalDestination;
         this.signatureImageName = signatureImageName;
         this.proofPictureName = proofPictureName;
+        this.idProduct = idProduct;
     }
 
+    public String getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(String idProduct) {
+        this.idProduct = idProduct;
+    }
     public String getIdUser() { return idUser; }
 
     public void setIdUser(String idUser) { this.idUser = idUser; }
@@ -115,6 +124,7 @@ public class DeliveryEntity {
         result.put("finalDestination", finalDestination);
         result.put("signatureImageName", signatureImageName);
         result.put("proofPictureName", proofPictureName);
+        result.put("idProduct", idProduct);
 
         return result;
     }
