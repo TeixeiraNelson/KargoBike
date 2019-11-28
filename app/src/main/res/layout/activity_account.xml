@@ -24,7 +24,8 @@
                 android:text="praz"
                 android:textColor="#000"
                 android:textSize="15sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:enabled="false"/>
 
             <EditText
                 android:id="@+id/FirstnameData"
@@ -34,7 +35,8 @@
                 android:text="Florent"
                 android:textColor="#000"
                 android:textSize="15sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:enabled="false"/>
 
             <EditText
                 android:id="@+id/EmailData"
@@ -44,7 +46,8 @@
                 android:text="praz.florent@gmail.com"
                 android:textColor="#000"
                 android:textSize="15sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:enabled="false"/>
 
             <Spinner
                 android:id="@+id/RoleSpinner"

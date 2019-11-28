@@ -25,7 +25,7 @@ public class DetailsActivity extends AppCompatActivity {
     this.Delivery = Delivery;
     }
 
-    /*@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -44,11 +44,11 @@ public class DetailsActivity extends AppCompatActivity {
     private void updateUI() {
         DateData.setText(Delivery.getDeliveryDateTime());
         ProductData.setText(Delivery.getIdProduct());
-        NumberData.setText(Delivery.getNbPackages());
+        NumberData.setText(String.valueOf(Delivery.getNbPackages()));
         ClientData.setText(Delivery.getFinalDestination());
         CyclistData.setText(Delivery.getIdUser());
        // DeliveryPicture.setImageResource(Delivery.getProofPictureName());
        // SignaturPicture.setImageResource(Delivery.getSignatureImageName());
 
-}*/
+}
     }
