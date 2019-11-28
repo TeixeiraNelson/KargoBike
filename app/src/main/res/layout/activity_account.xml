@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="681dp"
+        android:layout_height="337dp"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/LastnameData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="match_parent"
+                android:text="praz"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:id="@+id/FirstnameData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="match_parent"
+                android:text="Florent"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:id="@+id/EmailData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="match_parent"
+                android:text="praz.florent@gmail.com"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Spinner
+                android:id="@+id/RoleSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:layout_weight="match_parent" />
+
+            <Button
+                    android:id="@+id/ButtonModify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="match_parent"
+                    android:textSize="12sp"
+                    android:background="null"
+                    android:text="Modify"
+                    android:textColor="#1303fc"
+                    />
+
+
+                <Button
+                    android:id="@+id/ButtonSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="match_parent"
+                    android:text="Save"
+                    android:background="null"
+                    android:textSize="12sp"
+                    android:textColor="#1303fc"/>
+
+                <Button
+                    android:id="@+id/ButtonCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="match_parent"
+                    android:textSize="12sp"
+                    android:text="cancel"
+                    android:background="null"
+                    android:textColor="#fc0313" />
+
+        </LinearLayout>
+    </LinearLayout>

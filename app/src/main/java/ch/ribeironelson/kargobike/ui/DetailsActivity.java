@@ -47,8 +47,8 @@ public class DetailsActivity extends AppCompatActivity {
         NumberData.setText(Delivery.getNbPackages());
         ClientData.setText(Delivery.getFinalDestination());
         CyclistData.setText(Delivery.getIdUser());
-        DeliveryPicture.setI(Delivery.getProofPictureName());
-        SignaturPicture.setI(Delivery.getSignatureImageName());
+       // DeliveryPicture.setImageResource(Delivery.getProofPictureName());
+       // SignaturPicture.setImageResource(Delivery.getSignatureImageName());
 
     }
 }

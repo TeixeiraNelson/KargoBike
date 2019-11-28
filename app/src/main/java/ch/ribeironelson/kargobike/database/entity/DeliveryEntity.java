@@ -59,7 +59,7 @@ public class DeliveryEntity {
         this.description = description;
     }
 
-    public Long getNbPackages() {
+    public long getNbPackages() {
         return nbPackages;
     }
 
