@@ -1,4 +1,4 @@
-package ch.ribeironelson.kargobike.ui;
+package ch.ribeironelson.kargobike.ui.Delivery;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +25,7 @@ public class DetailsActivity extends AppCompatActivity {
     this.Delivery = Delivery;
     }
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -50,5 +50,5 @@ public class DetailsActivity extends AppCompatActivity {
         DeliveryPicture.setI(Delivery.getProofPictureName());
         SignaturPicture.setI(Delivery.getSignatureImageName());
 
+}*/
     }
-}

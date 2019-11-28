@@ -15,4 +15,6 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_todo_deliveries">TodoDeliveriesActivity</string>
+    <string name="title_activity_adfdf">adfdf</string>
+    <string name="add_a_new_delivery">Add a new Delivery</string>
 </resources>
