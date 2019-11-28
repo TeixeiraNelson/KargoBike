@@ -2,7 +2,6 @@ package ch.ribeironelson.kargobike.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -13,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -61,26 +61,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(this, About.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -97,9 +77,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_home) {
             intent=new Intent (BaseActivity.this, MainActivity.class);
 
-        } else if (id == R.id.nav_shops) {
-            intent=new Intent (BaseActivity.this, About.class);
-        } else if (id == R.id.nav_articles) {
+        } else if (id == R.id.nav_delivery) {
+            intent=new Intent (BaseActivity.this, DeliveryActivity.class);
+        } else if (id == R.id.nav_users) {
             intent=new Intent (BaseActivity.this, About.class);
         } else if (id == R.id.nav_about) {
             intent=new Intent (BaseActivity.this, About.class);

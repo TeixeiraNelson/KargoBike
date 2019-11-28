@@ -8,13 +8,13 @@
             android:icon="@drawable/ic_baseline_home_24px"
             android:title="Home" />
         <item
-            android:id="@+id/nav_shops"
-            android:icon="@drawable/ic_baseline_store_24px"
-            android:title="Shops" />
+            android:id="@+id/nav_delivery"
+            android:icon="@drawable/ic_assignment_black_24dp"
+            android:title="Deliverys" />
         <item
-            android:id="@+id/nav_articles"
-            android:icon="@drawable/ic_baseline_shopping_basket_24px"
-            android:title="Articles" />
+            android:id="@+id/nav_users"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="Users" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_baseline_info_24px"
