@@ -48,7 +48,8 @@
         android:layout_height="wrap_content"
         android:text="Modify"
         android:textColor="#1303fc"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:background="@android:color/transparent"/>
 
 
     <Button
@@ -57,7 +58,8 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:textColor="#1303fc"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:background="@android:color/transparent"/>
 
     <Button
         android:id="@+id/ButtonCancel"
@@ -65,6 +67,7 @@
         android:layout_height="wrap_content"
         android:text="cancel"
         android:textColor="#fc0313"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:background="@android:color/transparent"/>
 
         </LinearLayout>
