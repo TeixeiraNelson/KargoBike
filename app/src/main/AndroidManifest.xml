@@ -20,7 +20,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.SignInActivity" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.LoginActivity"
             android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -30,7 +30,7 @@
             android:label="About"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

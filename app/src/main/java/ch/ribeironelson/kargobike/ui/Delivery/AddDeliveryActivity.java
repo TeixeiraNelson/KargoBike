@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.ui.About;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +29,7 @@ import java.util.List;
 public class AddDeliveryActivity extends BaseActivity {
 
     private static final String TAG = "Add Delivery Activity";
-    private DeliveriesListViewModel viewModelUsers;
+    private UsersListViewModel viewModelUsers;
     private DeliveryViewModel deliveryViewModel;
     private ListAdapter<String> adpaterUserList;
     private ListAdapter<String> adapterProductList;
@@ -91,17 +93,17 @@ public class AddDeliveryActivity extends BaseActivity {
     }
 
     private void setupViewModels() {
-        DeliveriesListViewModel.Factory factory = new DeliveriesListViewModel.Factory(
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
                 getApplication());
-        viewModelUsers = ViewModelProviders.of(this, factory).get(DeliveriesListViewModel.class);
-        viewModelUsers.getDeliveries().observe(this, deliveryEntities -> {
-            if (deliveryEntities != null) {
+        viewModelUsers = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
+        viewModelUsers.getAllUsers().observe(this, userEntities -> {
+            if (userEntities != null) {
                 Log.d(TAG,"Usernames Not null");
-                //Array shopnames
+                //Array username
                 ArrayList<String> userNames = new ArrayList<String>();
-                for (DeliveryEntity d : deliveryEntities
+                for (UserEntity u : userEntities
                 ) {
-                    userNames.add(d.getDescription());
+                    userNames.add(u.getFirstname() + " " + u.getLastname());
                 }
                 updateAdapterUserList(userNames);
             }
@@ -125,7 +127,23 @@ public class AddDeliveryActivity extends BaseActivity {
         product = (String) spinnerProducts.getSelectedItem();
 
         if(!isAnyEditEmpty()){
-            DeliveryEntity newDelivery = new DeliveryEntity(user, description, nbProducts, date,
+
+            String currentString = "Fruit: they taste good";
+            String[] separated = user.split(" ");
+            final String[] idUser = new String[1];
+            viewModelUsers.getAllUsers().observe(this, userEntities -> {
+                if (userEntities != null) {
+                    Log.d(TAG,"Usernames Not null");
+                    //Array username
+                    for (UserEntity u : userEntities) {
+                        if(u.getFirstname().equals(separated[0]) && u.getLastname().equals(separated[1])){
+                            idUser[0] = u.getIdUser();
+                            return;
+                        }
+                    }
+                }
+            });
+            DeliveryEntity newDelivery = new DeliveryEntity(idUser[0], description, nbProducts, date,
                     departure, destination, "", "", product);
             DeliveryViewModel.Factory factoryD = new DeliveryViewModel.Factory(getApplication(), "0");
             deliveryViewModel = ViewModelProviders.of(this, factoryD).get(DeliveryViewModel.class);
@@ -133,10 +151,10 @@ public class AddDeliveryActivity extends BaseActivity {
                 @Override
                 public void onSuccess() {
                     Log.d(TAG, "createDelivery: success");
-                    //startActivity(h);
                     Toast toast = Toast.makeText(AddDeliveryActivity.this, "Created a new Delivery", Toast.LENGTH_LONG);
                     toast.show();
-                    //Intent h = new Intent(AddDeliveryActivity.this, DeliveryActivity.class);
+                    Intent h = new Intent(AddDeliveryActivity.this, DeliveryActivity.class);
+                    startActivity(h);
                 }
 
                 @Override
