@@ -20,6 +20,7 @@
                 android:id="@+id/LastnameData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="match_parent"
                 android:text="praz"
                 android:textColor="#000"
                 android:textSize="15sp"
@@ -30,6 +31,7 @@
                 android:id="@+id/FirstnameData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="match_parent"
                 android:text="Florent"
                 android:textColor="#000"
                 android:textSize="15sp"
@@ -40,6 +42,7 @@
                 android:id="@+id/EmailData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="match_parent"
                 android:text="praz.florent@gmail.com"
                 android:textColor="#000"
                 android:textSize="15sp"
@@ -51,13 +54,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:layout_weight="match_parent" />
 
             <Button
                     android:id="@+id/ButtonModify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="match_parent"
                     android:textSize="12sp"
+                    android:background="null"
                     android:text="Modify"
                     android:textColor="#1303fc"
                     />
@@ -67,7 +73,9 @@
                     android:id="@+id/ButtonSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="match_parent"
                     android:text="Save"
+                    android:background="null"
                     android:textSize="12sp"
                     android:textColor="#1303fc"/>
 
@@ -75,8 +83,10 @@
                     android:id="@+id/ButtonCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="match_parent"
                     android:textSize="12sp"
                     android:text="cancel"
+                    android:background="null"
                     android:textColor="#fc0313" />
 
         </LinearLayout>

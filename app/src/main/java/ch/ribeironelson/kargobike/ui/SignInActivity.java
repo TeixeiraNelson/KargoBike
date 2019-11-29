@@ -1,13 +1,29 @@
 package ch.ribeironelson.kargobike.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.repository.UserRepository;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
+
+    private final String TAG = "SignInActivity";
 
     private EditText firstname_et;
     private EditText lastname_et;
@@ -22,6 +38,11 @@ public class SignInActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String password2;
+
+    private UsersListViewModel usersListViewModel ;
+    private List<UserEntity> users;
+
+    private UserEntity userToAdd ;
 
     private Button registerBtn;
 
@@ -42,6 +63,16 @@ public class SignInActivity extends AppCompatActivity {
 
         registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener(v -> verifyUserInputs());
+
+        //Get the list of all users to check it
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
+                getApplication());
+        usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
+        usersListViewModel.getAllUsers().observe(this, userEntities -> {
+            if (userEntities != null) {
+                users = userEntities;
+            }
+        });
     }
 
     @Override
@@ -58,9 +89,29 @@ public class SignInActivity extends AppCompatActivity {
         password = password_et.getText().toString();
         password2 = password2_et.getText().toString();
 
-        if(!isAnyEditTextEmpty()){
-            // TODO : CREATE USER AND INSERT IN DATABASE + FIREBASE
+        userToAdd = new UserEntity(firstname, lastname, email, phone );
+
+
+        if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(userToAdd.getEmail())){
+            UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "Insert user : success");
+                    Intent loginIntent = new Intent(SignInActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "Insert user : failure");
+                }
+            });
+        }if(isUserAlreadyRegister(userToAdd.getEmail())){
+            Toast.makeText(this, getString(R.string.error_user_already_exist), Toast.LENGTH_LONG ).show();
+        }if(isAnyEditTextEmpty()){
+            Toast.makeText(this, getString(R.string.error_text_empty), Toast.LENGTH_LONG).show();
         }
+
     }
 
     private boolean isAnyEditTextEmpty() {
@@ -95,5 +146,15 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    private boolean isUserAlreadyRegister(String email){
+
+        for(int i = 0 ; i != users.size() ; i++){
+            if(users.get(i).getEmail().equals(email)){
+                return true ;
+            }
+        }
+        return false ;
     }
 }

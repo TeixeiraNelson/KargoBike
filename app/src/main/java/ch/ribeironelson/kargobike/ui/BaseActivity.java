@@ -80,7 +80,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_delivery) {
             intent=new Intent (BaseActivity.this, DeliveryActivity.class);
         } else if (id == R.id.nav_users) {
-            intent=new Intent (BaseActivity.this, About.class);
+            intent=new Intent (BaseActivity.this, AccountActivity.class);
         } else if (id == R.id.nav_about) {
             intent=new Intent (BaseActivity.this, About.class);
         }
