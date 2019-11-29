@@ -22,6 +22,8 @@ android {
     }
 }
 
+def supportVersion = "27.1.1"
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -44,7 +46,7 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-
+    implementation "com.android.support:appcompat-v7:$supportVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

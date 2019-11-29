@@ -8,6 +8,21 @@
     tools:context=".ui.Delivery.AddDeliveryActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <Button
+        android:id="@+id/buttonDattime"
+        android:text="Open Datetime Dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonDattime"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,19 +33,45 @@
         android:inputType="textMultiLine"
         android:text="@string/add_a_new_delivery"
         android:textStyle="bold"
+        android:textSize="25dp"
         tools:ignore="TextViewEdits" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:inputType="textMultiLine"
+        android:text="@string/product"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        tools:ignore="TextViewEdits" />
     <Spinner
         android:id="@+id/spinnerProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp" />
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:inputType="textMultiLine"
+        android:text="@string/users"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        tools:ignore="TextViewEdits" />
 
     <Spinner
         android:id="@+id/spinnerUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp" />
+        android:layout_marginBottom="8dp" />
 
 
 </LinearLayout>

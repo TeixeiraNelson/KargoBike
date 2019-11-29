@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public class AddDeliveryActivity extends BaseActivity {
     private ListAdapter<String> adapterProductList;
     private Spinner spinnerUsers;
     private Spinner spinnerProducts;
-    // Spinner Drop down elements
     private List<String> products = new ArrayList<String>();
 
     @Override
