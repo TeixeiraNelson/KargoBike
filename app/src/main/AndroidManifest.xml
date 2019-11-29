@@ -36,6 +36,9 @@
         <activity
             android:name=".ui.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.AccountActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>
