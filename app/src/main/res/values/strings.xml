@@ -19,4 +19,6 @@
     <string name="add_a_new_delivery">Add a new Delivery</string>
     <string name="product">Products</string>
     <string name="users">Users</string>
+    <string name="error_user_already_exist">User already exist !</string>
+    <string name="error_text_empty">A form value is empty !</string>
 </resources>

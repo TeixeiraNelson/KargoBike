@@ -1,13 +1,24 @@
 package ch.ribeironelson.kargobike.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.repository.UserRepository;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
+
+    private final String TAG = "SignInActivity";
 
     private EditText firstname_et;
     private EditText lastname_et;
@@ -22,6 +33,8 @@ public class SignInActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String password2;
+
+    private UserEntity userToAdd ;
 
     private Button registerBtn;
 
@@ -39,6 +52,8 @@ public class SignInActivity extends AppCompatActivity {
         email_et = findViewById(R.id.kargobike_reg_email);
         password_et = findViewById(R.id.kargobike_reg_password);
         password2_et = findViewById(R.id.kargobike_reg_password2);
+
+        UserEntity userToAdd ;
 
         registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener(v -> verifyUserInputs());
@@ -58,9 +73,29 @@ public class SignInActivity extends AppCompatActivity {
         password = password_et.getText().toString();
         password2 = password2_et.getText().toString();
 
-        if(!isAnyEditTextEmpty()){
-            // TODO : CREATE USER AND INSERT IN DATABASE + FIREBASE
+        userToAdd = new UserEntity(firstname, lastname, email, phone );
+
+        System.out.println("edit text :"+isAnyEditTextEmpty());
+        System.out.println("is existing:"+isUserAlreadyRegister(userToAdd.getEmail()));
+
+        if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(userToAdd.getEmail())){
+            UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "Insert user : success");
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "Insert user : failure");
+                }
+            });
+        }if(isUserAlreadyRegister(userToAdd.getEmail())){
+            Toast.makeText(this, getString(R.string.error_user_already_exist), Toast.LENGTH_LONG ).show();
+        }if(isAnyEditTextEmpty()){
+            Toast.makeText(this, getString(R.string.error_text_empty), Toast.LENGTH_LONG).show();
         }
+
     }
 
     private boolean isAnyEditTextEmpty() {
@@ -95,5 +130,16 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    private boolean isUserAlreadyRegister(String email){
+        LiveData<List<UserEntity>> users =  UserRepository.getInstance().getAllUsers();
+        List<UserEntity> usersList = users.getValue() ;
+
+        if(usersList != null){
+                return usersList.contains(email);
+        }
+
+        return false ;
     }
 }
