@@ -3,16 +3,20 @@ package ch.ribeironelson.kargobike.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -34,6 +38,9 @@ public class SignInActivity extends AppCompatActivity {
     private String password;
     private String password2;
 
+    private UsersListViewModel usersListViewModel ;
+    private List<UserEntity> users;
+
     private UserEntity userToAdd ;
 
     private Button registerBtn;
@@ -53,10 +60,17 @@ public class SignInActivity extends AppCompatActivity {
         password_et = findViewById(R.id.kargobike_reg_password);
         password2_et = findViewById(R.id.kargobike_reg_password2);
 
-        UserEntity userToAdd ;
-
         registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener(v -> verifyUserInputs());
+
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
+                getApplication());
+        usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
+        usersListViewModel.getAllUsers().observe(this, userEntities -> {
+            if (userEntities != null) {
+                users = userEntities;
+            }
+        });
     }
 
     @Override
@@ -133,13 +147,12 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private boolean isUserAlreadyRegister(String email){
-        LiveData<List<UserEntity>> users =  UserRepository.getInstance().getAllUsers();
-        List<UserEntity> usersList = users.getValue() ;
 
-        if(usersList != null){
-                return usersList.contains(email);
+        for(int i = 0 ; i != users.size() ; i++){
+            if(users.get(i).getEmail().equals(email)){
+                return true ;
+            }
         }
-
         return false ;
     }
 }
