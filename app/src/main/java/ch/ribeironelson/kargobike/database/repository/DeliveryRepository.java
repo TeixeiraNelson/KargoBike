@@ -9,7 +9,10 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.firebase.DeliveryListLiveData;
+import ch.ribeironelson.kargobike.database.firebase.DeliveryLiveData;
+import ch.ribeironelson.kargobike.database.firebase.SchedulesLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 public class DeliveryRepository {
@@ -35,6 +38,12 @@ public class DeliveryRepository {
         return new DeliveryListLiveData(reference);
     }
 
+    public LiveData<DeliveryEntity> getDelivery(final String deliveryId){
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("deliveries")
+                .child(deliveryId);
+        return new DeliveryLiveData(reference);
+    }
 
     /*
     public LiveData<List<DeliveryEntity>> getDeliveriesByUserId(final String userId){

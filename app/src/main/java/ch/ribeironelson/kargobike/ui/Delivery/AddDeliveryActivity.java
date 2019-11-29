@@ -5,14 +5,21 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.ui.About;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +27,31 @@ import java.util.List;
 public class AddDeliveryActivity extends BaseActivity {
 
     private static final String TAG = "Add Delivery Activity";
-    private DeliveriesListViewModel viewModel;
+    private DeliveriesListViewModel viewModelUsers;
+    private DeliveryViewModel deliveryViewModel;
     private ListAdapter<String> adpaterUserList;
     private ListAdapter<String> adapterProductList;
     private Spinner spinnerUsers;
     private Spinner spinnerProducts;
     private List<String> products = new ArrayList<String>();
+
+    private EditText DateData;
+    private EditText DescriptionData;
+    private EditText DeparturePlaceData;
+    private EditText finalDestinationData;
+    private EditText NumberData;
+    private EditText ClientData;
+
+    private String date;
+    private String description;
+    private String departure;
+    private String destination;
+    private long nbProducts;
+    private String client;
+    private String user;
+    private String product;
+
+    private Button addDeliveryBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +59,22 @@ public class AddDeliveryActivity extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_add_delivery, frameLayout);
         navigationView.setCheckedItem(R.id.nav_delivery);
 
-        products.add("Automobile");
-        products.add("Business Services");
-        products.add("Computers");
-        products.add("Education");
-        products.add("Personal");
-        products.add("Travel");
+        DateData = findViewById(R.id.DateData);
+        DescriptionData = findViewById(R.id.DescriptionData);
+        DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
+        finalDestinationData = findViewById(R.id.finalDestinationData);
+        NumberData = findViewById(R.id.NumberData);
+        ClientData = findViewById(R.id.ClientData);
+        addDeliveryBtn = findViewById(R.id.btnCreateDelivery);
+        addDeliveryBtn.setOnClickListener(v -> verifyUserInputs());
+        nbProducts = 0;
+
+        products.add("Product 1");
+        products.add("Product 2");
+        products.add("Product 3");
+        products.add("Product 4");
+        products.add("Product 5");
+        products.add("Product 6");
 
         //Spinner
         //Spinner for Products
@@ -57,8 +93,8 @@ public class AddDeliveryActivity extends BaseActivity {
     private void setupViewModels() {
         DeliveriesListViewModel.Factory factory = new DeliveriesListViewModel.Factory(
                 getApplication());
-        viewModel = ViewModelProviders.of(this, factory).get(DeliveriesListViewModel.class);
-        viewModel.getDeliveries().observe(this, deliveryEntities -> {
+        viewModelUsers = ViewModelProviders.of(this, factory).get(DeliveriesListViewModel.class);
+        viewModelUsers.getDeliveries().observe(this, deliveryEntities -> {
             if (deliveryEntities != null) {
                 Log.d(TAG,"Usernames Not null");
                 //Array shopnames
@@ -77,6 +113,68 @@ public class AddDeliveryActivity extends BaseActivity {
         adpaterUserList.updateData(new ArrayList<>(userNames));
     }
 
+    private void verifyUserInputs(){
+        date = DateData.getText().toString();
+        description = DescriptionData.getText().toString();
+        departure = DeparturePlaceData.getText().toString();
+        destination = finalDestinationData.getText().toString();
+        nbProducts = Long.parseLong(NumberData.getText().toString());
+        client = ClientData.getText().toString();
+
+        user = (String) spinnerUsers.getSelectedItem();
+        product = (String) spinnerProducts.getSelectedItem();
+
+        if(!isAnyEditEmpty()){
+            DeliveryEntity newDelivery = new DeliveryEntity(user, description, nbProducts, date,
+                    departure, destination, "", "", product);
+            DeliveryViewModel.Factory factoryD = new DeliveryViewModel.Factory(getApplication(), "0");
+            deliveryViewModel = ViewModelProviders.of(this, factoryD).get(DeliveryViewModel.class);
+            deliveryViewModel.createDelivery(newDelivery, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createDelivery: success");
+                    //startActivity(h);
+                    Toast toast = Toast.makeText(AddDeliveryActivity.this, "Created a new Delivery", Toast.LENGTH_LONG);
+                    toast.show();
+                    //Intent h = new Intent(AddDeliveryActivity.this, DeliveryActivity.class);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "create article: failure", e);
+                }
+            });
+        }
+    }
+
+    private boolean isAnyEditEmpty(){
+        if(date.length()<1){
+            DateData.setError("You mut enter a Date !");
+            return true;
+        }
+        if(description.length()<1){
+            DescriptionData.setError("You mut enter a Description !");
+            return true;
+        }
+        if(departure.length()<1){
+            DeparturePlaceData.setError("You mut enter a Departure !");
+            return true;
+        }
+        if(destination.length()<1){
+            finalDestinationData.setError("You mut enter a Destination !");
+            return true;
+        }
+        if(nbProducts==0){
+            NumberData.setError("You mut enter the Count of the Products !");
+            return true;
+        }
+        if(client.length()<1){
+            ClientData.setError("You mut ente the Client Name !");
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
@@ -87,4 +185,5 @@ public class AddDeliveryActivity extends BaseActivity {
         super.onResume();
         navigationView.setCheckedItem(R.id.nav_delivery);
     }
+
 }
