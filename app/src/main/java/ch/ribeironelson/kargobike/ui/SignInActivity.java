@@ -10,6 +10,7 @@ import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -63,6 +64,7 @@ public class SignInActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener(v -> verifyUserInputs());
 
+        //Get the list of all users to check it
         UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
                 getApplication());
         usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
@@ -89,14 +91,14 @@ public class SignInActivity extends AppCompatActivity {
 
         userToAdd = new UserEntity(firstname, lastname, email, phone );
 
-        System.out.println("edit text :"+isAnyEditTextEmpty());
-        System.out.println("is existing:"+isUserAlreadyRegister(userToAdd.getEmail()));
 
         if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(userToAdd.getEmail())){
             UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
                     Log.d(TAG, "Insert user : success");
+                    Intent loginIntent = new Intent(SignInActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
                 }
 
                 @Override

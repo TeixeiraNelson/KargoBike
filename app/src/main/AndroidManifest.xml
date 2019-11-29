@@ -23,11 +23,7 @@
             android:name=".ui.MainActivity"
             android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.About"
@@ -35,7 +31,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.AccountActivity"
             android:screenOrientation="landscape"/>
