@@ -140,7 +140,6 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
             });
-
         }if(isUserAlreadyRegister(userToAdd.getEmail())){
             Toast.makeText(this, getString(R.string.error_user_already_exist), Toast.LENGTH_LONG ).show();
         }if(isAnyEditTextEmpty()){
