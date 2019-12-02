@@ -24,7 +24,7 @@
         android:layout_below="@+id/logo_imgview"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
 
     <Button
