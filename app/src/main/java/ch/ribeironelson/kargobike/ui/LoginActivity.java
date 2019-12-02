@@ -3,7 +3,12 @@ package ch.ribeironelson.kargobike.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.repository.UserRepository;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -35,6 +40,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     static final int GOOGLE_SIGN = 123;
@@ -54,6 +61,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPassword;
 
     private ProgressBar progressBar;
+
+    private UsersListViewModel usersListViewModel;
+    private List<UserEntity> users;
+    private UserEntity userToAdd;
 
 
     @Override
@@ -86,6 +97,16 @@ public class LoginActivity extends AppCompatActivity {
         kargobikeLogin.setOnClickListener(v -> KargoBikeLogin());
         signinTxtview.setOnClickListener(v -> startSignInForm());
         forgotPassword.setOnClickListener(v -> forgotPassword());
+
+        //Get the list of all users to check it
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
+                getApplication());
+        usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
+        usersListViewModel.getAllUsers().observe(this, userEntities -> {
+            if (userEntities != null) {
+                users = userEntities;
+            }
+        });
     }
 
     private void forgotPassword() {
@@ -257,7 +278,23 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(this, "Signin Sucess ! " + user.getEmail() , Toast.LENGTH_SHORT).show();
                         logUserAuthentication(user);
 
-                        // TODO : INSERT IN THE DATABASE THE NEW GOOGLE USER, IF IT IS ONE !
+                        userToAdd = new UserEntity(user.getDisplayName(), user.getDisplayName(), user.getEmail(), user.getPhoneNumber());
+
+                        // TODO: TEST IF THE USER IS ADDED IN THE DATABASE
+                        if(!isUserAlreadyRegisterInDB(userToAdd.getEmail())) {
+                            UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.d(TAG, "Insert user: "+userToAdd.getFirstname()+" in database : success");
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.d(TAG, "Insert user in database : failure");
+                                }
+                            });
+                        }
+
                         startActivityBasedOnRole();
 
                         progressBar.setVisibility(View.INVISIBLE);
@@ -289,6 +326,16 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
                 task -> logUserAuthentication(null));
+    }
+
+    private boolean isUserAlreadyRegisterInDB(String email){
+
+        for(int i = 0 ; i != users.size() ; i++){
+            if(users.get(i).getEmail().equals(email)){
+                return true ;
+            }
+        }
+        return false ;
     }
 
 }

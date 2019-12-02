@@ -8,19 +8,16 @@
     tools:context=".ui.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <EditText
-        android:id="@+id/search_deliveries"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="Search delivery"
-        android:drawableLeft="@drawable/ic_search_24dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_deliveries"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="268dp"
-        tools:layout_editor_absoluteY="326dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:inputType="textMultiLine"
+        android:text="Home"
+        android:textStyle="bold"
+        />
 
 </LinearLayout>

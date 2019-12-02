@@ -3,7 +3,12 @@ package ch.ribeironelson.kargobike.database.repository;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.List;
+
+import androidx.lifecycle.LiveData;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.firebase.UsersListLiveData;
+import ch.ribeironelson.kargobike.database.firebase.UsersLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 public class UserRepository {
@@ -20,15 +25,21 @@ public class UserRepository {
         }
         return instance;
     }
-    /*
+
     public LiveData<UserEntity> getUser(final String userId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(userId);
-        return UserLiveDate(reference);
+        return new UsersLiveData(reference);
     }
 
-     */
+
+
+    public LiveData<List<UserEntity>> getAllUsers(){
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("users");
+        return new UsersListLiveData(reference);
+    }
 
     public void insert(final UserEntity userEntity, final OnAsyncEventListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance()

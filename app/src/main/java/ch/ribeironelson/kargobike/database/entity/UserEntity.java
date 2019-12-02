@@ -16,6 +16,14 @@ public class UserEntity {
     private String idRole;
 
     public UserEntity() { }
+
+    public UserEntity(String firstname, String lastname, String email, String phoneNumber){
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
     public UserEntity(String firstname, String lastname, String email, String phoneNumber,String idRole, String idUser, String idZone, String idSchedule) {
         this.firstname=firstname;
         this.lastname=lastname;
@@ -96,4 +104,6 @@ public class UserEntity {
 
         return result;
     }
+
+
 }

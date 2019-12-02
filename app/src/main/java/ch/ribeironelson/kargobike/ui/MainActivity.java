@@ -21,45 +21,12 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "Main Activity";
-
-    private EditText searchEditText;
-    private RecyclerView recyclerView;
-
-    private DeliveriesRecyclerViewAdapter adapter;
-    private List<DeliveryEntity> mdeliveryEntities;
-    private DeliveriesListViewModel viewModel;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_main, frameLayout);
         navigationView.setCheckedItem(R.id.nav_home);
-
-        searchEditText = findViewById(R.id.search_deliveries);
-        recyclerView = findViewById(R.id.recyclerView_deliveries);
-
-        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,MainActivity.this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-        setupViewModel();
     }
-
-    private void setupViewModel() {
-        DeliveriesListViewModel.Factory factory = new DeliveriesListViewModel.Factory(
-                getApplication());
-        viewModel = ViewModelProviders.of(this, factory).get(DeliveriesListViewModel.class);
-        viewModel.getDeliveries().observe(this, deliveryEntities -> {
-            if (deliveryEntities != null) {
-                mdeliveryEntities = deliveryEntities;
-                Log.d(TAG,"Deliveries Not null");
-                adapter.updateData(mdeliveryEntities);
-            }
-        });
-    }
-
 
     @Override
     public void onBackPressed() {

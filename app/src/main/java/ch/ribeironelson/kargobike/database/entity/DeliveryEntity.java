@@ -9,7 +9,7 @@ public class DeliveryEntity {
     String idUser;
     String idDelivery;
     String description;
-    Long nbPackages;
+    long nbPackages;
     String deliveryDateTime;
     String departurePlace;
     String finalDestination;
@@ -19,9 +19,8 @@ public class DeliveryEntity {
 
     public DeliveryEntity(){}
 
-    public DeliveryEntity(String idUser, String idDelivery, String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct) {
-        this.idUser = idUser;
-        this.idDelivery = idDelivery;
+    public DeliveryEntity(String idUser, String description, long nbPackages, String deliveryDateTime, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct) {
+            this.idUser = idUser;
         this.description = description;
         this.nbPackages = nbPackages;
         this.deliveryDateTime = deliveryDateTime;
@@ -59,11 +58,11 @@ public class DeliveryEntity {
         this.description = description;
     }
 
-    public Long getNbPackages() {
+    public long getNbPackages() {
         return nbPackages;
     }
 
-    public void setNbPackages(Long nbPackages) {
+    public void setNbPackages(long nbPackages) {
         this.nbPackages = nbPackages;
     }
 

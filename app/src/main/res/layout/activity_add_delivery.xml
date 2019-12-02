@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.Delivery.AddDeliveryActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <TextView
+        android:id="@+id/titleAddDelivery"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Add a new delivery"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/DateText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Date*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/DateData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/DescriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Description*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/DescriptionData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/DeparturePlaceText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="DeparturePlace*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/DeparturePlaceData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/finalDestinationText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Final Destination*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/finalDestinationData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/ProductText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="Product*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/spinnerProducts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/NumberText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="Nombre*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/NumberData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:fontFamily="sans-serif-medium"
+        android:inputType="numberDecimal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/ClientText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="Client*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+
+    <EditText
+        android:id="@+id/ClientData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:fontFamily="sans-serif-medium"
+        android:inputType="textPersonName"
+        android:text="Henri"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/CyclistText"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="Cycliste*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/spinnerUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnCreateDelivery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:inputType="textMultiLine"
+        android:text="@string/add_a_new_delivery"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        tools:ignore="TextViewEdits" />
+</LinearLayout>
+</ScrollView>
