@@ -31,9 +31,9 @@ public class UserViewModel extends AndroidViewModel {
         observableUser = new MediatorLiveData<>();
         observableUser.setValue(null);
 
-        LiveData<UserEntity> shop = repository.getUser(userId);
+        LiveData<UserEntity> user = repository.getUser(userId);
 
-        observableUser.addSource(shop, observableUser::setValue);
+        observableUser.addSource(user, observableUser::setValue);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
@@ -62,6 +62,10 @@ public class UserViewModel extends AndroidViewModel {
 
     public void createUser(UserEntity user, OnAsyncEventListener callback) {
         repository.insert(user, callback);
+    }
+
+    public void createUserUID(UserEntity user, String UID, OnAsyncEventListener callback) {
+        repository.insertUID(user,UID,callback);
     }
 
     public void updateUser(UserEntity user, OnAsyncEventListener callback) {

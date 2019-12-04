@@ -12,15 +12,16 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 
-public class DeliveryListLiveData extends LiveData<List<DeliveryEntity>> {
-    private static final String TAG = "DeliveryListLiveData";
+public class CheckpointListLiveData extends LiveData<List<CheckpointEntity>> {
+    private static final String TAG = "CheckpointListLiveData";
 
     private final DatabaseReference reference;
-    private final MyValueEventListener listener = new MyValueEventListener();
+    private final CheckpointListLiveData.MyValueEventListener listener = new CheckpointListLiveData.MyValueEventListener();
 
-    public DeliveryListLiveData(DatabaseReference ref) {
+    public CheckpointListLiveData(DatabaseReference ref) {
         reference = ref;
     }
 
@@ -38,7 +39,7 @@ public class DeliveryListLiveData extends LiveData<List<DeliveryEntity>> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            setValue(toDeliveries(dataSnapshot));
+            setValue(toCheckpoint(dataSnapshot));
         }
 
         @Override
@@ -47,14 +48,15 @@ public class DeliveryListLiveData extends LiveData<List<DeliveryEntity>> {
         }
     }
 
-    private List<DeliveryEntity> toDeliveries(DataSnapshot snapshot) {
-        List<DeliveryEntity> deliveries = new ArrayList<>();
+    private List<CheckpointEntity> toCheckpoint(DataSnapshot snapshot) {
+        List<CheckpointEntity> checkpoints = new ArrayList<>();
         Log.d(TAG,"Transforming into deliveries");
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            DeliveryEntity entity = childSnapshot.getValue(DeliveryEntity.class);
-            entity.setIdDelivery(childSnapshot.getKey());
-            deliveries.add(entity);
+            CheckpointEntity entity = childSnapshot.getValue(CheckpointEntity.class);
+            entity.setIdCheckpoint(childSnapshot.getKey());
+            checkpoints.add(entity);
+            Log.d(TAG,entity.getIdCheckpoint());
         }
-        return deliveries;
+        return checkpoints;
     }
 }

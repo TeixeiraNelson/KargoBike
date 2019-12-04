@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
@@ -42,11 +41,11 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        DateData.setText(Delivery.getDeliveryDateTime());
+        DateData.setText(Delivery.getDeliveryDate());
         ProductData.setText(Delivery.getIdProduct());
         NumberData.setText(String.valueOf(Delivery.getNbPackages()));
         ClientData.setText(Delivery.getFinalDestination());
-        CyclistData.setText(Delivery.getIdUser());
+        CyclistData.setText(Delivery.getActuallyAssignedUser());
        // DeliveryPicture.setImageResource(Delivery.getProofPictureName());
        // SignaturPicture.setImageResource(Delivery.getSignatureImageName());
 

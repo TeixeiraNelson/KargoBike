@@ -40,6 +40,7 @@ public class WorkingZoneEntity {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("location", location);
+        result.put("workingZoneId", workingZoneId);
 
         return result;
     }

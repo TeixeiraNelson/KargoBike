@@ -57,6 +57,20 @@ public class UserRepository {
                 });
     }
 
+    public void insertUID(final UserEntity userEntity, final String userUID, final OnAsyncEventListener callback){
+        String key = userUID;
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(key)
+                .setValue(userEntity, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+    }
+
     public void update(final UserEntity userEntity, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
                 .getReference("users")

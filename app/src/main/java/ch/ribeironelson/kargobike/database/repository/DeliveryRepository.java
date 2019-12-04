@@ -10,6 +10,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
+import ch.ribeironelson.kargobike.database.entity.TripEntity;
 import ch.ribeironelson.kargobike.database.firebase.DeliveryListLiveData;
 import ch.ribeironelson.kargobike.database.firebase.DeliveryLiveData;
 import ch.ribeironelson.kargobike.database.firebase.SchedulesLiveData;
@@ -61,7 +62,7 @@ public class DeliveryRepository {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("deliveries");
         String key = reference.push().getKey();
-
+        delivery.setIdDelivery(key);
         FirebaseDatabase.getInstance()
                 .getReference("deliveries")
                 .child(key)
