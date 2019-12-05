@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -45,13 +44,7 @@ public class DeliveryActivity extends BaseActivity {
         searchEditText = findViewById(R.id.search_deliveries);
         recyclerView = findViewById(R.id.recyclerView_deliveries);
 
-        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities, DeliveryActivity.this, new DeliveriesRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DeliveryEntity item) {
-                Toast toast = Toast.makeText(DeliveryActivity.this, "Click on Delivery" + item.getIdDelivery(), Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
+        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(DeliveryActivity.this));
 

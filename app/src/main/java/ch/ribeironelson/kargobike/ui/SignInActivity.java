@@ -30,10 +30,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.auth.zzy;
 import com.google.firebase.auth.zzz;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -106,31 +108,52 @@ public class SignInActivity extends AppCompatActivity {
         password = password_et.getText().toString();
         password2 = password2_et.getText().toString();
 
-        userToAdd = new UserEntity(firstname, lastname, email, phone );
 
 
-        if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(userToAdd.getEmail())){
-            UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "Insert user in database : success");
-                }
 
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "Insert user in database : failure");
-                }
-            });
-
-            auth.createUserWithEmailAndPassword(userToAdd.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(email)){
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = auth.getCurrentUser();
-                        Toast.makeText(getApplicationContext(), "User registered successful", Toast.LENGTH_SHORT);
+                        Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
                         Intent loginAIntent = new Intent(SignInActivity.this, LoginActivity.class);
                         startActivity(loginAIntent);
+
+                        userToAdd = new UserEntity();
+                        userToAdd.setEmail(email);
+                        userToAdd.setPhoneNumber(phone);
+                        userToAdd.setFirstname(firstname);
+                        userToAdd.setLastname(lastname);
+                        userToAdd.setIdUser(user.getUid());
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(firstname + " " + lastname)
+                                .build();
+
+                        Objects.requireNonNull(user).updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "User profile updated.");
+                                        }
+                                    }
+                                });
+
+                        UserRepository.getInstance().insertUID(userToAdd, user.getUid(), new OnAsyncEventListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "Insert user in database : success");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d(TAG, "Insert user in database : failure");
+                            }
+                        });
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -140,7 +163,7 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
             });
-        }if(isUserAlreadyRegister(userToAdd.getEmail())){
+        }if(isUserAlreadyRegister(email)){
             Toast.makeText(this, getString(R.string.error_user_already_exist), Toast.LENGTH_LONG ).show();
         }if(isAnyEditTextEmpty()){
             Toast.makeText(this, getString(R.string.error_text_empty), Toast.LENGTH_LONG).show();

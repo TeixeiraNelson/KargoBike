@@ -2,6 +2,7 @@ package ch.ribeironelson.kargobike.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -12,9 +13,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -72,7 +77,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         BaseActivity.position = id;
         Intent intent = null;
 
-        navigationView.setCheckedItem(id);
+        navigationView.setCheckedItem(item);
 
         if (id == R.id.nav_home) {
             intent=new Intent (BaseActivity.this, MainActivity.class);
@@ -83,6 +88,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent=new Intent (BaseActivity.this, AccountActivity.class);
         } else if (id == R.id.nav_about) {
             intent=new Intent (BaseActivity.this, About.class);
+        } else if (id == R.id.nav_logout){
+            intent= new Intent(BaseActivity.this, LoginActivity.class);
+            LoginActivity.Logout();
+        } else if (id == R.id.nav_add_delivery){
+            intent = new Intent(BaseActivity.this, AddDeliveryActivity.class);
         }
         if (intent != null) {
             intent.setFlags(

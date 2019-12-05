@@ -5,7 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
+import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
@@ -13,13 +16,9 @@ import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -48,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
+    private static GoogleSignInClient mGoogleSignInClient;
 
     private Button kargobikeLogin;
     private Button googleLoginBtn;
@@ -93,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         googleLoginBtn.setOnClickListener(v -> SignInGoogle());
-        logoutBtn.setOnClickListener(v -> Logout());
         kargobikeLogin.setOnClickListener(v -> KargoBikeLogin());
         signinTxtview.setOnClickListener(v -> startSignInForm());
         forgotPassword.setOnClickListener(v -> forgotPassword());
@@ -205,8 +203,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 logUserAuthentication(user);
-
-                                startActivityBasedOnRole();
+                                addUserToDB(user);
+                                startActivity();
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -222,8 +220,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void startActivityBasedOnRole() {
-        // TODO : MANAGE ROLES
+    private void startActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -278,24 +275,9 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(this, "Signin Sucess ! " + user.getEmail() , Toast.LENGTH_SHORT).show();
                         logUserAuthentication(user);
 
-                        userToAdd = new UserEntity(user.getDisplayName(), user.getDisplayName(), user.getEmail(), user.getPhoneNumber());
+                        addUserToDB(user);
 
-                        // TODO: TEST IF THE USER IS ADDED IN THE DATABASE
-                        if(!isUserAlreadyRegisterInDB(userToAdd.getEmail())) {
-                            UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.d(TAG, "Insert user: "+userToAdd.getFirstname()+" in database : success");
-                                }
-
-                                @Override
-                                public void onFailure(Exception e) {
-                                    Log.d(TAG, "Insert user in database : failure");
-                                }
-                            });
-                        }
-
-                        startActivityBasedOnRole();
+                        startActivity();
 
                         progressBar.setVisibility(View.INVISIBLE);
                         logoutBtn.setVisibility(View.VISIBLE);
@@ -307,6 +289,29 @@ public class LoginActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
+    }
+
+    private void addUserToDB(FirebaseUser user) {
+        userToAdd = new UserEntity();
+        userToAdd.setIdUser(user.getUid());
+        userToAdd.setEmail(user.getEmail());
+        userToAdd.setPhoneNumber(user.getPhoneNumber());
+        userToAdd.setFirstname(user.getDisplayName().substring(0,user.getDisplayName().indexOf(" ")));
+        userToAdd.setLastname(user.getDisplayName().substring(user.getDisplayName().indexOf(" ")+1));
+
+        if(!isUserAlreadyRegisterInDB(userToAdd.getEmail())) {
+            UserRepository.getInstance().insertUID(userToAdd,user.getUid(), new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "Insert user: "+userToAdd.getFirstname()+" in database : success");
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "Insert user in database : failure");
+                }
+            });
+        }
     }
 
     private void logUserAuthentication(FirebaseUser user) {
@@ -321,11 +326,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void Logout() {
-        logoutBtn.setVisibility(View.INVISIBLE);
+    public static void Logout() {
         FirebaseAuth.getInstance().signOut();
-        mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                task -> logUserAuthentication(null));
+        mGoogleSignInClient.signOut();
     }
 
     private boolean isUserAlreadyRegisterInDB(String email){

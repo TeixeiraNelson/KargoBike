@@ -36,7 +36,6 @@ public class AddDeliveryActivity extends BaseActivity {
     private Spinner spinnerUsers;
     private Spinner spinnerProducts;
     private List<String> products = new ArrayList<String>();
-    private DeliveryEntity currentDelivery;
 
     private EditText DateData;
     private EditText DescriptionData;
@@ -62,10 +61,6 @@ public class AddDeliveryActivity extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_add_delivery, frameLayout);
         navigationView.setCheckedItem(R.id.nav_delivery);
 
-        initView();
-    }
-
-    private void initView(){
         DateData = findViewById(R.id.DateData);
         DescriptionData = findViewById(R.id.DescriptionData);
         DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
@@ -106,13 +101,14 @@ public class AddDeliveryActivity extends BaseActivity {
                 Log.d(TAG,"Usernames Not null");
                 //Array username
                 ArrayList<String> userNames = new ArrayList<String>();
-                for (UserEntity u : userEntities) {
+                for (UserEntity u : userEntities
+                ) {
                     userNames.add(u.getFirstname() + " " + u.getLastname());
                 }
                 updateAdapterUserList(userNames);
-                //spinnerUsers.setSelection();
             }
         });
+
     }
 
     private void updateAdapterUserList(List<String> userNames) {
@@ -131,6 +127,8 @@ public class AddDeliveryActivity extends BaseActivity {
         product = (String) spinnerProducts.getSelectedItem();
 
         if(!isAnyEditEmpty()){
+
+            String currentString = "Fruit: they taste good";
             String[] separated = user.split(" ");
             final String[] idUser = new String[1];
             viewModelUsers.getAllUsers().observe(this, userEntities -> {
@@ -147,21 +145,23 @@ public class AddDeliveryActivity extends BaseActivity {
             });
             DeliveryEntity newDelivery = new DeliveryEntity(idUser[0], description, nbProducts, date,
                     departure, destination, "", "", product);
-                deliveryViewModel.createDelivery(newDelivery, new OnAsyncEventListener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "createDelivery: success");
-                        Toast toast = Toast.makeText(AddDeliveryActivity.this, "Created a new Delivery", Toast.LENGTH_LONG);
-                        toast.show();
-                        Intent h = new Intent(AddDeliveryActivity.this, DeliveryActivity.class);
-                        startActivity(h);
-                    }
+            DeliveryViewModel.Factory factoryD = new DeliveryViewModel.Factory(getApplication(), "0");
+            deliveryViewModel = ViewModelProviders.of(this, factoryD).get(DeliveryViewModel.class);
+            deliveryViewModel.createDelivery(newDelivery, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createDelivery: success");
+                    Toast toast = Toast.makeText(AddDeliveryActivity.this, "Created a new Delivery", Toast.LENGTH_LONG);
+                    toast.show();
+                    Intent h = new Intent(AddDeliveryActivity.this, DeliveryActivity.class);
+                    startActivity(h);
+                }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d(TAG, "update delivery: failure", e);
-                    }
-                });
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "create article: failure", e);
+                }
+            });
         }
     }
 

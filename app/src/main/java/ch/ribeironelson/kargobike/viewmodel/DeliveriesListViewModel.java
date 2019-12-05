@@ -1,7 +1,6 @@
 package ch.ribeironelson.kargobike.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import java.util.List;
 
@@ -14,31 +13,30 @@ import androidx.lifecycle.ViewModelProvider;
 import ch.ribeironelson.kargobike.BaseApp;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 
 public class DeliveriesListViewModel extends AndroidViewModel {
     private static final String TAG = "DeliveriesListViewModel";
 
-    private DeliveryRepository mRepository;
+    private DeliveryRepository repository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<List<DeliveryEntity>> mObservableDeliveries;
+    private final MediatorLiveData<List<DeliveryEntity>> observableProducts;
 
-    public DeliveriesListViewModel(@NonNull Application application, DeliveryRepository repo) {
+    public DeliveriesListViewModel(@NonNull Application application, DeliveryRepository beverageRepository) {
         super(application);
 
-        mRepository = repo;
+        repository = beverageRepository;
 
-        mObservableDeliveries = new MediatorLiveData<>();
-
+        observableProducts = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
-        mObservableDeliveries.setValue(null);
+        observableProducts.setValue(null);
 
-
-        LiveData<List<DeliveryEntity>> deliveries = mRepository.getAllDeliveries();
+        LiveData<List<DeliveryEntity>> products = repository.getAllDeliveries();
 
         // observe the changes of the entities from the database and forward them
-        mObservableDeliveries.addSource(deliveries, mObservableDeliveries::setValue);
+        observableProducts.addSource(products, observableProducts::setValue);
     }
 
     /**
@@ -47,40 +45,36 @@ public class DeliveriesListViewModel extends AndroidViewModel {
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
-        private final Application mApplication;
+        private final Application application;
 
-        private final DeliveryRepository mRepository;
+        private final DeliveryRepository beverageRepository;
 
         public Factory(@NonNull Application application) {
-            mApplication = application;
-            mRepository = ((BaseApp) application).getDeliveryRepository();
+            this.application = application;
+            beverageRepository = DeliveryRepository.getInstance();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new DeliveriesListViewModel(mApplication, mRepository);
+            return (T) new DeliveriesListViewModel(application, beverageRepository);
         }
     }
 
     /**
-     * Expose the LiveData ClientWithAccounts query so the UI can observe it.
+     * Expose the LiveData ClientEntities query so the UI can observe it.
      */
     public LiveData<List<DeliveryEntity>> getDeliveries() {
-        return mObservableDeliveries;
+        return observableProducts;
     }
 
-    /**
-     * Expose the LiveData AccountEntities query so the UI can observe it.
-     *//*
+    public void deleteDelivery(DeliveryEntity beverage) {
+        repository.delete(beverage, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {}
 
-    public void deleteAccount(AccountEntity account, OnAsyncEventListener callback) {
-        ((BaseApp) getApplication()).getAccountRepository()
-                .delete(account, callback);
+            @Override
+            public void onFailure(Exception e) {}
+        });
     }
-
-    public void executeTransaction(final AccountEntity sender, final AccountEntity recipient,
-                                   OnAsyncEventListener callback) {
-        ((BaseApp) getApplication()).getAccountRepository().transaction(sender, recipient, callback);
-    }*/
 }
