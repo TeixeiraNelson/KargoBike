@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
@@ -12,182 +13,175 @@
     tools:showIn="@layout/app_bar_main">
 
     <TextView
-        android:id="@+id/titleAddDelivery"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Add a new delivery"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/DateText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Date*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        android:id="@+id/textViewDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Add new Delivery"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/DateData"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_date_range_black_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
+        android:hint="Date"
         android:inputType="date"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/DateTimeText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Time*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/DateTime"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_date_range_black_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
+        android:hint="Time"
         android:inputType="time"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/DescriptionText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Description*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        app:layout_constraintTop_toBottomOf="@+id/DateData"
+        tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/DescriptionData"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_description_black_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
+        android:hint="Description"
         android:inputType="text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/DeparturePlaceText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="DeparturePlace*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        app:layout_constraintTop_toBottomOf="@+id/DateTime"
+        tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/DeparturePlaceData"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_place_black_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
+        android:hint="Departure Place"
         android:inputType="text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/finalDestinationText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Final Destination*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionData"
+        tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/finalDestinationData"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_place_black_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
+        android:hint="Final Destination"
         android:inputType="text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp" />
+        app:layout_constraintTop_toBottomOf="@+id/DeparturePlaceData"
+        tools:layout_editor_absoluteX="31dp" />
 
     <TextView
         android:id="@+id/ProductText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Product*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
-
-    <TextView
-        android:id="@+id/NumberText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:text="Nombre*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/NumberData"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_exposure_zero_black_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:fontFamily="sans-serif-medium"
-        android:inputType="numberDecimal"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp" />
-
-
-    <TextView
-        android:id="@+id/ClientText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:text="Client*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        android:hint="Nombre"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/finalDestinationData"
+        tools:layout_editor_absoluteX="31dp" />
 
     <EditText
         android:id="@+id/ClientData"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_account_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:fontFamily="sans-serif-medium"
-        android:inputType="textPersonName"
-        android:text="Henri"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textSize="24sp" />
+        android:hint="Client"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/NumberData"
+        tools:layout_editor_absoluteX="31dp" />
+
 
     <TextView
         android:id="@+id/CyclistText"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:text="Cycliste*"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Cyclist*"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/btnCreateDelivery"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="textMultiLine"
-        android:text="@string/add_a_new_delivery"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        tools:ignore="TextViewEdits" />
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/round_bg"
+        android:text="Save"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerUsers"
+        tools:layout_editor_absoluteX="0dp" />
+
 </LinearLayout>
 </ScrollView>

@@ -17,10 +17,10 @@
         <activity
             android:name=".ui.Delivery.DeliveryActivity"
             android:label="Delivery"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.SignInActivity" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.MainActivity"
             android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -34,13 +34,11 @@
             android:label="About"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-        </activity>
+            android:name=".ui.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.AccountActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
