@@ -1,7 +1,5 @@
 package ch.ribeironelson.kargobike.ui.Delivery;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +8,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 
-public class DetailsActivity extends AppCompatActivity {
-
+public class ModifyDetailsActivity extends AppCompatActivity {
     private EditText DateData;
     private EditText HoursData;
     //ProductData = description de la delivery
@@ -28,14 +27,14 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView SignaturPicture;
     private ImageButton ButtonSignature;
     private ImageButton ButtonProof;
-    private Button ButtonModify;
+    private Button ButtonSave;
+    private Button ButtonBack;
     private DeliveryEntity Delivery;
 
-    public DetailsActivity(DeliveryEntity Delivery) {
+    public ModifyDetailsActivity(DeliveryEntity Delivery) {
         this.Delivery = Delivery;
     }
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -51,15 +50,25 @@ public class DetailsActivity extends AppCompatActivity {
         DeliveryPicture = findViewById(R.id.DeliveryPicture);
         SignaturPicture = findViewById(R.id.SignaturPicture);
         // Capture button clicks
-        ButtonModify.setOnClickListener(new View.OnClickListener() {
+        ButtonBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
                 // Start NewActivity.class
-                Intent myIntent = new Intent(DetailsActivity.this,
-                        ModifyDetailsActivity.class);
+                Intent myIntent = new Intent(ModifyDetailsActivity.this,
+                        DetailsActivity.class);
                 startActivity(myIntent);
             }
+
+        });
+        ButtonBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(ModifyDetailsActivity.this,
+                        DetailsActivity.class);
+                startActivity(myIntent);
+            }
+
         });
     }
 }
-

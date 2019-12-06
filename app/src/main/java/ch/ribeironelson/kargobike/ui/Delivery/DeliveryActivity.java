@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.adapter.DeliveriesRecyclerViewAdapter;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
 import ch.ribeironelson.kargobike.util.DeliveriesRecyclerViewAdapter;
