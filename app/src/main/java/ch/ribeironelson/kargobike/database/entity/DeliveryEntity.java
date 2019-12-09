@@ -21,6 +21,7 @@ public class DeliveryEntity implements Serializable {
     String proofPictureName;
     String idProduct;
     String deliveryTime;
+    String achievedTimeStamp;
     CheckpointEntity nextPlaceToGo;
     String insertionTime;
     String actuallyAssignedUser;
@@ -31,6 +32,7 @@ public class DeliveryEntity implements Serializable {
         this.description = description;
         this.nbPackages = nbPackages;
         this.deliveryDate = deliveryDate;
+        achievedTimeStamp= "";
         this.departurePlace = departurePlace;
         this.finalDestination = finalDestination;
         this.signatureImageName = signatureImageName;
@@ -46,6 +48,7 @@ public class DeliveryEntity implements Serializable {
 
     public DeliveryEntity(String idUser,String clientName,String insertionTime,String deliveryTime, String description, long nbPackages, String deliveryDate, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct, List<TripEntity> checkpoints) {
         this.description = description;
+        achievedTimeStamp="";
         this.clientName = clientName;
         this.insertionTime = insertionTime;
         this.nbPackages = nbPackages;
@@ -59,6 +62,14 @@ public class DeliveryEntity implements Serializable {
         this.idProduct = idProduct;
         actuallyAssignedUser = idUser;
         this.checkpoints = checkpoints;
+    }
+
+    public String getAchievedTimeStamp() {
+        return achievedTimeStamp;
+    }
+
+    public void setAchievedTimeStamp(String achievedTimeStamp) {
+        this.achievedTimeStamp = achievedTimeStamp;
     }
 
     public String getInsertionTime() {
@@ -206,6 +217,7 @@ public class DeliveryEntity implements Serializable {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("achievedTimeStamp",achievedTimeStamp);
         result.put("idDelivery", idDelivery);
         result.put("actuallyAssignedUser", actuallyAssignedUser);
         result.put("clientName",clientName);

@@ -11,6 +11,7 @@ import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
 import ch.ribeironelson.kargobike.ui.About;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.util.TimeStamp;
 import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
@@ -71,7 +72,7 @@ public class AddDeliveryActivity extends BaseActivity {
 
         DateData = findViewById(R.id.DateData);
         TimeData = findViewById(R.id.DateTime);
-        DescriptionData = findViewById(R.id.DescriptionData);
+        DescriptionData = findViewById(R.id.DescriptionText2);
         DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
         finalDestinationData = findViewById(R.id.finalDestinationData);
         NumberData = findViewById(R.id.NumberData);
@@ -136,14 +137,7 @@ public class AddDeliveryActivity extends BaseActivity {
         user = (String) spinnerUsers.getSelectedItem();
         product = (String) spinnerProducts.getSelectedItem();
 
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
-        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy - HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-        String timestamp = df.format(c);
-
-        Log.d("timestamp : ", timestamp);
+        String timestamp = TimeStamp.getTimeStamp();
 
         if(!isAnyEditEmpty()){
 

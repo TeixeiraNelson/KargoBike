@@ -27,10 +27,10 @@ import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 public class ModifyDetailsActivity extends AppCompatActivity {
+
     private static final String TAG = "ModifyDetailsActivity";
     private EditText DateData;
     private EditText HoursData;
-    //Description = description de la delivery
     private EditText DescriptionData;
     private EditText DepartData;
     private EditText ArrivalData;
@@ -55,9 +55,11 @@ public class ModifyDetailsActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_modify_details);
+
         Intent i = getIntent();
         Delivery= (DeliveryEntity) i.getSerializableExtra("DeliveryDetails");
-        setContentView(R.layout.activity_modify_details);
+
         DateData = findViewById(R.id.DateData);
         HoursData = findViewById(R.id.HoursData);
         DescriptionData = findViewById(R.id.DescriptionData);
@@ -80,6 +82,7 @@ public class ModifyDetailsActivity extends AppCompatActivity {
             }
 
         });
+
         ButtonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
             verifyuserinput();

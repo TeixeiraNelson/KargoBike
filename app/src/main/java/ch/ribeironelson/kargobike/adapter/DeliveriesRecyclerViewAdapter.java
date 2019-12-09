@@ -3,6 +3,7 @@ package ch.ribeironelson.kargobike.adapter;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +43,9 @@ import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
+import ch.ribeironelson.kargobike.ui.DeliveryCompleteActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.util.TimeStamp;
 import ch.ribeironelson.kargobike.viewmodel.CheckpointListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
@@ -313,14 +316,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                 String tripType = "";
                 String gpsCoordinates ="";
 
-                Date c = Calendar.getInstance().getTime();
-                System.out.println("Current time => " + c);
-
-                SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy - HH:mm:ss");
-                df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-                String timestamp = df.format(c);
-
-
+                String timestamp = TimeStamp.getTimeStamp();
 
                 if(deliveryEntity.isLoaded())
                     tripType = "Unload";
@@ -358,7 +354,9 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                     public void onSuccess() {
                         Log.d("Delivery status", "Delivery checkpoint added !");
                         if(deliveryEntity.getActuallyAssignedUser().equals("Delivery Finished")){
-
+                            Intent intent = new Intent(mContext, DeliveryCompleteActivity.class);
+                            intent.putExtra("DeliveryEntity",deliveryEntity);
+                            mContext.startActivity(intent);
                         }
                     }
 

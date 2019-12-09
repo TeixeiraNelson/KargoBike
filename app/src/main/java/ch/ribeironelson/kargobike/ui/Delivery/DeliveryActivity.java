@@ -1,15 +1,5 @@
 package ch.ribeironelson.kargobike.ui.Delivery;
 
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import ch.ribeironelson.kargobike.R;
-import ch.ribeironelson.kargobike.adapter.DeliveriesRecyclerViewAdapter;
-import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
-import ch.ribeironelson.kargobike.ui.BaseActivity;
-import ch.ribeironelson.kargobike.util.DeliveriesRecyclerViewAdapter;
-import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +10,22 @@ import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.adapter.DeliveriesRecyclerViewAdapter;
+import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 
 public class DeliveryActivity extends BaseActivity {
 
@@ -45,7 +49,7 @@ public class DeliveryActivity extends BaseActivity {
         searchEditText = findViewById(R.id.search_deliveries);
         recyclerView = findViewById(R.id.recyclerView_deliveries);
 
-        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this);
+        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this, DeliveryActivity.this.getApplication());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(DeliveryActivity.this));
 
@@ -68,7 +72,7 @@ public class DeliveryActivity extends BaseActivity {
         viewModel = ViewModelProviders.of(this, factory).get(DeliveriesListViewModel.class);
         viewModel.getDeliveries().observe(this, deliveryEntities -> {
             if (deliveryEntities != null) {
-                mdeliveryEntities = deliveryEntities;
+                filterDeliveriesByUserAndDate(deliveryEntities);
                 Log.d(TAG,"Deliveries Not null");
                 adapter.updateData(mdeliveryEntities);
             }
@@ -105,4 +109,41 @@ public class DeliveryActivity extends BaseActivity {
         super.onResume();
         navigationView.setCheckedItem(R.id.nav_home);
     }
+
+    private void filterDeliveriesByUserAndDate(List<DeliveryEntity> deliveryEntities) {
+        mdeliveryEntities = new ArrayList<>();
+
+        for( DeliveryEntity d : deliveryEntities){
+            if(isToday(d.getDeliveryDate())){
+                if(isMyDelivery(d.getActuallyAssignedUser())){
+                    mdeliveryEntities.add(d);
+                }
+            }
+        }
+
+    }
+
+    private boolean isMyDelivery(String assignedUser) {
+        String loggedUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if(assignedUser.equals(loggedUserId))
+            return true;
+
+        Log.d(TAG,"returning false is my delivery");
+        return false;
+    }
+
+    private boolean isToday(String deliveryDate) {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = df.format(c);
+
+        if(deliveryDate.equals(formattedDate))
+            return true;
+
+        return false;
+    }
+
+
 }
