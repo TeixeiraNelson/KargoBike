@@ -11,17 +11,16 @@ public class SchedulesEntity {
     String endingDateTime;
     Boolean safetyCheck;
     Long nbDeliveries;
-    String scheduleType;
 
     public SchedulesEntity(){}
 
-    public SchedulesEntity(String scheduledId, String beginningDateTime, String endingDateTime, Boolean safetyCheck, Long nbDeliveries, String scheduleType) {
+    public SchedulesEntity(String scheduledId, String beginningDateTime, String endingDateTime, Boolean safetyCheck, Long nbDeliveries) {
         this.scheduledId = scheduledId ;
         this.beginningDateTime = beginningDateTime;
         this.endingDateTime = endingDateTime;
         this.safetyCheck = safetyCheck;
         this.nbDeliveries = nbDeliveries;
-        this.scheduleType = scheduleType;
+
     }
 
     public String getScheduledId() {
@@ -64,17 +63,9 @@ public class SchedulesEntity {
         this.nbDeliveries = nbDeliveries;
     }
 
-    public String getScheduleType() {
-        return scheduleType;
-    }
-
-    public void setScheduleType(String scheduleType) {
-        this.scheduleType = scheduleType;
-    }
-
     @Override
     public String toString() {
-        return beginningDateTime + endingDateTime+scheduleType;
+        return beginningDateTime + endingDateTime;
     }
 
     @Exclude
@@ -85,7 +76,6 @@ public class SchedulesEntity {
         result.put("endingDateTime", endingDateTime);
         result.put("safetyCheck", safetyCheck);
         result.put("nbDeliveries", nbDeliveries);
-        result.put("scheduleType", scheduleType);
 
         return result;
     }

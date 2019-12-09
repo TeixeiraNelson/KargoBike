@@ -2,12 +2,13 @@ package ch.ribeironelson.kargobike.database.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryEntity {
+public class DeliveryEntity implements Serializable {
     String idDelivery;
     String description;
     long nbPackages;

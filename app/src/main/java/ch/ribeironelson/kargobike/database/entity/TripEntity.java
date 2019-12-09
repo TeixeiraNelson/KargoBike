@@ -2,10 +2,11 @@ package ch.ribeironelson.kargobike.database.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TripEntity {
+public class TripEntity implements Serializable {
     CheckpointEntity checkpoint;
     String type;
     String idUser;

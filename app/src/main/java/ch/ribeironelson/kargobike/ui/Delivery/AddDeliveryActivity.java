@@ -147,7 +147,6 @@ public class AddDeliveryActivity extends BaseActivity {
 
         if(!isAnyEditEmpty()){
 
-            String currentString = "Fruit: they taste good";
             String[] separated = user.split(" ");
             final String[] idUser = new String[1];
             viewModelUsers.getAllUsers().observe(this, userEntities -> {
