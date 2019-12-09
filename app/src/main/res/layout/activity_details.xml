@@ -72,7 +72,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/DescriptionData"
+        android:id="@+id/DescriptionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Description"
@@ -80,7 +80,7 @@
         android:textSize="17sp" />
 
     <EditText
-        android:id="@+id/ProductData"
+        android:id="@+id/DescriptionData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

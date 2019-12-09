@@ -72,7 +72,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/DescriptionData"
+        android:id="@+id/DescriptionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Description"
@@ -80,7 +80,7 @@
         android:textSize="17sp" />
 
     <EditText
-        android:id="@+id/ProductData"
+        android:id="@+id/DescriptionData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -192,6 +192,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textSize="14sp" />
 
+    <Spinner
+        android:id="@+id/ProductSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/CyclistText"
         android:layout_width="match_parent"
@@ -200,17 +205,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="17sp" />
 
-    <EditText
+    <Spinner
         android:id="@+id/CyclistData"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif-medium"
-        android:inputType="textPersonName"
-        android:text="Henri"
-        android:enabled="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textSize="14sp" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"

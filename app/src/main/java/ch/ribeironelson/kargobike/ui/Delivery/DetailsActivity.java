@@ -42,7 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         DateData = findViewById(R.id.DateData);
         HoursData = findViewById(R.id.HoursData);
-        ProductData = findViewById(R.id.ProductData);
+        ProductData = findViewById(R.id.DescriptionData);
         DepartData = findViewById(R.id.DepartData);
         ArrivalData = findViewById(R.id.ArrivalData);
         NumberData = findViewById(R.id.NumberData);
