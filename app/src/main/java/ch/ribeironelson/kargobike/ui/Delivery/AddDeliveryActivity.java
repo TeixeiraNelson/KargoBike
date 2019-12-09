@@ -143,8 +143,9 @@ public class AddDeliveryActivity extends BaseActivity {
                     }
                 }
             });
-            DeliveryEntity newDelivery = new DeliveryEntity(idUser[0], description, nbProducts, date,
-                    departure, destination, "", "", product);
+            DeliveryEntity newDelivery = new DeliveryEntity();
+            /*DeliveryEntity newDelivery = new DeliveryEntity(idUser[0], description, nbProducts, date,
+                    departure, destination, "", "", product);*/
             DeliveryViewModel.Factory factoryD = new DeliveryViewModel.Factory(getApplication(), "0");
             deliveryViewModel = ViewModelProviders.of(this, factoryD).get(DeliveryViewModel.class);
             deliveryViewModel.createDelivery(newDelivery, new OnAsyncEventListener() {
