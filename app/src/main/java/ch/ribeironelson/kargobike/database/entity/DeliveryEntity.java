@@ -21,10 +21,11 @@ public class DeliveryEntity {
     String idProduct;
     String deliveryTime;
     CheckpointEntity nextPlaceToGo;
+    String insertionTime;
     String actuallyAssignedUser;
     List<TripEntity> checkpoints;
 
-    public DeliveryEntity(String idUser,String clientName,String deliveryTime , String idDelivery, String description, long nbPackages, String deliveryDate, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct, List<TripEntity> checkpoints) {
+    public DeliveryEntity(String idUser,String clientName,String insertionTime,String deliveryTime , String idDelivery, String description, long nbPackages, String deliveryDate, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct, List<TripEntity> checkpoints) {
         this.idDelivery = idDelivery;
         this.description = description;
         this.nbPackages = nbPackages;
@@ -38,12 +39,14 @@ public class DeliveryEntity {
         this.idProduct = idProduct;
         this.deliveryTime = deliveryTime;
         actuallyAssignedUser = idUser;
+        this.insertionTime = insertionTime;
         this.checkpoints = checkpoints;
     }
 
-    public DeliveryEntity(String idUser,String clientName,String deliveryTime, String description, long nbPackages, String deliveryDate, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct, List<TripEntity> checkpoints) {
+    public DeliveryEntity(String idUser,String clientName,String insertionTime,String deliveryTime, String description, long nbPackages, String deliveryDate, String departurePlace, String finalDestination, String signatureImageName, String proofPictureName, String idProduct, List<TripEntity> checkpoints) {
         this.description = description;
         this.clientName = clientName;
+        this.insertionTime = insertionTime;
         this.nbPackages = nbPackages;
         this.deliveryTime = deliveryTime;
         this.deliveryDate = deliveryDate;
@@ -55,6 +58,14 @@ public class DeliveryEntity {
         this.idProduct = idProduct;
         actuallyAssignedUser = idUser;
         this.checkpoints = checkpoints;
+    }
+
+    public String getInsertionTime() {
+        return insertionTime;
+    }
+
+    public void setInsertionTime(String insertionTime) {
+        this.insertionTime = insertionTime;
     }
 
     public String getActuallyAssignedUser() {
@@ -198,6 +209,7 @@ public class DeliveryEntity {
         result.put("actuallyAssignedUser", actuallyAssignedUser);
         result.put("clientName",clientName);
         result.put("loaded", loaded);
+        result.put("insertionTime",insertionTime);
         result.put("description", description);
         result.put("nbPackages", nbPackages);
         result.put("nextPlaceToGo",nextPlaceToGo);

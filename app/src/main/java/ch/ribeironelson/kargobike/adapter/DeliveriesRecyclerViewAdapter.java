@@ -17,9 +17,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -308,7 +312,13 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
             if(deliveryEntity!=null){
                 String tripType = "";
                 String gpsCoordinates ="";
-                String timeStamp ="";
+
+                Date c = Calendar.getInstance().getTime();
+                System.out.println("Current time => " + c);
+
+                SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy - HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+                String timestamp = df.format(c);
 
 
 
@@ -318,7 +328,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                     tripType = "Load";
 
                 deliveryEntity.setLoaded(!deliveryEntity.isLoaded());
-                TripEntity checkpoint = new TripEntity(deliveryEntity.getNextPlaceToGo(), tripType, deliveryEntity.getActuallyAssignedUser(), gpsCoordinates, timeStamp);
+                TripEntity checkpoint = new TripEntity(deliveryEntity.getNextPlaceToGo(), tripType, deliveryEntity.getActuallyAssignedUser(), gpsCoordinates, timestamp);
                 deliveryEntity.addCheckpoint(checkpoint);
 
                 if(selectedCheckpoint!=null){
@@ -329,7 +339,6 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
 
                 if(deliveryEntity.getNextPlaceToGo().getName().equals("Final Destination") && !deliveryEntity.isLoaded()){
                     deliveryEntity.setActuallyAssignedUser("Delivery Finished");
-                    Toast.makeText(mContext,"Delivery complete !", Toast.LENGTH_SHORT).show();
                 } else {
                     if(deliveryEntity.isLoaded()){
                         Toast.makeText(mContext,"Package loaded !", Toast.LENGTH_SHORT).show();
@@ -348,6 +357,9 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                     @Override
                     public void onSuccess() {
                         Log.d("Delivery status", "Delivery checkpoint added !");
+                        if(deliveryEntity.getActuallyAssignedUser().equals("Delivery Finished")){
+
+                        }
                     }
 
                     @Override

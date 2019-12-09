@@ -7,6 +7,7 @@ import ch.ribeironelson.kargobike.adapter.ListAdapter;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.entity.TripEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
 import ch.ribeironelson.kargobike.ui.About;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
@@ -24,8 +25,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class AddDeliveryActivity extends BaseActivity {
 
@@ -131,6 +136,15 @@ public class AddDeliveryActivity extends BaseActivity {
         user = (String) spinnerUsers.getSelectedItem();
         product = (String) spinnerProducts.getSelectedItem();
 
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy - HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        String timestamp = df.format(c);
+
+        Log.d("timestamp : ", timestamp);
+
         if(!isAnyEditEmpty()){
 
             String currentString = "Fruit: they taste good";
@@ -148,11 +162,10 @@ public class AddDeliveryActivity extends BaseActivity {
                     }
                 }
             });
-            DeliveryEntity newDelivery = new DeliveryEntity(idUser[0],client,time, description, nbProducts, date,
+            DeliveryEntity newDelivery = new DeliveryEntity(idUser[0],client,timestamp,time, description, nbProducts, date,
                     departure, destination, "", "", product, new ArrayList<TripEntity>());
-            DeliveryViewModel.Factory factoryD = new DeliveryViewModel.Factory(getApplication(), "0");
-            deliveryViewModel = ViewModelProviders.of(this, factoryD).get(DeliveryViewModel.class);
-            deliveryViewModel.createDelivery(newDelivery, new OnAsyncEventListener() {
+
+            DeliveryRepository.getInstance().insert(newDelivery, new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
                     Log.d(TAG, "createDelivery: success");
@@ -164,7 +177,7 @@ public class AddDeliveryActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Log.d(TAG, "create article: failure", e);
+
                 }
             });
         }
