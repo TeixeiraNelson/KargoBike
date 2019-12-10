@@ -5,10 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
-import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
-import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
-import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
@@ -204,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 logUserAuthentication(user);
                                 addUserToDB(user);
-                                startActivity();
+                                startActivityBasedOnRole(user);
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -220,10 +217,60 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void startActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void startActivityBasedOnRole(FirebaseUser user) {
+
+        for(UserEntity u : users){
+            if(u.getIdUser().equals(user.getUid())){
+                if(u.getIdRole().equals("0")){
+                    showNoRolePopup();
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }
+
+
+
+    }
+
+    private void showNoRolePopup() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("No role");
+        alert.setMessage("Your account has no role assigned to it, you cannot connect to the app for the moment! Please contact an administrator!");
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+        final AlertDialog dialog = alert.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button negativeButton = ((AlertDialog)dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+                Button positiveButton = ((AlertDialog)dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+                negativeButton.invalidate();
+                positiveButton.invalidate();
+            }
+        });
+
+        dialog.show();
     }
 
 
@@ -277,7 +324,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         addUserToDB(user);
 
-                        startActivity();
+                        startActivityBasedOnRole(user);
 
                         progressBar.setVisibility(View.INVISIBLE);
                         logoutBtn.setVisibility(View.VISIBLE);

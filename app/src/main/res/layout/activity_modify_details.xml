@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="409dp"
+    android:layout_height="601dp"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="409dp"
-        android:layout_height="601dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/DateText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="0.5"
+            android:ems="9"
+            android:fontFamily="sans-serif-medium"
+            android:text="Date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/DateText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:ems="9"
-                android:fontFamily="sans-serif-medium"
-                android:text="Date"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="17sp" />
+        <TextView
+            android:id="@+id/HoursText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="10"
+            android:text="Hours"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/HoursText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:ems="10"
-                android:text="Hours"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="17sp" />
-
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:ems="9"
             android:fontFamily="sans-serif-medium"
             android:inputType="date"
-            android:enabled="false"
+            android:enabled="true"
             android:text="03.02.2018"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="14sp" />
@@ -66,7 +66,7 @@
             android:fontFamily="sans-serif-medium"
             android:inputType="textPersonName"
             android:text="15:15"
-            android:enabled="false"
+            android:enabled="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="14sp" />
     </LinearLayout>
@@ -87,7 +87,7 @@
         android:fontFamily="sans-serif-medium"
         android:inputType="textPersonName"
         android:text="Description"
-        android:enabled="false"
+        android:enabled="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textSize="14sp" />
 
@@ -133,7 +133,7 @@
             android:fontFamily="sans-serif-medium"
             android:inputType="textPersonName"
             android:text="Sion"
-            android:enabled="false"
+            android:enabled="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="14sp" />
 
@@ -146,7 +146,7 @@
             android:fontFamily="sans-serif-medium"
             android:inputType="textPersonName"
             android:text="martigny"
-            android:enabled="false"
+            android:enabled="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="14sp" />
 
@@ -168,7 +168,7 @@
         android:fontFamily="sans-serif-medium"
         android:inputType="numberDecimal"
         android:text="3"
-        android:enabled="false"
+        android:enabled="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="14sp" />
 
@@ -188,9 +188,14 @@
         android:fontFamily="sans-serif-medium"
         android:inputType="textPersonName"
         android:text="Michel"
-        android:enabled="false"
+        android:enabled="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textSize="14sp" />
+
+    <Spinner
+        android:id="@+id/ProductSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/CyclistText"
@@ -200,17 +205,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="17sp" />
 
-    <EditText
+    <Spinner
         android:id="@+id/CyclistData"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif-medium"
-        android:inputType="textPersonName"
-        android:text="Henri"
-        android:enabled="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textSize="14sp" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -248,7 +246,7 @@
         <ImageView
             android:id="@+id/SignaturPicture"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="100dp"
             android:layout_weight="0.5"
             android:ems="9"
             app:srcCompat="@android:drawable/ic_menu_report_image" />
@@ -256,7 +254,7 @@
         <ImageView
             android:id="@+id/DeliveryPicture"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="100dp"
             android:layout_weight="0.5"
             android:ems="10"
             app:srcCompat="@android:drawable/ic_menu_report_image" />
@@ -282,10 +280,26 @@
             app:srcCompat="@android:drawable/ic_menu_camera" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/ButtonModify"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Modify" />
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ButtonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_save" />
+
+        <ImageButton
+            android:id="@+id/ButtonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+    </LinearLayout>
 
 </LinearLayout>

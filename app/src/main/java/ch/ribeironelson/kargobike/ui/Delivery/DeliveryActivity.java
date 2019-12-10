@@ -1,14 +1,5 @@
 package ch.ribeironelson.kargobike.ui.Delivery;
 
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import ch.ribeironelson.kargobike.R;
-import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
-import ch.ribeironelson.kargobike.ui.BaseActivity;
-import ch.ribeironelson.kargobike.util.DeliveriesRecyclerViewAdapter;
-import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +12,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.adapter.DeliveriesRecyclerViewAdapter;
+import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 
 public class DeliveryActivity extends BaseActivity {
 
@@ -44,7 +44,9 @@ public class DeliveryActivity extends BaseActivity {
         searchEditText = findViewById(R.id.search_deliveries);
         recyclerView = findViewById(R.id.recyclerView_deliveries);
 
-        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this);
+        setupViewModel();
+
+        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this, null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(DeliveryActivity.this));
 
@@ -57,8 +59,6 @@ public class DeliveryActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
-        setupViewModel();
     }
 
     private void setupViewModel() {
