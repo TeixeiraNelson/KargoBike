@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.ui.Checkpoint.CheckPointsActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
 
@@ -93,6 +94,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.Logout();
         } else if (id == R.id.nav_add_delivery){
             intent = new Intent(BaseActivity.this, AddDeliveryActivity.class);
+        }
+        else if (id == R.id.nav_checkpoints){
+            intent = new Intent(BaseActivity.this, CheckPointsActivity.class);
         }
         if (intent != null) {
             intent.setFlags(

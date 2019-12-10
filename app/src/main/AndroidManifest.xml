@@ -18,9 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ModifyCheckpointsActivity"></activity>
-        <activity android:name=".ui.DrawActivity"></activity>
-        <activity android:name=".ui.DeliveryCompleteActivity"></activity>
+        <activity android:name=".ui.Checkpoint.CheckPointsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.Checkpoint.ModifyCheckpointsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.DrawActivity" />
+        <activity android:name=".ui.DeliveryCompleteActivity" />
         <activity
             android:name=".ui.Delivery.AddDeliveryActivity"
             android:label="Delivery"

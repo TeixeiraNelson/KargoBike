@@ -1,19 +1,16 @@
-package ch.ribeironelson.kargobike.ui;
+package ch.ribeironelson.kargobike.ui.Checkpoint;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
-import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
-import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
+import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.ui.MainActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.CheckpointViewModel;
-import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +36,7 @@ public class ModifyCheckpointsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_modify_checkpoints, frameLayout);
-        navigationView.setCheckedItem(R.id.nav_delivery);
+        navigationView.setCheckedItem(R.id.nav_checkpoints);
 
         mode = getIntent().getExtras().getString("mode","0");
         checkPointId = getIntent().getExtras().getString("checkpointid", "0");

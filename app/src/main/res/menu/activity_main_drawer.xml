@@ -16,6 +16,10 @@
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="Add Delivery" />
         <item
+            android:id="@+id/nav_checkpoints"
+            android:icon="@drawable/ic_add_location_black_24dp"
+            android:title="Checkpoints" />
+        <item
             android:id="@+id/nav_users"
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="Users" />

@@ -16,6 +16,11 @@ public class CheckpointEntity implements Serializable {
         this.name = name;
     }
 
+    public CheckpointEntity(String id, String name) {
+        this.idCheckpoint = id;
+        this.name = name;
+    }
+
     public String getIdCheckpoint() {
         return idCheckpoint;
     }
