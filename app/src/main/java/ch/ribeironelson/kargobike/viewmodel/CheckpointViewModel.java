@@ -57,15 +57,15 @@ public class CheckpointViewModel extends AndroidViewModel {
         return observableDelivery;
     }
 
-    public void createDelivery(CheckpointEntity checkpointEntity, OnAsyncEventListener callback) {
+    public void createCheckPoint(CheckpointEntity checkpointEntity, OnAsyncEventListener callback) {
         repository.insert(checkpointEntity, callback);
     }
 
-    public void updateDelivery(CheckpointEntity checkpointEntity, OnAsyncEventListener callback) {
+    public void updateCheckPoint(CheckpointEntity checkpointEntity, OnAsyncEventListener callback) {
         repository.update(checkpointEntity, callback);
     }
 
-    public void deleteDelivery(CheckpointEntity checkpointEntity, OnAsyncEventListener callback){
+    public void deleteCheckPoint(CheckpointEntity checkpointEntity, OnAsyncEventListener callback){
         repository.delete(checkpointEntity,callback);
     }
 }
