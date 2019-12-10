@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class SchedulesEntity {
     String scheduledId;
+    String userID;
     String beginningDateTime;
     String endingDateTime;
     Boolean safetyCheck;
@@ -14,13 +15,22 @@ public class SchedulesEntity {
 
     public SchedulesEntity(){}
 
-    public SchedulesEntity(String scheduledId, String beginningDateTime, String endingDateTime, Boolean safetyCheck, Long nbDeliveries) {
+    public SchedulesEntity(String scheduledId,String userID, String beginningDateTime, String endingDateTime, Boolean safetyCheck, Long nbDeliveries) {
         this.scheduledId = scheduledId ;
         this.beginningDateTime = beginningDateTime;
         this.endingDateTime = endingDateTime;
+        this.userID = userID;
         this.safetyCheck = safetyCheck;
         this.nbDeliveries = nbDeliveries;
 
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getScheduledId() {
@@ -63,6 +73,10 @@ public class SchedulesEntity {
         this.nbDeliveries = nbDeliveries;
     }
 
+    public void addDelivery(){
+        nbDeliveries++;
+    }
+
     @Override
     public String toString() {
         return beginningDateTime + endingDateTime;
@@ -72,6 +86,7 @@ public class SchedulesEntity {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("scheduledId", scheduledId);
+        result.put("userID",userID);
         result.put("beginningDateTime", beginningDateTime);
         result.put("endingDateTime", endingDateTime);
         result.put("safetyCheck", safetyCheck);

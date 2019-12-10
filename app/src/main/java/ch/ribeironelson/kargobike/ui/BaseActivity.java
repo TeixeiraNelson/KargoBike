@@ -12,17 +12,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
+import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.util.TimeStamp;
+import ch.ribeironelson.kargobike.viewmodel.SchedulesListViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.List;
+
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "BaseActivity";
     protected FrameLayout frameLayout;
 
     protected DrawerLayout drawerLayout;
@@ -81,7 +90,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_home) {
             intent=new Intent (BaseActivity.this, MainActivity.class);
-
         } else if (id == R.id.nav_delivery) {
             intent=new Intent (BaseActivity.this, DeliveryActivity.class);
         } else if (id == R.id.nav_users) {
@@ -90,7 +98,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent=new Intent (BaseActivity.this, About.class);
         } else if (id == R.id.nav_logout){
             intent= new Intent(BaseActivity.this, LoginActivity.class);
-            LoginActivity.Logout();
+            finishSchedule();
+
         } else if (id == R.id.nav_add_delivery){
             intent = new Intent(BaseActivity.this, AddDeliveryActivity.class);
         }
@@ -102,5 +111,36 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void finishSchedule() {
+        SchedulesListViewModel.Factory factory2 = new SchedulesListViewModel.Factory(
+                getApplication());
+        SchedulesListViewModel schedulesListViewModel = ViewModelProviders.of(this, factory2).get(SchedulesListViewModel.class);
+        schedulesListViewModel.getSchedules().observe(this, schedulesEntities -> {
+            if (schedulesEntities != null) {
+                updateScheduleFinishDate(schedulesEntities);
+            }
+        });
+    }
+
+    private void updateScheduleFinishDate(List<SchedulesEntity> schedulesEntities) {
+         for(SchedulesEntity sch : schedulesEntities){
+            if(DeliveryActivity.isTodaySchedule(sch) && sch.getUserID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                sch.setEndingDateTime(TimeStamp.getTimeStamp());
+                SchedulesRepository.getInstance().updateSchedules(sch, new OnAsyncEventListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG,"Schedule ended properly");
+                        LoginActivity.Logout();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d(TAG,"Schedule end error");
+                    }
+                });
+            }
+        }
     }
 }

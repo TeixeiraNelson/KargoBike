@@ -36,10 +36,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.entity.TripEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
+import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
@@ -56,6 +58,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
     private Context mContext;
     private List<DeliveryEntity> mDeliveries;
     private Application app;
+    private SchedulesEntity riderSchedule;
 
     public DeliveriesRecyclerViewAdapter(List<DeliveryEntity> mDeliveries, Context context, Application app) {
         mContext = context;
@@ -143,6 +146,10 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
             this.mDeliveries = data;
             result.dispatchUpdatesTo(this);
         }
+    }
+
+    public void bindSchedule(SchedulesEntity sch) {
+        riderSchedule = sch;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -354,9 +361,21 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                     public void onSuccess() {
                         Log.d("Delivery status", "Delivery checkpoint added !");
                         if(deliveryEntity.getActuallyAssignedUser().equals("Delivery Finished")){
-                            Intent intent = new Intent(mContext, DeliveryCompleteActivity.class);
-                            intent.putExtra("DeliveryEntity",deliveryEntity);
-                            mContext.startActivity(intent);
+                            riderSchedule.addDelivery();
+                            SchedulesRepository.getInstance().updateSchedules(riderSchedule, new OnAsyncEventListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Intent intent = new Intent(mContext, DeliveryCompleteActivity.class);
+                                    intent.putExtra("DeliveryEntity",deliveryEntity);
+                                    mContext.startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+
+                                }
+                            });
+
                         }
                     }
 
