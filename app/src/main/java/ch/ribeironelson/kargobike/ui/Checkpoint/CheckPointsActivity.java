@@ -28,7 +28,7 @@ public class CheckPointsActivity extends BaseActivity {
     private void testF(){
         Intent intent = new Intent(CheckPointsActivity.this, ModifyCheckpointsActivity.class);
         intent.putExtra("mode", "modify");
-        intent.putExtra("checkpointid", "LvFojti-0YEH-rOpCJt");
+        intent.putExtra("checkpointid", "-LvFojti-0YEH-rOpCJt");
         startActivity(intent);
 
     }
