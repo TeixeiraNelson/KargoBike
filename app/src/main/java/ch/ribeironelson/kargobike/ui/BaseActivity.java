@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
-import ch.ribeironelson.kargobike.ui.Checkpoint.CheckPointsActivity;
+import ch.ribeironelson.kargobike.ui.Checkpoint.ModifyCheckpointsActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
@@ -105,7 +105,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent = new Intent(BaseActivity.this, AddDeliveryActivity.class);
         }
         else if (id == R.id.nav_checkpoints){
-            intent = new Intent(BaseActivity.this, CheckPointsActivity.class);
+            intent = new Intent(BaseActivity.this, ModifyCheckpointsActivity.class);
+            intent.putExtra("mode", "add");
         }
         if (intent != null) {
             intent.setFlags(

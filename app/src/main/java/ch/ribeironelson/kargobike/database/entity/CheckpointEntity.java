@@ -9,6 +9,7 @@ import java.util.Map;
 public class CheckpointEntity implements Serializable {
     String idCheckpoint;
     String name;
+    WorkingZoneEntity location;
 
     public CheckpointEntity(){}
 
@@ -16,9 +17,22 @@ public class CheckpointEntity implements Serializable {
         this.name = name;
     }
 
+    public CheckpointEntity(String id, String name, WorkingZoneEntity workingZoneEntity) {
+        this.idCheckpoint = id;
+        this.name = name;
+        this.location = workingZoneEntity;
+    }
     public CheckpointEntity(String id, String name) {
         this.idCheckpoint = id;
         this.name = name;
+    }
+
+    public WorkingZoneEntity getLocation() {
+        return location;
+    }
+
+    public void setLocation(WorkingZoneEntity workingZoneEntity) {
+        this.location = workingZoneEntity;
     }
 
     public String getIdCheckpoint() {
@@ -41,6 +55,7 @@ public class CheckpointEntity implements Serializable {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("idCheckpoint", idCheckpoint);
+        result.put("location",location);
         result.put("name", name);
 
         return result;

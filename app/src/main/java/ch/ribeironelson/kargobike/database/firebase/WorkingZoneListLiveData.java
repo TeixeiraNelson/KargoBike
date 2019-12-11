@@ -51,7 +51,6 @@ public class WorkingZoneListLiveData extends LiveData<List<WorkingZoneEntity>> {
         List<WorkingZoneEntity> workingZones = new ArrayList<>();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
             WorkingZoneEntity entity = childSnapshot.getValue(WorkingZoneEntity.class);
-            entity.setWorkingZoneId(snapshot.getKey());
             workingZones.add(entity);
         }
         return workingZones;

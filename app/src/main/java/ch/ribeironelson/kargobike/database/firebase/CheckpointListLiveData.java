@@ -53,7 +53,6 @@ public class CheckpointListLiveData extends LiveData<List<CheckpointEntity>> {
         Log.d(TAG,"Transforming into deliveries");
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
             CheckpointEntity entity = childSnapshot.getValue(CheckpointEntity.class);
-            entity.setIdCheckpoint(childSnapshot.getKey());
             checkpoints.add(entity);
             Log.d(TAG,entity.getIdCheckpoint());
         }
