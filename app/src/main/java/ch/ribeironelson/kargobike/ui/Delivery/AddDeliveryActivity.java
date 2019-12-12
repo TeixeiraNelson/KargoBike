@@ -76,7 +76,7 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_add_delivery, frameLayout);
-        navigationView.setCheckedItem(R.id.nav_delivery);
+        navigationView.setCheckedItem(R.id.nav_add_delivery);
 
         DateData = findViewById(R.id.DateData);
         TimeData = findViewById(R.id.DateTime);
