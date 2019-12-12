@@ -17,6 +17,10 @@ public class WorkingZoneEntity implements Serializable {
         this.location = location;
     }
 
+    public WorkingZoneEntity(String location){
+        this.location = location;
+    }
+
     public String getWorkingZoneId() {
         return workingZoneId;
     }

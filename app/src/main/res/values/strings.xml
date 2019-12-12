@@ -23,4 +23,5 @@
     <string name="error_text_empty">A form value is empty !</string>
     <string name="what_is_the_next_checkpoint">What is the next checkpoint ?</string>
     <string name="title_activity_testtet">testtet</string>
+    <string name="title_activity_modify_working_zone">activity_modify_workingzones</string>
 </resources>
