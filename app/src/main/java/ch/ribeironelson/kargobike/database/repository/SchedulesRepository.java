@@ -10,6 +10,7 @@ import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.firebase.SchedulesListLiveData;
 import ch.ribeironelson.kargobike.database.firebase.SchedulesLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListenerSchedule;
 
 public class SchedulesRepository {
     private static SchedulesRepository instance;
@@ -40,8 +41,9 @@ public class SchedulesRepository {
         return new SchedulesListLiveData(reference);
     }
 
-    public void insertSchedules(final SchedulesEntity schedules, final OnAsyncEventListener callback){
+    public void insertSchedules(SchedulesEntity schedules, final OnAsyncEventListenerSchedule callback){
         String id = FirebaseDatabase.getInstance().getReference("schedules").push().getKey();
+        schedules.setScheduledId(id);
         FirebaseDatabase.getInstance()
                 .getReference("schedules")
                 .child(id)
@@ -49,7 +51,7 @@ public class SchedulesRepository {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
-                        callback.onSuccess();
+                        callback.onSuccess(schedules);
                     }
                 });
     }

@@ -2,10 +2,11 @@ package ch.ribeironelson.kargobike.database.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkingZoneEntity {
+public class WorkingZoneEntity implements Serializable {
     String workingZoneId;
     String location;
 
@@ -34,13 +35,13 @@ public class WorkingZoneEntity {
 
     @Override
     public String toString() {
-        return location;
+        return workingZoneId + " - " +location;
     }
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("location", location);
-
+        result.put("workingZoneId", workingZoneId);
         return result;
     }
 }

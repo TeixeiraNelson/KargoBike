@@ -1,26 +1,39 @@
 package ch.ribeironelson.kargobike.ui.Delivery;
 
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import ch.ribeironelson.kargobike.R;
-import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
-import ch.ribeironelson.kargobike.ui.BaseActivity;
-import ch.ribeironelson.kargobike.util.DeliveriesRecyclerViewAdapter;
-import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
-
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.adapter.DeliveriesRecyclerViewAdapter;
+import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
+import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
+import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListenerSchedule;
+import ch.ribeironelson.kargobike.util.TimeStamp;
+import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.SchedulesListViewModel;
 
 public class DeliveryActivity extends BaseActivity {
 
@@ -32,8 +45,8 @@ public class DeliveryActivity extends BaseActivity {
     private DeliveriesRecyclerViewAdapter adapter;
     private List<DeliveryEntity> mdeliveryEntities;
     private DeliveriesListViewModel viewModel;
-
-
+    private SchedulesListViewModel schedulesListViewModel;
+    private List<SchedulesEntity> mSchedules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +57,117 @@ public class DeliveryActivity extends BaseActivity {
         searchEditText = findViewById(R.id.search_deliveries);
         recyclerView = findViewById(R.id.recyclerView_deliveries);
 
-        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this);
+        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this, DeliveryActivity.this.getApplication());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(DeliveryActivity.this));
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        setupViewModel();
+
+
+    }
+
+    private void startVerificationProcess(){
+        if(!hasUserAlreadyStartedShift())
+            showPopupSafetyCheck();
+        else
+            displayDeliveries();
+    }
+
+    private void displayDeliveries() {
+        adapter.updateData(mdeliveryEntities);
+    }
+
+    private boolean hasUserAlreadyStartedShift() {
+
+        for(SchedulesEntity sch : mSchedules){
+            if(isTodaySchedule(sch) && isMySchedule(sch)){
+                adapter.bindSchedule(sch);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isMySchedule(SchedulesEntity sch) {
+        if(sch.getUserID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+            return true;
+
+        return false;
+    }
+
+    public static boolean isTodaySchedule(SchedulesEntity sch) {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = df.format(c);
+
+        Date c2 = null;
+        try {
+            c2 = df.parse(sch.getBeginningDateTime().substring(0,sch.getBeginningDateTime().indexOf("-")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String scheduleDate = df.format(c2);
+        if(scheduleDate.equals(formattedDate))
+            return true;
+
+        return false;
+    }
+
+    private void showPopupSafetyCheck() {
+        final Dialog dialog = new Dialog(DeliveryActivity.this);
+        dialog.setContentView(R.layout.popup_window_safetycheck);
+        dialog.setTitle("Next step");
+
+        // set the custom dialog components - text, image and button
+        Button dialogButton = (Button) dialog.findViewById(R.id.button_popup);
+        Button dialogButton2 = (Button) dialog.findViewById(R.id.button_popup2);
+        CheckBox checkBox = dialog.findViewById(R.id.checkBox);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Add a new Delivery", Snackbar.LENGTH_LONG);
-                Intent intent=new Intent (DeliveryActivity.this, AddDeliveryActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
+                if(checked){
+                    dialogButton.setEnabled(true);
+                } else {
+                    dialogButton.setEnabled(false);
+                }
             }
         });
 
-        setupViewModel();
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SchedulesEntity schedule = new SchedulesEntity("",FirebaseAuth.getInstance().getCurrentUser().getUid(), TimeStamp.getTimeStamp(), "", true, Long.valueOf(0));
+                SchedulesRepository.getInstance().insertSchedules(schedule, new OnAsyncEventListenerSchedule() {
+                    @Override
+                    public void onSuccess(SchedulesEntity sch) {
+                        Log.d(TAG,"User " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " started his shift and make the safety check.");
+                        dialog.dismiss();
+                        Toast.makeText(DeliveryActivity.this,"Your shift started at " + TimeStamp.getTimeStamp() + " !", Toast.LENGTH_LONG).show();
+                        adapter.bindSchedule(sch);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d(TAG,"Was not able to start schedule, database error.");
+                    }
+                });
+
+            }
+        });
+
+        dialogButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                DeliveryActivity.this.finish();
+            }
+        });
+
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     private void setupViewModel() {
@@ -67,9 +176,19 @@ public class DeliveryActivity extends BaseActivity {
         viewModel = ViewModelProviders.of(this, factory).get(DeliveriesListViewModel.class);
         viewModel.getDeliveries().observe(this, deliveryEntities -> {
             if (deliveryEntities != null) {
-                mdeliveryEntities = deliveryEntities;
+                filterDeliveriesByUserAndDate(deliveryEntities);
                 Log.d(TAG,"Deliveries Not null");
-                adapter.updateData(mdeliveryEntities);
+            }
+        });
+
+        SchedulesListViewModel.Factory factory2 = new SchedulesListViewModel.Factory(
+                getApplication());
+        schedulesListViewModel = ViewModelProviders.of(this, factory2).get(SchedulesListViewModel.class);
+        schedulesListViewModel.getSchedules().observe(this, schedulesEntities -> {
+            if (schedulesEntities != null) {
+                Log.d(TAG,"Deliveries Not null");
+                mSchedules = schedulesEntities;
+                startVerificationProcess();
             }
         });
     }
@@ -104,4 +223,41 @@ public class DeliveryActivity extends BaseActivity {
         super.onResume();
         navigationView.setCheckedItem(R.id.nav_home);
     }
+
+    private void filterDeliveriesByUserAndDate(List<DeliveryEntity> deliveryEntities) {
+        mdeliveryEntities = new ArrayList<>();
+
+        for( DeliveryEntity d : deliveryEntities){
+            if(isToday(d.getDeliveryDate())){
+                if(isMyDelivery(d.getActuallyAssignedUser())){
+                    mdeliveryEntities.add(d);
+                }
+            }
+        }
+
+    }
+
+    private boolean isMyDelivery(String assignedUser) {
+        String loggedUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if(assignedUser.equals(loggedUserId))
+            return true;
+
+        Log.d(TAG,"returning false is my delivery");
+        return false;
+    }
+
+    private boolean isToday(String deliveryDate) {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = df.format(c);
+
+        if(deliveryDate.equals(formattedDate))
+            return true;
+
+        return false;
+    }
+
+
 }

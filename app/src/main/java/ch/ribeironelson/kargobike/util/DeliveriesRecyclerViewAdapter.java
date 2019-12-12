@@ -45,7 +45,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
         Log.d("RV ADAPTER","SETTING DATA FOR A DELIVERY");
         holder.productName.setText(delivery.getIdProduct());
         holder.clientName.setText(delivery.getFinalDestination());
-        holder.deliveryDate.setText(delivery.getDeliveryDateTime());
+        holder.deliveryDate.setText(delivery.getDeliveryDate() + " " +delivery.getDeliveryTime());
 
     }
 
@@ -59,7 +59,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
     public void updateData(List<DeliveryEntity> deliveries) {
         Log.d("RV ADAPTER", "updating data");
         for(DeliveryEntity dv : deliveries){
-            Log.d("RV ADAPTER UPDATING : ", dv.getIdUser());
+            Log.d("RV ADAPTER UPDATING : ", dv.getActuallyAssignedUser());
         }
         if(mDeliveries!= null){
             mDeliveries.clear();
@@ -87,9 +87,9 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
             deliveryDate = itemView.findViewById(R.id.deliveryDate_txtview);
             productName = itemView.findViewById(R.id.productType_txtview);
 
-            deliverBtn = itemView.findViewById(R.id.deliverButton);
+            /*deliverBtn = itemView.findViewById(R.id.deliverButton);
             formBtn = itemView.findViewById(R.id.formBtn);
-            mapBtn = itemView.findViewById(R.id.mapBtn);
+            mapBtn = itemView.findViewById(R.id.mapBtn);*/
         }
     }
 }

@@ -2,7 +2,9 @@ package ch.ribeironelson.kargobike.database.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserEntity {
@@ -12,19 +14,21 @@ public class UserEntity {
     private String phoneNumber;
     private String idUser;
     private String idZone;
-    private String idSchedule;
+    private List<SchedulesEntity> schedules;
     private String idRole;
 
-    public UserEntity() { }
-
-    public UserEntity(String firstname, String lastname, String email, String phoneNumber){
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+    public UserEntity() {
+        this.firstname = "";
+        this.lastname = "";
+        this.email = "";
+        this.phoneNumber ="";
+        this.idUser="";
+        this.idZone="0";
+        this.schedules = new ArrayList<>();
+        this.idRole="0";
     }
 
-    public UserEntity(String firstname, String lastname, String email, String phoneNumber,String idRole, String idUser, String idZone, String idSchedule) {
+    public UserEntity(String firstname, String lastname, String email, String phoneNumber,String idRole, String idUser, String idZone, List<SchedulesEntity> schedulesEntities) {
         this.firstname=firstname;
         this.lastname=lastname;
         this.email=email;
@@ -32,7 +36,7 @@ public class UserEntity {
         this.idRole=idRole;
         this.idUser=idUser;
         this.idZone=idZone;
-        this.idSchedule=idSchedule;
+        this.schedules=schedulesEntities;
     }
     public String getFirstname() {
         return firstname;
@@ -82,12 +86,12 @@ public class UserEntity {
         this.idZone = idZone;
     }
 
-    public String getIdSchedule() {
-        return idSchedule;
+    public List<SchedulesEntity> getSchedules() {
+        return schedules;
     }
 
-    public void setIdSchedule(String idSchedule) {
-        this.idSchedule = idSchedule;
+    public void setSchedules(List<SchedulesEntity> schedules) {
+        this.schedules = schedules;
     }
 
     @Override
@@ -101,6 +105,10 @@ public class UserEntity {
         result.put("lastname", lastname);
         result.put("email", email);
         result.put("phoneNumber", phoneNumber);
+        result.put("idUser",idUser);
+        result.put("idZone",idZone);
+        result.put("schedules",schedules);
+        result.put("idRole",idRole);
 
         return result;
     }

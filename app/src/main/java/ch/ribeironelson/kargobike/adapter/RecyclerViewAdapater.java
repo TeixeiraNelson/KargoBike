@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
 
 public class RecyclerViewAdapater extends RecyclerView.Adapter<RecyclerViewAdapater.ViewHolder>{
@@ -96,9 +98,6 @@ public class RecyclerViewAdapater extends RecyclerView.Adapter<RecyclerViewAdapa
             modify=itemView.findViewById(R.id.ButtonModify);
             save = itemView.findViewById(R.id.ButtonSave);
             cancel = itemView.findViewById(R.id.ButtonCancel);
-
-
-
         }
     }
 }

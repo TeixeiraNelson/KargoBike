@@ -1,20 +1,41 @@
 package ch.ribeironelson.kargobike.ui;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.firebase_auth.zzew;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.auth.zzy;
+import com.google.firebase.auth.zzz;
+
 import java.util.List;
+import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -33,6 +54,10 @@ public class SignInActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String password2;
+
+    private UsersListViewModel usersListViewModel ;
+    private List<UserEntity> users;
+    private FirebaseAuth auth;
 
     private UserEntity userToAdd ;
 
@@ -53,10 +78,20 @@ public class SignInActivity extends AppCompatActivity {
         password_et = findViewById(R.id.kargobike_reg_password);
         password2_et = findViewById(R.id.kargobike_reg_password2);
 
-        UserEntity userToAdd ;
-
         registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener(v -> verifyUserInputs());
+
+        auth = FirebaseAuth.getInstance() ;
+
+        //Get the list of all users to check it
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
+                getApplication());
+        usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
+        usersListViewModel.getAllUsers().observe(this, userEntities -> {
+            if (userEntities != null) {
+                users = userEntities;
+            }
+        });
     }
 
     @Override
@@ -73,24 +108,62 @@ public class SignInActivity extends AppCompatActivity {
         password = password_et.getText().toString();
         password2 = password2_et.getText().toString();
 
-        userToAdd = new UserEntity(firstname, lastname, email, phone );
 
-        System.out.println("edit text :"+isAnyEditTextEmpty());
-        System.out.println("is existing:"+isUserAlreadyRegister(userToAdd.getEmail()));
 
-        if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(userToAdd.getEmail())){
-            UserRepository.getInstance().insert(userToAdd, new OnAsyncEventListener() {
+
+        if(!isAnyEditTextEmpty() && !isUserAlreadyRegister(email)){
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onSuccess() {
-                    Log.d(TAG, "Insert user : success");
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = auth.getCurrentUser();
+                        Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
+                        Intent loginAIntent = new Intent(SignInActivity.this, LoginActivity.class);
+                        startActivity(loginAIntent);
+
+                        userToAdd = new UserEntity();
+                        userToAdd.setEmail(email);
+                        userToAdd.setPhoneNumber(phone);
+                        userToAdd.setFirstname(firstname);
+                        userToAdd.setLastname(lastname);
+                        userToAdd.setIdUser(user.getUid());
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(firstname + " " + lastname)
+                                .build();
+
+                        Objects.requireNonNull(user).updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "User profile updated.");
+                                        }
+                                    }
+                                });
+
+                        UserRepository.getInstance().insertUID(userToAdd, user.getUid(), new OnAsyncEventListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "Insert user in database : success");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d(TAG, "Insert user in database : failure");
+                            }
+                        });
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(getApplicationContext(), "Authentication failed : "+task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "Insert user : failure");
-                }
             });
-        }if(isUserAlreadyRegister(userToAdd.getEmail())){
+        }if(isUserAlreadyRegister(email)){
             Toast.makeText(this, getString(R.string.error_user_already_exist), Toast.LENGTH_LONG ).show();
         }if(isAnyEditTextEmpty()){
             Toast.makeText(this, getString(R.string.error_text_empty), Toast.LENGTH_LONG).show();
@@ -133,13 +206,12 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private boolean isUserAlreadyRegister(String email){
-        LiveData<List<UserEntity>> users =  UserRepository.getInstance().getAllUsers();
-        List<UserEntity> usersList = users.getValue() ;
 
-        if(usersList != null){
-                return usersList.contains(email);
+        for(int i = 0 ; i != users.size() ; i++){
+            if(users.get(i).getEmail().equals(email)){
+                return true ;
+            }
         }
-
         return false ;
     }
 }

@@ -3,18 +3,23 @@ package ch.ribeironelson.kargobike.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
+import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
+import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
+import ch.ribeironelson.kargobike.database.repository.UserRepository;
+import ch.ribeironelson.kargobike.database.repository.WorkingZoneRepository;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -35,13 +40,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     static final int GOOGLE_SIGN = 123;
     private static final String TAG = "LoginActivity";
 
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
+    private static GoogleSignInClient mGoogleSignInClient;
 
     private Button kargobikeLogin;
     private Button googleLoginBtn;
@@ -54,6 +61,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPassword;
 
     private ProgressBar progressBar;
+
+    private UsersListViewModel usersListViewModel;
+    private List<UserEntity> users;
+    private UserEntity userToAdd;
 
 
     @Override
@@ -82,10 +93,20 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         googleLoginBtn.setOnClickListener(v -> SignInGoogle());
-        logoutBtn.setOnClickListener(v -> Logout());
         kargobikeLogin.setOnClickListener(v -> KargoBikeLogin());
         signinTxtview.setOnClickListener(v -> startSignInForm());
         forgotPassword.setOnClickListener(v -> forgotPassword());
+
+        //Get the list of all users to check it
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
+                getApplication());
+        usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
+        usersListViewModel.getAllUsers().observe(this, userEntities -> {
+            if (userEntities != null) {
+                users = userEntities;
+            }
+        });
+
     }
 
     private void forgotPassword() {
@@ -184,8 +205,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 logUserAuthentication(user);
-
-                                startActivityBasedOnRole();
+                                addUserToDB(user);
+                                startActivityBasedOnRole(user);
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -201,11 +222,60 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void startActivityBasedOnRole() {
-        // TODO : MANAGE ROLES
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void startActivityBasedOnRole(FirebaseUser user) {
+
+        for(UserEntity u : users){
+            if(u.getIdUser().equals(user.getUid())){
+                if(u.getIdRole().equals("0")){
+                    showNoRolePopup();
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }
+
+
+
+    }
+
+    private void showNoRolePopup() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("No role");
+        alert.setMessage("Your account has no role assigned to it, you cannot connect to the app for the moment! Please contact an administrator!");
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+        final AlertDialog dialog = alert.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button negativeButton = ((AlertDialog)dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+                Button positiveButton = ((AlertDialog)dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+                negativeButton.invalidate();
+                positiveButton.invalidate();
+            }
+        });
+
+        dialog.show();
     }
 
 
@@ -257,8 +327,9 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(this, "Signin Sucess ! " + user.getEmail() , Toast.LENGTH_SHORT).show();
                         logUserAuthentication(user);
 
-                        // TODO : INSERT IN THE DATABASE THE NEW GOOGLE USER, IF IT IS ONE !
-                        startActivityBasedOnRole();
+                        addUserToDB(user);
+
+                        startActivityBasedOnRole(user);
 
                         progressBar.setVisibility(View.INVISIBLE);
                         logoutBtn.setVisibility(View.VISIBLE);
@@ -270,6 +341,29 @@ public class LoginActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
+    }
+
+    private void addUserToDB(FirebaseUser user) {
+        userToAdd = new UserEntity();
+        userToAdd.setIdUser(user.getUid());
+        userToAdd.setEmail(user.getEmail());
+        userToAdd.setPhoneNumber(user.getPhoneNumber());
+        userToAdd.setFirstname(user.getDisplayName().substring(0,user.getDisplayName().indexOf(" ")));
+        userToAdd.setLastname(user.getDisplayName().substring(user.getDisplayName().indexOf(" ")+1));
+
+        if(!isUserAlreadyRegisterInDB(userToAdd.getEmail())) {
+            UserRepository.getInstance().insertUID(userToAdd,user.getUid(), new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "Insert user: "+userToAdd.getFirstname()+" in database : success");
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "Insert user in database : failure");
+                }
+            });
+        }
     }
 
     private void logUserAuthentication(FirebaseUser user) {
@@ -284,11 +378,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void Logout() {
-        logoutBtn.setVisibility(View.INVISIBLE);
+    public static void Logout() {
         FirebaseAuth.getInstance().signOut();
-        mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                task -> logUserAuthentication(null));
+        mGoogleSignInClient.signOut();
+    }
+
+    private boolean isUserAlreadyRegisterInDB(String email){
+
+        for(int i = 0 ; i != users.size() ; i++){
+            if(users.get(i).getEmail().equals(email)){
+                return true ;
+            }
+        }
+        return false ;
     }
 
 }

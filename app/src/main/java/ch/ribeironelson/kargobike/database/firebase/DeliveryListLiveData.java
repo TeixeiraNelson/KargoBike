@@ -54,7 +54,6 @@ public class DeliveryListLiveData extends LiveData<List<DeliveryEntity>> {
             DeliveryEntity entity = childSnapshot.getValue(DeliveryEntity.class);
             entity.setIdDelivery(childSnapshot.getKey());
             deliveries.add(entity);
-            Log.d(TAG,entity.getIdUser());
         }
         return deliveries;
     }

@@ -2,6 +2,7 @@ package ch.ribeironelson.kargobike;
 
 import android.app.Application;
 
+import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
 import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
@@ -12,6 +13,10 @@ import ch.ribeironelson.kargobike.database.repository.WorkingZoneRepository;
  * Android Application class. Used for accessing singletons.
  */
 public class BaseApp extends Application {
+    public CheckpointRepository getCheckpointRepository(){
+        return CheckpointRepository.getInstance();
+    }
+
     public SchedulesRepository getSchedulesRepository() {
         return SchedulesRepository.getInstance();
     }

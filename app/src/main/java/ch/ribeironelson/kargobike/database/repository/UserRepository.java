@@ -1,5 +1,7 @@
 package ch.ribeironelson.kargobike.database.repository;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -45,6 +47,20 @@ public class UserRepository {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("users");
         String key = reference.push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(key)
+                .setValue(userEntity, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+    }
+
+    public void insertUID(final UserEntity userEntity, final String userUID, final OnAsyncEventListener callback){
+        String key = userUID;
         FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(key)

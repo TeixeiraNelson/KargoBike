@@ -12,6 +12,7 @@ import ch.ribeironelson.kargobike.BaseApp;
 import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.util.OnAsyncEventListenerSchedule;
 
 public class SchedulesViewModel extends AndroidViewModel {
     private Application application;
@@ -57,7 +58,7 @@ public class SchedulesViewModel extends AndroidViewModel {
         return observableSchedule;
     }
 
-    public void createSchedule(SchedulesEntity schedule, OnAsyncEventListener callback) {
+    public void createSchedule(SchedulesEntity schedule, OnAsyncEventListenerSchedule callback) {
         repository.insertSchedules(schedule, callback);
     }
 

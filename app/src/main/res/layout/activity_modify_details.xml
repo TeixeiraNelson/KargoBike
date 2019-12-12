@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="409dp"
+    android:layout_height="601dp"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/DateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="9"
+            android:fontFamily="sans-serif-medium"
+            android:text="Date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/HoursText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="10"
+            android:text="Hours"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/DateData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="9"
+            android:fontFamily="sans-serif-medium"
+            android:inputType="date"
+            android:enabled="true"
+            android:text="03.02.2018"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/HoursData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="10"
+            android:fontFamily="sans-serif-medium"
+            android:inputType="textPersonName"
+            android:text="15:15"
+            android:enabled="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/DescriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="17sp" />
+
+    <EditText
+        android:id="@+id/DescriptionData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="sans-serif-medium"
+        android:inputType="textPersonName"
+        android:text="Description"
+        android:enabled="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/DepartText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:fontFamily="sans-serif-medium"
+            android:text="Departure"
+            android:ems="9"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/FinalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="10"
+            android:fontFamily="sans-serif-medium"
+            android:text="Arrival"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/DepartData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="9"
+            android:fontFamily="sans-serif-medium"
+            android:inputType="textPersonName"
+            android:text="Sion"
+            android:enabled="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/ArrivalData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="10"
+            android:fontFamily="sans-serif-medium"
+            android:inputType="textPersonName"
+            android:text="martigny"
+            android:enabled="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/NumberText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre de produit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="17sp" />
+
+    <EditText
+        android:id="@+id/NumberData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="sans-serif-medium"
+        android:inputType="numberDecimal"
+        android:text="3"
+        android:enabled="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/ClientText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Client*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="17sp" />
+
+    <EditText
+        android:id="@+id/ClientData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="sans-serif-medium"
+        android:inputType="textPersonName"
+        android:text="Michel"
+        android:enabled="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textSize="14sp" />
+
+    <Spinner
+        android:id="@+id/ProductData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/CyclistText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cycliste*"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="17sp" />
+
+    <Spinner
+        android:id="@+id/CyclistData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/SignatureText"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.5"
+            android:ems="9"
+            android:fontFamily="sans-serif-medium"
+            android:text="Signature Picture"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/ProofText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:ems="10"
+            android:fontFamily="sans-serif-medium"
+            android:text="Proof Picture"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/SignaturPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_weight="0.5"
+            android:ems="9"
+            app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+        <ImageView
+            android:id="@+id/DeliveryPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_weight="0.5"
+            android:ems="10"
+            app:srcCompat="@android:drawable/ic_menu_report_image" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ButtonSignature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        <ImageButton
+            android:id="@+id/ButtonProof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ButtonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_save" />
+
+        <ImageButton
+            android:id="@+id/ButtonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+    </LinearLayout>
+
+</LinearLayout>
