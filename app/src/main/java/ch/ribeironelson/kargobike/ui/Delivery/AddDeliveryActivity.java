@@ -166,7 +166,7 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                             TimeData.setText(hourOfDay + ":" + minute);
                         }
-                    }, mHour, mMinute, false);
+                    }, mHour, mMinute, true);
             timePickerDialog.show();
         }
     }
