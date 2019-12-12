@@ -193,7 +193,7 @@
         android:textSize="14sp" />
 
     <Spinner
-        android:id="@+id/ProductSpinner"
+        android:id="@+id/ProductData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

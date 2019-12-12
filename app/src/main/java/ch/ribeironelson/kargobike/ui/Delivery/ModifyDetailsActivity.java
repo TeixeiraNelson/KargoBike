@@ -46,8 +46,10 @@ public class ModifyDetailsActivity extends AppCompatActivity {
     private Button ButtonBack;
     private DeliveryEntity Delivery;
     private Spinner ProductData;
+    private String ProductText;
     private UsersListViewModel viewModelUsers;
-    private ListAdapter<String> adpaterUserList;
+    private ListAdapter<String> adapterUserList;
+    private ListAdapter<String> adapterProductList;
 
     public ModifyDetailsActivity(DeliveryEntity Delivery) {
         this.Delivery = Delivery;
@@ -70,7 +72,7 @@ public class ModifyDetailsActivity extends AppCompatActivity {
         CyclistData = findViewById(R.id.CyclistData);
         DeliveryPicture = findViewById(R.id.DeliveryPicture);
         SignaturPicture = findViewById(R.id.SignaturPicture);
-        ProductData= findViewById(R.id.ProductSpinner);
+        ProductData= findViewById(R.id.ProductData);
         // Capture button clicks
         ButtonBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -85,7 +87,7 @@ public class ModifyDetailsActivity extends AppCompatActivity {
 
         ButtonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-            verifyuserinput();
+            verifyUserInput();
                 // Start NewActivity.class
 
 
@@ -97,13 +99,21 @@ public class ModifyDetailsActivity extends AppCompatActivity {
         });
         //Spinner for Users
         CyclistData = (Spinner) findViewById(R.id.spinnerUsers);
-        adpaterUserList = new ListAdapter<>(ModifyDetailsActivity.this, R.layout.row_list, new ArrayList<>());
-        CyclistData.setAdapter(adpaterUserList);
+        adapterUserList = new ListAdapter<>(ModifyDetailsActivity.this, R.layout.row_list, new ArrayList<>());
+        CyclistData.setAdapter(adapterUserList);
         setupViewModels();
         CyclistText = (String) CyclistData.getSelectedItem();
+
+        //Spinner for product
+        ProductData = (Spinner) findViewById(R.id.spinnerProducts);
+        adapterProductList = new ListAdapter<>(ModifyDetailsActivity.this, R.layout.row_list, new ArrayList<>());
+        ProductData.setAdapter(adapterProductList);
+        setupViewModels();
+        ProductText = (String) ProductData.getSelectedItem();
+
     }
 
-    private void verifyuserinput() {
+    private void verifyUserInput() {
         String Date;
         String Hours;
         String Description;
@@ -121,6 +131,8 @@ public class ModifyDetailsActivity extends AppCompatActivity {
         Arrival = ArrivalData.getText().toString();
         Number = NumberData.getText().toString();
         Client = ClientData.getText().toString();
+        Cyclist = CyclistText;
+        Product = ProductText;
         String[] separated = CyclistText.split(" ");
         final String[] idUser = new String[1];
         viewModelUsers.getAllUsers().observe(this, userEntities -> {
@@ -145,7 +157,7 @@ public class ModifyDetailsActivity extends AppCompatActivity {
             df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
             String timestamp = df.format(c);
             DeliveryEntity newDelivery = new DeliveryEntity(Delivery.getActuallyAssignedUser(),Client,timestamp,Hours, Description, Integer.valueOf(Number) , Date,
-                    Depart, Arrival, "", "","", new ArrayList<TripEntity>());
+                    Depart, Arrival, "", "",Product, new ArrayList<TripEntity>());
 
         }
 
@@ -171,6 +183,6 @@ public class ModifyDetailsActivity extends AppCompatActivity {
     }
 
     private void updateAdapterUserList(ArrayList<String> userNames) {
-        adpaterUserList.updateData(new ArrayList<>(userNames));
+        adapterUserList.updateData(new ArrayList<>(userNames));
     }
 }

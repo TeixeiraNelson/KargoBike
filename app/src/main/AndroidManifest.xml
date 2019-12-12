@@ -3,9 +3,13 @@
     package="ch.ribeironelson.kargobike">
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -17,9 +21,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Checkpoint.ModifyCheckpointsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <activity
+            android:name=".ui.WorkingZones.ModifyWorkingZoneActivity"
+            android:label="@string/title_activity_modify_working_zone"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.Checkpoint.ModifyCheckpointsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ui.DrawActivity" />
         <activity android:name=".ui.DeliveryCompleteActivity" />
         <activity
