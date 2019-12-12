@@ -44,7 +44,6 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
     private EditText workingZoneName;
     private Button btnWorkingZone;
     private Button btnDeleteWorkingZone;
-    private Button btnModify;
     private Spinner spinnerWorkingZones;
     FloatingActionButton fab;
 
@@ -62,7 +61,7 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_modify_working_zone, frameLayout);
-        navigationView.setCheckedItem(R.id.nav_checkpoints);
+        navigationView.setCheckedItem(R.id.nav_workingzones);
 
         mode = getIntent().getExtras().getString("mode","add");
         fab = findViewById(R.id.floatingActionButtonWZ);
@@ -70,9 +69,7 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
         workingZoneName = findViewById(R.id.workingZoneData);
         btnWorkingZone = findViewById(R.id.btnWorkingZone);
         btnDeleteWorkingZone = findViewById(R.id.btnDeleteWorkingZone);
-        btnModify = findViewById(R.id.btnModifyWorkingZone);
         spinnerWorkingZones = findViewById(R.id.spinner_workingZones);
-        btnModify.setOnClickListener(v-> enableButtons());
         btnWorkingZone.setOnClickListener(v -> verifyUserInputs());
         btnDeleteWorkingZone.setOnClickListener(v -> deleteWorkingZone());
 
@@ -83,9 +80,7 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
     }
 
     private void enableButtons() {
-        btnDeleteWorkingZone.setEnabled(true);
-        btnWorkingZone.setEnabled(true);
-        spinnerWorkingZones.setVisibility(View.VISIBLE);
+
     }
 
     private void startEditingMode(){
@@ -108,7 +103,6 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
         if(mode.equals("add")){
             description.setText("Add a new Working Zone");
             btnDeleteWorkingZone.setVisibility(View.INVISIBLE);
-            btnModify.setVisibility(View.INVISIBLE);
             spinnerWorkingZones.setVisibility(View.INVISIBLE);
             btnWorkingZone.setEnabled(true);
             workingZoneName.setEnabled(true);
@@ -124,6 +118,9 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
         if(mode.equals("modify")) {
             description.setText("Modify a Working Zone");
             btnDeleteWorkingZone.setVisibility(View.VISIBLE);
+            spinnerWorkingZones.setVisibility(View.VISIBLE);
+            btnDeleteWorkingZone.setEnabled(true);
+            btnWorkingZone.setEnabled(true);
             spinnerWorkingZones.setVisibility(View.VISIBLE);
             FloatingActionButton fab = findViewById(R.id.floatingActionButtonWZ);
             fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
@@ -201,7 +198,7 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
 
         });
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "NO", (dialog, which) -> {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO", (dialog, which) -> {
             alertDialog.dismiss();
         });
         alertDialog.show();
@@ -231,9 +228,6 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
             if(mode.equals("modify")){
                 if(workingzonename.length()>1)
                     workingZoneEntity.setLocation(workingzonename);
-
-               /* if(spinnerLocations.getVisibility()==View.VISIBLE)
-                    checkPoint.setLocation(workingZoneEntity);*/
 
                 viewModelWorkingZone.updateWorkingZone(workingZoneEntity, new OnAsyncEventListener() {
                     @Override

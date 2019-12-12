@@ -247,7 +247,7 @@ public class ModifyCheckpointsActivity extends BaseActivity {
 
         });
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "NO", (dialog, which) -> {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO", (dialog, which) -> {
             alertDialog.dismiss();
         });
         alertDialog.show();
