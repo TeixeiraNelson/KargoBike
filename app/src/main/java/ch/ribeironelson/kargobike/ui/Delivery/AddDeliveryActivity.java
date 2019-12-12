@@ -15,14 +15,18 @@ import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -30,9 +34,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
-public class AddDeliveryActivity extends BaseActivity {
+public class AddDeliveryActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = "Add Delivery Activity";
     private UsersListViewModel viewModelUsers;
@@ -62,6 +67,10 @@ public class AddDeliveryActivity extends BaseActivity {
     private String product;
 
     private Button addDeliveryBtn;
+    private Button btnDatePicker, btnTimePicker;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+
+    final Calendar myCalender = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +88,11 @@ public class AddDeliveryActivity extends BaseActivity {
         addDeliveryBtn = findViewById(R.id.btnCreateDelivery);
         addDeliveryBtn.setOnClickListener(v -> verifyUserInputs());
         nbProducts = 0;
+        btnDatePicker=findViewById(R.id.btn_date);
+        btnTimePicker=findViewById(R.id.btn_time);
+
+        btnDatePicker.setOnClickListener(this);
+        btnTimePicker.setOnClickListener(this);
 
         products.add("Product 1");
         products.add("Product 2");
@@ -118,6 +132,43 @@ public class AddDeliveryActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == btnDatePicker) {
+            // Get Current Date
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            DateData.setText(dayOfMonth + "." + (monthOfYear + 1) + "." + year);
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        }
+        if (v == btnTimePicker) {
+
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            mHour = c.get(Calendar.HOUR_OF_DAY);
+            mMinute = c.get(Calendar.MINUTE);
+
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            TimeData.setText(hourOfDay + ":" + minute);
+                        }
+                    }, mHour, mMinute, false);
+            timePickerDialog.show();
+        }
     }
 
     private void updateAdapterUserList(List<String> userNames) {

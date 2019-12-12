@@ -25,34 +25,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/DateData"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:drawableStart="@drawable/ic_date_range_black_24dp"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Date"
-        android:inputType="date"
-        tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/DateData"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:drawableStart="@drawable/ic_date_range_black_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Date"
+            android:inputType="date"
+            tools:layout_editor_absoluteX="16dp" />
 
-    <EditText
-        android:id="@+id/DateTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:drawableStart="@drawable/ic_date_range_black_24dp"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Time"
-        android:inputType="time"
-        app:layout_constraintTop_toBottomOf="@+id/DateData"
-        tools:layout_editor_absoluteX="16dp" />
+
+        <Button
+            android:id="@+id/btn_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/DateData"
+            android:layout_toEndOf="@+id/DateData"
+            android:layout_toRightOf="@+id/DateData"
+            android:text="SELECT DATE" />
+
+        <EditText
+            android:id="@+id/DateTime"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/DateData"
+            android:drawableStart="@drawable/ic_date_range_black_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Time"
+            android:inputType="time"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SELECT TIME"
+            android:id="@+id/btn_time"
+            android:layout_below="@+id/btn_date"
+            android:layout_alignLeft="@+id/btn_date"
+            android:layout_alignStart="@+id/btn_date" />
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/DescriptionText2"
