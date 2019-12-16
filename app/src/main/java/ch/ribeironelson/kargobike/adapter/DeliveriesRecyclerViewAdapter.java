@@ -45,6 +45,7 @@ import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
+import ch.ribeironelson.kargobike.ui.Delivery.DetailsActivity;
 import ch.ribeironelson.kargobike.ui.DeliveryCompleteActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.util.TimeStamp;
@@ -390,7 +391,9 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
 
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(mContext, DetailsActivity.class);
+            intent.putExtra("deliveryId",deliveryEntity.getIdDelivery());
+            mContext.startActivity(intent);
         }
     }
 }
