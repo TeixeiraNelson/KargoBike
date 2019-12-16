@@ -259,6 +259,12 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
             ClientData.setError("You must enter the client name !");
             return true;
         }
+        if(time.length()<1){
+            TimeData.setError("Yout must choose a delivery time !");
+        }
+        if(date.length()<1){
+            DateData.setError("You must choose a delivery date");
+        }
         return false;
     }
 
