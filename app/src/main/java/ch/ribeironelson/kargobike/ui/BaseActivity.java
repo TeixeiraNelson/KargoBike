@@ -108,7 +108,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent = new Intent(BaseActivity.this, ModifyCheckpointsActivity.class);
             intent.putExtra("mode", "add");
         }
-        else if (id == R.id.nav_workingzones){
+        else if (id == R.id.nav_working_zones){
             intent = new Intent(BaseActivity.this, ModifyWorkingZoneActivity.class);
             intent.putExtra("mode", "add");
         }
