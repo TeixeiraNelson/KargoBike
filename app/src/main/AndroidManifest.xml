@@ -23,8 +23,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.WorkingZones.ModifyWorkingZoneActivity"
-            android:label="@string/title_activity_modify_working_zone"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.Delivery.DetailsActivity" android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ui.Delivery.DeliveryActivity"/>
         <activity
             android:name=".ui.Checkpoint.ModifyCheckpointsActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
