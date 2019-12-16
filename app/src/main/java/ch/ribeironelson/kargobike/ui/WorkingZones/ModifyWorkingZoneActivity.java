@@ -61,7 +61,7 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_modify_working_zone, frameLayout);
-        navigationView.setCheckedItem(R.id.nav_workingzones);
+        navigationView.setCheckedItem(R.id.nav_working_zones);
 
         mode = getIntent().getExtras().getString("mode","add");
         fab = findViewById(R.id.floatingActionButtonWZ);

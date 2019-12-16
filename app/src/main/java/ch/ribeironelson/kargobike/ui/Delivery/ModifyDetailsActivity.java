@@ -98,7 +98,7 @@ public class ModifyDetailsActivity extends AppCompatActivity {
 
         });
         //Spinner for Users
-        CyclistData = (Spinner) findViewById(R.id.spinnerUsers);
+        CyclistData = (Spinner) findViewById(R.id.spinnerWorkingZones);
         adapterUserList = new ListAdapter<>(ModifyDetailsActivity.this, R.layout.row_list, new ArrayList<>());
         CyclistData.setAdapter(adapterUserList);
         setupViewModels();

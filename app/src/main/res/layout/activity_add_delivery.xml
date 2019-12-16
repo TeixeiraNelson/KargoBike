@@ -96,35 +96,41 @@
         app:layout_constraintTop_toBottomOf="@+id/DateTime"
         tools:layout_editor_absoluteX="16dp" />
 
+    <TextView
+        android:id="@+id/CyclistText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Departure place"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/DeparturePlaceData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:drawableStart="@drawable/ic_place_black_24dp"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Departure Place"
+        android:hint="Departure address"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@+id/DescriptionText"
         tools:layout_editor_absoluteX="16dp" />
 
-    <EditText
-        android:id="@+id/finalDestinationData"
+    <Spinner
+        android:id="@+id/spinnerWorkingZones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginRight="16dp"
-        android:drawableStart="@drawable/ic_place_black_24dp"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Final Destination"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/DeparturePlaceData"
-        tools:layout_editor_absoluteX="31dp" />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/DescriptionText"
@@ -144,6 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="10dp" />
 
     <EditText
@@ -177,25 +184,20 @@
         tools:layout_editor_absoluteX="31dp" />
 
 
-    <TextView
-        android:id="@+id/CyclistText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Cyclist*"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/spinnerUsers"
+    <EditText
+        android:id="@+id/finalDestinationData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_place_black_24dp"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:hint="Delivery address"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/DeparturePlaceData"
+        tools:layout_editor_absoluteX="31dp" />
 
     <Button
         android:id="@+id/btnCreateDelivery"
@@ -207,7 +209,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/round_bg"
         android:text="Save"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerUsers"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerWorkingZones"
         tools:layout_editor_absoluteX="0dp" />
 
 </LinearLayout>

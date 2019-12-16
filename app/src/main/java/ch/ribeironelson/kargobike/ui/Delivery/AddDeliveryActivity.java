@@ -1,19 +1,20 @@
 package ch.ribeironelson.kargobike.ui.Delivery;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
 import ch.ribeironelson.kargobike.database.entity.TripEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
-import ch.ribeironelson.kargobike.ui.About;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.ui.WorkingZones.ModifyWorkingZoneActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
-import ch.ribeironelson.kargobike.viewmodel.DeliveriesListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.WorkingZoneViewModel;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -21,30 +22,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class AddDeliveryActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = "Add Delivery Activity";
-    private UsersListViewModel viewModelUsers;
-    private DeliveryViewModel deliveryViewModel;
-    private ListAdapter<String> adpaterUserList;
+
+    private ListAdapter<String> adapterWorkingZoneList;
     private ListAdapter<String> adapterProductList;
-    private Spinner spinnerUsers;
+    private List<WorkingZoneEntity> workingZoneEntities;
+    private Spinner spinnerWorkingZones;
     private Spinner spinnerProducts;
     private List<String> products = new ArrayList<String>();
 
@@ -65,10 +66,12 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
     private String client;
     private String user;
     private String product;
+    private WorkingZoneListViewModel listViewModelWorkingZone;
 
     private Button addDeliveryBtn;
     private Button btnDatePicker, btnTimePicker;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private WorkingZoneEntity workingZoneEntity;
 
     final Calendar myCalender = Calendar.getInstance();
 
@@ -80,7 +83,7 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
 
         DateData = findViewById(R.id.DateData);
         TimeData = findViewById(R.id.DateTime);
-        DescriptionData = findViewById(R.id.DescriptionData);
+        DescriptionData = findViewById(R.id.DescriptionText2);
         DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
         finalDestinationData = findViewById(R.id.finalDestinationData);
         NumberData = findViewById(R.id.NumberData);
@@ -108,30 +111,34 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
         spinnerProducts.setAdapter(adapterProductList);
 
 
-        //Spinner for Users
-        spinnerUsers = (Spinner) findViewById(R.id.spinnerUsers);
-        adpaterUserList = new ListAdapter<>(AddDeliveryActivity.this, R.layout.row_list, new ArrayList<>());
-        spinnerUsers.setAdapter(adpaterUserList);
-        setupViewModels();
+        //Spinner for zones
+        spinnerWorkingZones = (Spinner) findViewById(R.id.spinnerWorkingZones);
+        adapterWorkingZoneList = new ListAdapter<>(AddDeliveryActivity.this, R.layout.row_list, new ArrayList<>());
+        spinnerWorkingZones.setAdapter(adapterWorkingZoneList);
+        fillSpinners();
+        assignSpinnerActions();
     }
 
-    private void setupViewModels() {
-        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
-                getApplication());
-        viewModelUsers = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
-        viewModelUsers.getAllUsers().observe(this, userEntities -> {
-            if (userEntities != null) {
-                Log.d(TAG,"Usernames Not null");
-                //Array username
-                ArrayList<String> userNames = new ArrayList<String>();
-                for (UserEntity u : userEntities
-                ) {
-                    userNames.add(u.getFirstname() + " " + u.getLastname());
+    private void fillSpinners() {
+
+        WorkingZoneListViewModel.Factory factory3 = new WorkingZoneListViewModel.Factory(getApplication());
+        listViewModelWorkingZone = ViewModelProviders.of(this,factory3).get(WorkingZoneListViewModel.class);
+
+        listViewModelWorkingZone.getAllWorkingZones().observe(this, workingZoneEntityList -> {
+            if (workingZoneEntityList != null) {
+                //Array
+                ArrayList<String> workingZoneNames = new ArrayList<String>();
+                workingZoneEntities = new ArrayList<>();
+                for (WorkingZoneEntity u : workingZoneEntityList) {
+                    Log.d("WORKING ZONE", u.toString());
+                    if(!u.getWorkingZoneId().equals("0")) {
+                        workingZoneNames.add(u.getLocation());
+                        workingZoneEntities.add(u);
+                    }
                 }
-                updateAdapterUserList(userNames);
+                adapterWorkingZoneList.updateData(new ArrayList<>(workingZoneNames));
             }
         });
-
     }
 
     @Override
@@ -171,8 +178,19 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void updateAdapterUserList(List<String> userNames) {
-        adpaterUserList.updateData(new ArrayList<>(userNames));
+    private void assignSpinnerActions() {
+        spinnerWorkingZones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                workingZoneEntity = workingZoneEntities.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
     }
 
     private void verifyUserInputs(){
@@ -184,7 +202,7 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
         nbProducts = Long.parseLong(NumberData.getText().toString());
         client = ClientData.getText().toString();
 
-        user = (String) spinnerUsers.getSelectedItem();
+        user = (String) spinnerWorkingZones.getSelectedItem();
         product = (String) spinnerProducts.getSelectedItem();
 
         Date c = Calendar.getInstance().getTime();
@@ -198,32 +216,16 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
 
         if(!isAnyEditEmpty()){
 
-            String currentString = "Fruit: they taste good";
-            String[] separated = user.split(" ");
-            final String[] idUser = new String[1];
-            viewModelUsers.getAllUsers().observe(this, userEntities -> {
-                if (userEntities != null) {
-                    Log.d(TAG,"Usernames Not null");
-                    //Array username
-                    for (UserEntity u : userEntities) {
-                        if(u.getFirstname().equals(separated[0]) && u.getLastname().equals(separated[1])){
-                            idUser[0] = u.getIdUser();
-                            return;
-                        }
-                    }
-                }
-            });
-            DeliveryEntity newDelivery = new DeliveryEntity(idUser[0],client,timestamp,time, description, nbProducts, date,
+            DeliveryEntity newDelivery = new DeliveryEntity(workingZoneEntity.getAssignedDispatcherId(),client,timestamp,time, description, nbProducts, date,
                     departure, destination, "", "", product, new ArrayList<TripEntity>());
 
             DeliveryRepository.getInstance().insert(newDelivery, new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
                     Log.d(TAG, "createDelivery: success");
-                    Toast toast = Toast.makeText(AddDeliveryActivity.this, "Created a new Delivery", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(AddDeliveryActivity.this, "Created a new delivery!", Toast.LENGTH_LONG);
                     toast.show();
-                    Intent h = new Intent(AddDeliveryActivity.this, DeliveryActivity.class);
-                    startActivity(h);
+                    restartForm();
                 }
 
                 @Override
@@ -232,6 +234,19 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
                 }
             });
         }
+    }
+
+    private void restartForm() {
+        DateData.setText("");
+        TimeData.setText("");
+        DescriptionData.setText("");
+        DeparturePlaceData.setText("");
+        finalDestinationData.setText("");
+        NumberData.setText("");
+        ClientData.setText("");
+
+        spinnerWorkingZones.setSelection(0);
+        spinnerProducts.setSelection(0);
     }
 
     private boolean isAnyEditEmpty(){
