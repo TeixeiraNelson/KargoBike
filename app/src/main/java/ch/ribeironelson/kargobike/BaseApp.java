@@ -4,6 +4,7 @@ import android.app.Application;
 
 import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
+import ch.ribeironelson.kargobike.database.repository.ProductRepository;
 import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.database.repository.WorkingZoneRepository;
@@ -30,5 +31,9 @@ public class BaseApp extends Application {
     }
     public UserRepository getUserRepository() {
         return UserRepository.getInstance();
+    }
+
+    public ProductRepository getProductRepository() {
+        return ProductRepository.getInstance();
     }
 }

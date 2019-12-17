@@ -19,6 +19,7 @@ import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.ui.Checkpoint.ModifyCheckpointsActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
+import ch.ribeironelson.kargobike.ui.Product.ModifyProductActivity;
 import ch.ribeironelson.kargobike.ui.WorkingZones.ModifyWorkingZoneActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.util.TimeStamp;
@@ -106,6 +107,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_checkpoints){
             intent = new Intent(BaseActivity.this, ModifyCheckpointsActivity.class);
+            intent.putExtra("mode", "add");
+        }
+        else if (id == R.id.nav_products){
+            intent = new Intent(BaseActivity.this, ModifyProductActivity.class);
             intent.putExtra("mode", "add");
         }
         else if (id == R.id.nav_working_zones){

@@ -21,14 +21,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.Product.ModifyProductActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.WorkingZones.ModifyWorkingZoneActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.Delivery.DetailsActivity" android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".ui.Delivery.DeliveryActivity"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.Delivery.DetailsActivity"
+            android:parentActivityName=".ui.Delivery.DeliveryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.Checkpoint.ModifyCheckpointsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.DrawActivity" />
         <activity android:name=".ui.DeliveryCompleteActivity" />
         <activity
