@@ -8,6 +8,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import ch.ribeironelson.kargobike.database.entity.RoleEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.firebase.RoleListLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
 public class RoleRepository {
@@ -24,7 +25,7 @@ public class RoleRepository {
         }
         return instance;
     }
-    /*
+
     public LiveData<List<RoleEntity>> getAllRoles() {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("roles");
@@ -32,9 +33,9 @@ public class RoleRepository {
         return new RoleListLiveData(reference);
     }
 
-     */
-    /*
-    public LiveData<RoleEntity> getRoleByUserId(final UserEntity user){
+
+
+/*    public LiveData<RoleEntity> getRoleByUserId(final UserEntity user){
 
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("users")

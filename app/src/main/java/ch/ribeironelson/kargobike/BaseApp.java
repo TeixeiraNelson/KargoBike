@@ -6,6 +6,7 @@ import ch.ribeironelson.kargobike.database.repository.CheckpointRepository;
 import ch.ribeironelson.kargobike.database.repository.CustomerRepository;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
 import ch.ribeironelson.kargobike.database.repository.ProductRepository;
+import ch.ribeironelson.kargobike.database.repository.RoleRepository;
 import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.database.repository.WorkingZoneRepository;
@@ -41,4 +42,6 @@ public class BaseApp extends Application {
     public CustomerRepository getCustomerRepository() {
         return CustomerRepository.getInstance();
     }
+
+    public RoleRepository getRoleRepository() {return RoleRepository.getInstance();}
 }
