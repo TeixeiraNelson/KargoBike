@@ -1,30 +1,47 @@
 package ch.ribeironelson.kargobike.adapter;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.RoleEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
+import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
+import ch.ribeironelson.kargobike.ui.Riders.RidersList;
 import ch.ribeironelson.kargobike.util.RecyclerViewItemClickListener;
+import ch.ribeironelson.kargobike.viewmodel.RoleListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
 
 public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRecyclerViewAdapter.ViewHolder> {
 
-
     private RecyclerViewItemClickListener mListener ;
     private List<T> data ;
+    private List<WorkingZoneEntity> workingZones ;
+    private List<RoleEntity> roles ;
+    private Context mContext ;
+    private Application app ;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView riderName ;
         private final TextView workingZone ;
         private final TextView email ;
         private final TextView role ;
+
+        private Context mContext ;
+        private Application app ;
 
         private ViewHolder(View v, TextView riderName, TextView workingZone, TextView email, TextView role){
             super(v);
@@ -33,9 +50,17 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
             this.email = email ;
             this.role = role ;
         }
+        private void bindItem(Context mContext, Application app){
+            this.mContext = mContext ;
+            this.app = app ;
+        }
     }
 
-    public RidersRecyclerViewAdapter(RecyclerViewItemClickListener listener){mListener = listener;}
+    public RidersRecyclerViewAdapter(Context context, Application app, RecyclerViewItemClickListener listener){
+        mListener = listener;
+        mContext = context ;
+        this.app = app ;
+    }
 
     @NonNull
     @Override
@@ -59,10 +84,11 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
     @Override
     public void onBindViewHolder(RidersRecyclerViewAdapter.ViewHolder holder, int position){
         T item = data.get(position);
+        holder.bindItem(mContext, app);
         holder.riderName.setText(((UserEntity)item).getFirstname() +" "+ ((UserEntity)item).getLastname());
-        holder.workingZone.setText(((UserEntity)item).getIdZone());
+        holder.workingZone.setText(/*getWorkingZoneString((UserEntity)item)*/ ((UserEntity)item).getIdZone());
         holder.email.setText(((UserEntity)item).getEmail());
-        holder.role.setText(((UserEntity)item).getIdRole());
+        holder.role.setText(/*getRoleString((UserEntity)item)*/ ((UserEntity)item).getIdRole());
     }
 
     @Override
@@ -105,80 +131,43 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
         }
     }
 
+    private String getWorkingZoneString(UserEntity rider){
 
-/*
-    private Context mContext;
-    private List<UserEntity> mRiders;
-    private Application app;
-    private SchedulesEntity riderSchedule;
+        String result = "No working zone assigned !" ;
 
+        WorkingZoneListViewModel.Factory factory = new WorkingZoneListViewModel.Factory(app);
+        WorkingZoneListViewModel viewModel = ViewModelProviders.of((RidersList)mContext, factory).get(WorkingZoneListViewModel.class);
+        viewModel.getAllWorkingZones().observe((LifecycleOwner) mContext, workingZoneEntities -> {
+                System.out.println("BONJOUR");
+                workingZones = new ArrayList<>();
+                workingZones = workingZoneEntities;
 
-    public RidersRecyclerViewAdapter(List<UserEntity> mRiders, Context context, Application app){
-        mContext = context ;
-        this.mRiders = mRiders ;
-        this.app = app ;
-    }
+        });
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rider_item, parent, false);
-        ViewHolder  viewHolder = new ViewHolder(view);
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder){
-        holder.bindItem(mContext, RidersRecyclerViewAdapter.this, mRiders, app);
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private TextView riderName ;
-        private TextView workingZone ;
-        private TextView email ;
-        private TextView role ;
-
-        private UserEntity rider ;
-        private Context mContext ;
-        private Application app ;
-        private List<UserEntity> mRiders ;
-        private RidersRecyclerViewAdapter ridersRecyclerViewAdapter ;
-
-        public ViewHolder(@NonNull View itemView){
-            super(itemView);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-            riderName = itemView.findViewById(R.id.txt_riderName);
-            workingZone = itemView.findViewById(R.id.txt_workingZone);
-            email = itemView.findViewById(R.id.txt_email);
-            role = itemView.findViewById(R.id.txt_role);
+        for(int i = 0 ; i != workingZones.size() ; i++){
+            if(workingZones.get(i).getWorkingZoneId().equals(rider.getIdZone()))
+                result = workingZones.get(i).getLocation();
         }
 
-        public void bindItem(Context mContext, RidersRecyclerViewAdapter ridersRecyclerViewAdapter, List<UserEntity> mRiders, Application app){
-            */
-/*this.rider = rider ;*//*
-
-            this.mContext = mContext ;
-            this.ridersRecyclerViewAdapter = ridersRecyclerViewAdapter ;
-            this.mRiders = mRiders ;
-            this.app = app ;
-        }
-
-        @Override
-        public boolean onLongClick(View v){
-
-            return true ;
-        }
-
-        @Override
-        public void onClick(View v){
-            Intent intent = new Intent(mContext, DetailsRiderActivity.class);
-            intent.putExtra("riderId", rider.getIdUser());
-            mContext.startActivity(intent);
-        }
-
+        return result ;
     }
-*/
+
+    private String getRoleString(UserEntity rider){
+        String result = "No role assigned !";
+
+        RoleListViewModel.Factory factory = new RoleListViewModel.Factory(app);
+        RoleListViewModel viewModel = ViewModelProviders.of((RidersList)mContext, factory).get(RoleListViewModel.class);
+        viewModel.getRoles().observe((LifecycleOwner)mContext, roleEntities -> {
+            if(roleEntities != null){
+                roles = roleEntities ;
+            }
+        });
+        for (int i = 0 ; i != roles.size() ; i++){
+            if(roles.get(i).getRoleId().equals(rider.getIdRole()))
+                result = roles.get(i).getRole();
+        }
+        return result ;
+    }
 
     }
 

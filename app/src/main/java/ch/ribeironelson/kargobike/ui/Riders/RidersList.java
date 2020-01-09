@@ -1,13 +1,17 @@
 package ch.ribeironelson.kargobike.ui.Riders;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ribeironelson.kargobike.R;
@@ -25,6 +29,8 @@ public class RidersList extends BaseActivity {
     private RidersRecyclerViewAdapter<UserEntity> adapter;
     private UsersListViewModel usersListViewModel ;
     private List<UserEntity> users ;
+    private Context mContext ;
+    private Application app ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +41,13 @@ public class RidersList extends BaseActivity {
         searchEditText = findViewById(R.id.search_riders);
         recyclerView = findViewById(R.id.recyclerView_riders);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
 
         users = new ArrayList<>();
-        adapter = new RidersRecyclerViewAdapter<>(new RecyclerViewItemClickListener() {
+        adapter = new RidersRecyclerViewAdapter<>(RidersList.this, RidersList.this.getApplication(), new RecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 
