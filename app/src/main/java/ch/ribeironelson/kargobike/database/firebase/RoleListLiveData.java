@@ -40,7 +40,6 @@ public class RoleListLiveData extends LiveData<List<RoleEntity>> {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             setValue(toRole(dataSnapshot));
-            setValue(toRole(dataSnapshot));
         }
 
         @Override

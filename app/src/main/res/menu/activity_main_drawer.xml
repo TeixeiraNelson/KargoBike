@@ -8,6 +8,10 @@
             android:icon="@drawable/ic_baseline_home_24px"
             android:title="Home" />
         <item
+            android:id="@+id/nav_riders"
+            android:icon="@drawable/ic_bike_black_24dp"
+            android:title="Riders" />
+        <item
             android:id="@+id/nav_delivery"
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="Deliveries" />

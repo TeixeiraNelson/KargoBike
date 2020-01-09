@@ -124,7 +124,7 @@ public class ModifyCustomerActivity extends BaseActivity {
             btnDeleteCustomer.setVisibility(View.VISIBLE);
             spinnerCustomers.setVisibility(View.VISIBLE);
             FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_red_24dp));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

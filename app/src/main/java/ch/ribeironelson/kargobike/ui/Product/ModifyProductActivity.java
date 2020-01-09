@@ -1,21 +1,14 @@
 package ch.ribeironelson.kargobike.ui.Product;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
-import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.ProductEntity;
-import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
-import ch.ribeironelson.kargobike.ui.Checkpoint.ModifyCheckpointsActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
-import ch.ribeironelson.kargobike.viewmodel.CheckpointListViewModel;
-import ch.ribeironelson.kargobike.viewmodel.CheckpointViewModel;
 import ch.ribeironelson.kargobike.viewmodel.ProductListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.ProductViewModel;
-import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -118,7 +111,7 @@ public class ModifyProductActivity extends BaseActivity {
             btnDeleteProduct.setVisibility(View.VISIBLE);
             spinnerProducts.setVisibility(View.VISIBLE);
             FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_red_24dp));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

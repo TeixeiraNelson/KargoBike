@@ -2,7 +2,9 @@ package ch.ribeironelson.kargobike.ui.Riders;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,7 +25,8 @@ import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
 public class RidersList extends BaseActivity {
 
-    private EditText searchEditText;
+    private static final String TAG = "RidersList" ;
+
     private RecyclerView recyclerView;
 
     private RidersRecyclerViewAdapter<UserEntity> adapter;
@@ -36,9 +39,8 @@ public class RidersList extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_riders_list, frameLayout);
-        navigationView.setCheckedItem(R.id.nav_delivery);
+        navigationView.setCheckedItem(R.id.nav_riders);
 
-        searchEditText = findViewById(R.id.search_riders);
         recyclerView = findViewById(R.id.recyclerView_riders);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -50,12 +52,22 @@ public class RidersList extends BaseActivity {
         adapter = new RidersRecyclerViewAdapter<>(RidersList.this, RidersList.this.getApplication(), new RecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                Log.d(TAG, "Clicked position: "+position);
+                Log.d(TAG, "Clicked on: "+users.get(position));
 
+                Intent intent = new Intent(RidersList.this, RiderDetails.class);
+                intent.putExtra("userid", users.get(position).getIdUser());
+                startActivity(intent);
             }
 
             @Override
             public void onItemLongClick(View v, int position) {
+                Log.d(TAG, "Clicked position: "+position);
+                Log.d(TAG, "Clicked on: "+users.get(position));
 
+                Intent intent = new Intent(RidersList.this, RiderDetails.class);
+                intent.putExtra("userid", users.get(position).getIdUser());
+                startActivity(intent);
             }
         });
 
