@@ -25,8 +25,16 @@
             android:name=".ui.Riders.RidersList"
             android:label="@string/title_activity_riders_list"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.Riders.RiderDetails"
+            android:parentActivityName=".ui.Riders.RidersList"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.Customer.ModifyCustomerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -57,13 +65,7 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="Dashboard"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.About"
             android:label="About"

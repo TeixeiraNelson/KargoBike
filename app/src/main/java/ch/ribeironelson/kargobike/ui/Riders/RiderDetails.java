@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.ribeironelson.kargobike.R;
+import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.RoleEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
@@ -40,8 +42,6 @@ import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
 public class RiderDetails extends BaseActivity {
 
     private static final String TAG = "RiderDetails";
-
-    private static final int EDIT_RIDER = 0 ;
 
     private UserViewModel userViewModel ;
     private UserEntity user ;
@@ -56,9 +56,11 @@ public class RiderDetails extends BaseActivity {
     private EditText lastnameData;
     private EditText emailData;
     private EditText phoneNumberData;
+    private TextView workingZoneTxt;
     private Spinner workingZoneSpinner;
     private Spinner roleSpinner;
     private Button modifyRiderButton;
+    private Button cancelRiderButton;
 
     private boolean isEditable ;
 
@@ -72,7 +74,7 @@ public class RiderDetails extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rider_details);
+        getLayoutInflater().inflate(R.layout.activity_rider_details, frameLayout);
         navigationView.setCheckedItem(R.id.nav_riders);
 
         mRoleRef = FirebaseDatabase.getInstance().getReference().child("roles");
@@ -82,17 +84,14 @@ public class RiderDetails extends BaseActivity {
 
         userid = getIntent().getStringExtra("userid");
 
+        workingZonesL = new ArrayList<>();
+        rolesL = new ArrayList<>();
+
         loadData();
         initiateView();
         initiateSpinnerRole();
         initiateSpinnerWorkingZone();
 
-        UserViewModel.Factory factory = new UserViewModel.Factory(getApplication(), userid);
-        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
-        userViewModel.getUser().observe(this, userEntity -> {
-            user = userEntity ;
-            updateContent();
-        });
 
     }
 
@@ -152,7 +151,11 @@ public class RiderDetails extends BaseActivity {
         phoneNumberData = findViewById(R.id.phoneNumberData);
         workingZoneSpinner = findViewById(R.id.workingZoneSpinner);
         roleSpinner = findViewById(R.id.roleSpinner);
+        workingZoneTxt = findViewById(R.id.workingZoneText);
         modifyRiderButton = findViewById(R.id.modifyRiderButton);
+        cancelRiderButton = findViewById(R.id.cancelSaveButton);
+
+        workingZoneTxt.setVisibility(View.INVISIBLE);
 
         firstnameData.setFocusable(false);
         firstnameData.setClickable(false);
@@ -172,26 +175,41 @@ public class RiderDetails extends BaseActivity {
 
         workingZoneSpinner.setEnabled(false);
         workingZoneSpinner.setClickable(false);
+        workingZoneSpinner.setVisibility(View.INVISIBLE);
 
         roleSpinner.setEnabled(false);
         roleSpinner.setClickable(false);
+
+        modifyRiderButton.setText("Modify");
+        modifyRiderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    switchToEdit();
+            }
+        });
+
+        cancelRiderButton.setVisibility(View.INVISIBLE);
 
     }
 
     private void switchToEdit(){
         if(!isEditable){
+            firstnameData.setFocusableInTouchMode(true);
             firstnameData.setFocusable(true);
             firstnameData.setClickable(true);
             firstnameData.setEnabled(true);
 
+            lastnameData.setFocusableInTouchMode(true);
             lastnameData.setFocusable(true);
             lastnameData.setClickable(true);
             lastnameData.setEnabled(true);
 
+            emailData.setFocusableInTouchMode(true);
             emailData.setFocusable(true);
             emailData.setClickable(true);
             emailData.setEnabled(true);
 
+            phoneNumberData.setFocusableInTouchMode(true);
             phoneNumberData.setFocusable(true);
             phoneNumberData.setClickable(true);
             phoneNumberData.setEnabled(true);
@@ -201,6 +219,17 @@ public class RiderDetails extends BaseActivity {
 
             roleSpinner.setEnabled(true);
             roleSpinner.setClickable(true);
+
+            modifyRiderButton.setText("Save Changes");
+
+            cancelRiderButton.setVisibility(View.VISIBLE);
+            cancelRiderButton.setClickable(true);
+            cancelRiderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initiateView();
+                }
+            });
         }else{
             saveChanges(firstnameData.getText().toString(),
                     lastnameData.getText().toString(),
@@ -230,6 +259,11 @@ public class RiderDetails extends BaseActivity {
 
             roleSpinner.setEnabled(false);
             roleSpinner.setClickable(false);
+
+            modifyRiderButton.setText("Modify");
+
+            cancelRiderButton.setVisibility(View.INVISIBLE);
+            cancelRiderButton.setClickable(false);
         }
         isEditable = !isEditable;
     }
@@ -240,6 +274,12 @@ public class RiderDetails extends BaseActivity {
         user.setLastname(lastname);
         user.setEmail(email);
         user.setPhoneNumber(phonenumber);
+        for(RoleEntity r : rolesL){
+            if(role.equals(r.getRoleId())){
+                role = r.getRole();
+            }
+        }
+        user.setIdRole(role);
 
         userViewModel.updateUser(user, new OnAsyncEventListener() {
             @Override
@@ -268,24 +308,30 @@ public class RiderDetails extends BaseActivity {
 
     private void loadData() {
 
-        RoleListViewModel.Factory factoryR = new RoleListViewModel.Factory(mApp);
-        roleListViewModel = ViewModelProviders.of(this, factoryR).get(RoleListViewModel.class);
-        roleListViewModel.getRoles().observe(this, roleEntities -> {
-            if(roleEntities != null){
-                rolesL = roleEntities ;
-                System.out.println("PAS NUL");
+        UserViewModel.Factory factory = new UserViewModel.Factory(getApplication(), userid);
+        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
+        userViewModel.getUser().observe(this, userEntity -> {
+            if(userEntity != null) {
+                user = userEntity;
+
+                RoleListViewModel.Factory factoryR = new RoleListViewModel.Factory(getApplication());
+                roleListViewModel = ViewModelProviders.of(this, factoryR).get(RoleListViewModel.class);
+                roleListViewModel.getRoles().observe(this, roleEntities -> {
+                    if(roleEntities != null){
+                        rolesL = roleEntities ;
+                        System.out.println("PAS NUL");
+
+                        WorkingZoneListViewModel.Factory factory3 = new WorkingZoneListViewModel.Factory(getApplication());
+                        workingZoneListViewModel = ViewModelProviders.of(this,factory3).get(WorkingZoneListViewModel.class);
+                        workingZoneListViewModel.getAllWorkingZones().observe(this, workingZoneEntityList -> {
+                            if (workingZoneEntityList != null) {
+                                workingZonesL = workingZoneEntityList;
+                                updateContent();
+                            }
+                        });
+                    }
+                });
             }
-
-        });
-
-        WorkingZoneListViewModel.Factory factoryW = new WorkingZoneListViewModel.Factory(mApp);
-        workingZoneListViewModel = ViewModelProviders.of(this, factoryW).get(WorkingZoneListViewModel.class);
-        workingZoneListViewModel.getAllWorkingZones().observe(this, workingZoneEntities -> {
-            if(workingZoneEntities != null){
-                workingZonesL = workingZoneEntities ;
-                System.out.println("PAS NUL");
-            }
-
         });
     }
 
@@ -297,26 +343,31 @@ public class RiderDetails extends BaseActivity {
             emailData.setText(user.getEmail());
             phoneNumberData.setText(user.getPhoneNumber());
 
-          /*  String roleName = null;
+            String roleName = null;
             String roleId = user.getIdRole();
             for(RoleEntity role: rolesL){
                 if(role.getRoleId().equals(roleId))
                     roleName = role.getRole();
             }
             ArrayAdapter myAdapR = (ArrayAdapter) roleSpinner.getAdapter();
-            int spinnerPos = myAdapR.getPosition(roleName);
-            roleSpinner.setSelection(spinnerPos);
+            int spinnerPosR = myAdapR.getPosition(roleName);
+            roleSpinner.setSelection(spinnerPosR);
 
             String workingZoneName = null;
-            String workingZoneId = user.getIdZone();
+            String workingZoneId = null ;
+            for(WorkingZoneEntity w: workingZonesL){
+                if(w.getAssignedDispatcherId().equals(user.getIdUser())){
+                    workingZoneId = w.getAssignedDispatcherId();
+                }
+            }
             for(WorkingZoneEntity w: workingZonesL){
                 if(w.getWorkingZoneId().equals(workingZoneId))
                     workingZoneName=w.getLocation();
             }
 
             ArrayAdapter myAdapW = (ArrayAdapter) workingZoneSpinner.getAdapter();
-            int spinnerPos = myAdapW.getPosition(workingZoneName);
-            workingZoneSpinner.setSelection(spinnerPos);  */
+            int spinnerPosW = myAdapW.getPosition(workingZoneName);
+            workingZoneSpinner.setSelection(spinnerPosW);
 
         }
     }

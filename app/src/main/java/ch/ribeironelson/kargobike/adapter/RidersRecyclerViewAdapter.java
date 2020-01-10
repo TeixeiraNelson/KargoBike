@@ -29,10 +29,12 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
 
     private RecyclerViewItemClickListener mListener ;
     private List<T> data ;
-    private List<WorkingZoneEntity> workingZones ;
-    private List<RoleEntity> roles ;
     private Context mContext ;
     private Application app ;
+
+    private List<WorkingZoneEntity> workingZones ;
+    private List<RoleEntity> roles ;
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView riderName ;
@@ -40,8 +42,6 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
         private final TextView email ;
         private final TextView role ;
 
-        private Context mContext ;
-        private Application app ;
 
         private ViewHolder(View v, TextView riderName, TextView workingZone, TextView email, TextView role){
             super(v);
@@ -50,16 +50,11 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
             this.email = email ;
             this.role = role ;
         }
-        private void bindItem(Context mContext, Application app){
-            this.mContext = mContext ;
-            this.app = app ;
-        }
+
     }
 
-    public RidersRecyclerViewAdapter(Context context, Application app, RecyclerViewItemClickListener listener){
+    public RidersRecyclerViewAdapter(RecyclerViewItemClickListener listener){
         mListener = listener;
-        mContext = context ;
-        this.app = app ;
     }
 
     @NonNull
@@ -84,11 +79,17 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
     @Override
     public void onBindViewHolder(RidersRecyclerViewAdapter.ViewHolder holder, int position){
         T item = data.get(position);
-        holder.bindItem(mContext, app);
+       /* String roleString = getRoleString((UserEntity)item);
+        String workingZoneString = getWorkingZoneString((UserEntity)item);*/
+
         holder.riderName.setText(((UserEntity)item).getFirstname() +" "+ ((UserEntity)item).getLastname());
-        holder.workingZone.setText(/*getWorkingZoneString((UserEntity)item)*/ ((UserEntity)item).getIdZone());
+        if(((UserEntity)item).getIdZone().equals("0")){
+            holder.workingZone.setText("No zone");
+        }else{
+            holder.workingZone.setText(((UserEntity)item).getIdZone());
+        }
         holder.email.setText(((UserEntity)item).getEmail());
-        holder.role.setText(/*getRoleString((UserEntity)item)*/ ((UserEntity)item).getIdRole());
+        holder.role.setText(((UserEntity)item).getIdRole());
     }
 
     @Override
@@ -98,6 +99,28 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
         } else {
             return 0;
         }
+    }
+
+    private String getWorkingZoneString(UserEntity rider){
+
+        String result = "No working zone" ;
+
+        for(int i = 0 ; i != workingZones.size() ; i++){
+            if(workingZones.get(i).getWorkingZoneId().equals(rider.getIdZone()))
+                result = workingZones.get(i).getLocation();
+        }
+
+        return result ;
+    }
+
+    private String getRoleString(UserEntity rider){
+        String result = "No role";
+
+        for (int i = 0 ; i != roles.size() ; i++){
+            if(roles.get(i).getRoleId().equals(rider.getIdRole()))
+                result = roles.get(i).getRole();
+        }
+        return result ;
     }
 
     public void setData(final List<T> riders){
@@ -129,44 +152,6 @@ public class RidersRecyclerViewAdapter<T> extends RecyclerView.Adapter<RidersRec
             data = riders ;
             result.dispatchUpdatesTo(this);
         }
-    }
-
-    private String getWorkingZoneString(UserEntity rider){
-
-        String result = "No working zone assigned !" ;
-
-        WorkingZoneListViewModel.Factory factory = new WorkingZoneListViewModel.Factory(app);
-        WorkingZoneListViewModel viewModel = ViewModelProviders.of((RidersList)mContext, factory).get(WorkingZoneListViewModel.class);
-        viewModel.getAllWorkingZones().observe((LifecycleOwner) mContext, workingZoneEntities -> {
-                System.out.println("BONJOUR");
-                workingZones = new ArrayList<>();
-                workingZones = workingZoneEntities;
-
-        });
-
-        for(int i = 0 ; i != workingZones.size() ; i++){
-            if(workingZones.get(i).getWorkingZoneId().equals(rider.getIdZone()))
-                result = workingZones.get(i).getLocation();
-        }
-
-        return result ;
-    }
-
-    private String getRoleString(UserEntity rider){
-        String result = "No role assigned !";
-
-        RoleListViewModel.Factory factory = new RoleListViewModel.Factory(app);
-        RoleListViewModel viewModel = ViewModelProviders.of((RidersList)mContext, factory).get(RoleListViewModel.class);
-        viewModel.getRoles().observe((LifecycleOwner)mContext, roleEntities -> {
-            if(roleEntities != null){
-                roles = roleEntities ;
-            }
-        });
-        for (int i = 0 ; i != roles.size() ; i++){
-            if(roles.get(i).getRoleId().equals(rider.getIdRole()))
-                result = roles.get(i).getRole();
-        }
-        return result ;
     }
 
     }
