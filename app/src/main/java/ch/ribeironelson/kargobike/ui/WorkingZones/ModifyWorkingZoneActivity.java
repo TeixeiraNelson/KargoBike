@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
@@ -25,13 +22,9 @@ import java.util.List;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
-import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
-import ch.ribeironelson.kargobike.ui.Checkpoint.ModifyCheckpointsActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
-import ch.ribeironelson.kargobike.viewmodel.CheckpointListViewModel;
-import ch.ribeironelson.kargobike.viewmodel.CheckpointViewModel;
 import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.WorkingZoneViewModel;
 
@@ -123,7 +116,7 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
             btnWorkingZone.setEnabled(true);
             spinnerWorkingZones.setVisibility(View.VISIBLE);
             FloatingActionButton fab = findViewById(R.id.floatingActionButtonWZ);
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_red_24dp));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

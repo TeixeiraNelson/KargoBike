@@ -168,20 +168,26 @@
         app:layout_constraintTop_toBottomOf="@+id/finalDestinationData"
         tools:layout_editor_absoluteX="31dp" />
 
-    <EditText
-        android:id="@+id/ClientData"
+    <TextView
+        android:id="@+id/DescriptionCustomer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Customer*"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerCustomer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginRight="16dp"
-        android:drawableStart="@drawable/ic_account_24dp"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Client"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/NumberData"
-        tools:layout_editor_absoluteX="31dp" />
+        android:layout_marginTop="10dp" />
 
 
     <EditText

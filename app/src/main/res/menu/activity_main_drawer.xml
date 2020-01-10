@@ -8,6 +8,10 @@
             android:icon="@drawable/ic_baseline_home_24px"
             android:title="Home" />
         <item
+            android:id="@+id/nav_riders"
+            android:icon="@drawable/ic_bike_black_24dp"
+            android:title="Riders" />
+        <item
             android:id="@+id/nav_delivery"
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="Deliveries" />
@@ -27,6 +31,14 @@
             android:id="@+id/nav_users"
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="Users" />
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@drawable/ic_business_center_primary_24dp"
+            android:title="Products" />
+        <item
+            android:id="@+id/nav_customers"
+            android:icon="@drawable/ic_people_red_24dp"
+            android:title="Customers" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_baseline_info_24px"

@@ -6,56 +6,48 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import ch.ribeironelson.kargobike.database.entity.RoleEntity;
-import ch.ribeironelson.kargobike.database.entity.UserEntity;
-import ch.ribeironelson.kargobike.database.firebase.RoleListLiveData;
+import ch.ribeironelson.kargobike.database.entity.ProductEntity;
+import ch.ribeironelson.kargobike.database.firebase.ProductLiveData;
+import ch.ribeironelson.kargobike.database.firebase.ProductListLiveData;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 
-public class RoleRepository {
+public class ProductRepository {
+    private static ProductRepository instance ;
 
-    private static RoleRepository instance ;
-
-    public static RoleRepository getInstance(){
+    public static ProductRepository getInstance(){
         if(instance == null) {
             synchronized (RoleRepository.class) {
                 if (instance == null) {
-                    instance = new RoleRepository();
+                    instance = new ProductRepository();
                 }
             }
         }
         return instance;
     }
 
-    public LiveData<List<RoleEntity>> getAllRoles() {
+    public LiveData<List<ProductEntity>> getAllProducts() {
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("roles");
+                .getReference("products");
 
-        return new RoleListLiveData(reference);
+        return new ProductListLiveData(reference);
     }
 
-
-
-/*    public LiveData<RoleEntity> getRoleByUserId(final UserEntity user){
-
+    public LiveData<ProductEntity> getProduct(final String productId){
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("users")
-                .child(user.getIdUser())
-                .child(user.getIdRole());
-
-        return new RoleLiveData(reference);
+                .getReference("products")
+                .child(productId);
+        return new ProductLiveData(reference);
     }
 
-     */
-
-    public void insert(final RoleEntity role, OnAsyncEventListener callback){
+    public void insertProduct(final ProductEntity product, OnAsyncEventListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("roles");
+                .getReference("products");
         String key = reference.push().getKey();
-        role.setRoleId(key);
+        product.setIdProduct(key);
         FirebaseDatabase.getInstance()
-                .getReference("roles")
-                .child(role.getRoleId())
-                .setValue(role, (databaseError, databaseReference) -> {
+                .getReference("products")
+                .child(key)
+                .setValue(product, (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
@@ -64,11 +56,11 @@ public class RoleRepository {
                 });
     }
 
-    public void update(final RoleEntity role, OnAsyncEventListener callback){
+    public void updateProduct(final ProductEntity product, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
-                .getReference("roles")
-                .child(role.getRoleId())
-                .updateChildren(role.toMap(),(databaseError, databaseReference) -> {
+                .getReference("products")
+                .child(product.getIdProduct())
+                .updateChildren(product.toMap(),(databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
@@ -77,10 +69,10 @@ public class RoleRepository {
                 });
     }
 
-    public void delete(final RoleEntity role, OnAsyncEventListener callback){
+    public void deleteProduct(final ProductEntity product, OnAsyncEventListener callback){
         FirebaseDatabase.getInstance()
-                .getReference("roles")
-                .child(role.getRoleId())
+                .getReference("products")
+                .child(product.getIdProduct())
                 .removeValue((databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());

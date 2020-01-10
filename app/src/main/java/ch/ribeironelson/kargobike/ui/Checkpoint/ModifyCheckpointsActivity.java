@@ -5,11 +5,8 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
 import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
-import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
-import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
-import ch.ribeironelson.kargobike.ui.MainActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.CheckpointListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.CheckpointViewModel;
@@ -18,9 +15,6 @@ import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,11 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ModifyCheckpointsActivity extends BaseActivity {
     private static final String TAG = "ModifyCheckPointsActivity";
@@ -140,7 +132,7 @@ public class ModifyCheckpointsActivity extends BaseActivity {
             textView.setVisibility(View.INVISIBLE);
             spinnerLocations.setVisibility(View.INVISIBLE);
             FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_circle_red_24dp));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

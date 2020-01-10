@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.Customer.ModifyCustomerActivity"
+        tools:showIn="@layout/app_bar_main">
+
+        <TextView
+            android:id="@+id/textCustomerDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="50dp"
+
+            android:layout_marginRight="16dp"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="Add a Customer" />
+
+        <Spinner
+            android:id="@+id/spinner_customers"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/CustomerFirstnameData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_account_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:enabled="true"
+            android:hint="Firstname"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_customers"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/CustomerLastnameData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_account_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:enabled="true"
+            android:hint="Lastname"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/CustomerFirstnameData"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/CustomerLocationData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_location_on_red_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:enabled="true"
+            android:hint="Location"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/CustomerLastnameData"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/CustomerEmailData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_email_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:enabled="true"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintTop_toBottomOf="@+id/CustomerLocationData"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/CustomerPhoneData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_phone_24dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:enabled="true"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            app:layout_constraintTop_toBottomOf="@+id/CustomerEmailData"
+            tools:layout_editor_absoluteX="16dp" />
+
+
+        <Button
+            android:id="@+id/btnDeleteCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/round_bg"
+            android:enabled="true"
+            android:text="Delete"
+            app:layout_constraintTop_toBottomOf="@+id/btnModifyCheckpoint"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <Button
+            android:id="@+id/btnSaveCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_bg"
+            android:enabled="true"
+            android:text="Save"
+            app:layout_constraintTop_toBottomOf="@+id/btnDeleteCheckPoint"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:fabCustomSize="60dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="25dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_mode_edit_24dp" />
+
+    </LinearLayout>
+
+
+</ScrollView>
