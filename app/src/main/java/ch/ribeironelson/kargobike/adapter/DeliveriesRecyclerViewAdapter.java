@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
     private List<DeliveryEntity> mDeliveries;
     private Application app;
     private SchedulesEntity riderSchedule;
+
+    private EditText commentData;
 
     public DeliveriesRecyclerViewAdapter(List<DeliveryEntity> mDeliveries, Context context, Application app) {
         mContext = context;
@@ -177,6 +180,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
             deliveryDate = itemView.findViewById(R.id.deliveryDate_txtview);
             productName = itemView.findViewById(R.id.productType_txtview);
             packageImg = itemView.findViewById(R.id.packageImage);
+
         }
 
         public void bindItem(DeliveryEntity delivery, Context mContext, int position, DeliveriesRecyclerViewAdapter deliveriesRecyclerViewAdapter, List<DeliveryEntity> mDeliveries, Application app){
@@ -186,6 +190,13 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
             this.position = position;
             this.app = app;
             this.deliveriesRecyclerViewAdapter = deliveriesRecyclerViewAdapter;
+
+            if(deliveryEntity.isLoaded()){
+                itemView.setBackgroundColor(mContext.getResources().getColor(R.color.packageLoaded));
+            }
+            else {
+                itemView.setBackgroundColor(mContext.getResources().getColor(R.color.packageUnloaded));
+            }
         }
 
         @Override
@@ -200,6 +211,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
             CheckBox checkBox = dialog.findViewById(R.id.checkBox);
             Spinner nextRider = dialog.findViewById(R.id.spinner_next_rider);
             Spinner nextCheckpoint = dialog.findViewById(R.id.spinner_checkpoint);
+            commentData = dialog.findViewById(R.id.comment_content);
 
             if(!deliveryEntity.isLoaded()){
                 checkBox.setVisibility(View.INVISIBLE);
@@ -332,7 +344,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                     tripType = "Load";
 
                 deliveryEntity.setLoaded(!deliveryEntity.isLoaded());
-                TripEntity checkpoint = new TripEntity(deliveryEntity.getNextPlaceToGo(), tripType, deliveryEntity.getActuallyAssignedUser(), gpsCoordinates, timestamp);
+                TripEntity checkpoint = new TripEntity(deliveryEntity.getNextPlaceToGo(), tripType, deliveryEntity.getActuallyAssignedUser(), gpsCoordinates, timestamp, commentData.getText().toString());
                 deliveryEntity.addCheckpoint(checkpoint);
 
                 if(selectedCheckpoint!=null){

@@ -226,11 +226,13 @@ public class DeliveryActivity extends BaseActivity {
 
     private void filterDeliveriesByUserAndDate(List<DeliveryEntity> deliveryEntities) {
         mdeliveryEntities = new ArrayList<>();
-
+        System.out.println("FILTERING DELIVERIES");
         for( DeliveryEntity d : deliveryEntities){
             if(isToday(d.getDeliveryDate())){
+                System.out.println("IS TODAY");
                 if(isMyDelivery(d.getActuallyAssignedUser())){
                     mdeliveryEntities.add(d);
+                    System.out.println("ADDED : " + d.getIdDelivery());
                 }
             }
         }
@@ -252,9 +254,13 @@ public class DeliveryActivity extends BaseActivity {
 
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         String formattedDate = df.format(c);
-
-        if(deliveryDate.equals(formattedDate))
+        System.out.println("TESTING DATE");
+        System.out.println(formattedDate+"-"+deliveryDate);
+        if(deliveryDate.equals(formattedDate)){
+            System.out.println("RETURNING TRUE");
             return true;
+        }
+
 
         return false;
     }

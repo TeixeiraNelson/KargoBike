@@ -46,7 +46,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:enabled="true"
-            android:hint="New working zone"
+            android:hint="New working zone name"
             android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/spinner_checkpoints"
             tools:layout_editor_absoluteX="16dp" />

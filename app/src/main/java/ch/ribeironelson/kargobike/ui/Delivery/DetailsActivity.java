@@ -21,7 +21,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -50,6 +52,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private EditText NumberData;
     private EditText ClientData;
     private EditText TimeData;
+    private TextView nextCheckpoint;
+
+    private Button nextCheckpointModify;
+    private ImageView proofImage;
 
     private DeliveryEntity delivery;
 
@@ -81,6 +87,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         DateData = findViewById(R.id.DateData);
         TimeData = findViewById(R.id.DateTime);
+        nextCheckpoint = findViewById(R.id.nextCheckpoint);
+        nextCheckpointModify = findViewById(R.id.btn_update_checkpoint);
+        proofImage = findViewById(R.id.proofimageview);
+        proofImage.setVisibility(View.INVISIBLE);
         DescriptionData = findViewById(R.id.DescriptionText2);
         DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
         finalDestinationData = findViewById(R.id.finalDestinationData);
@@ -109,6 +119,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private void disableButtons() {
         DateData.setEnabled(pageEnabled);
         TimeData.setEnabled(pageEnabled);
+        nextCheckpointModify.setEnabled(pageEnabled);
         DescriptionData.setEnabled(pageEnabled);
         DeparturePlaceData.setEnabled(pageEnabled);
         NumberData.setEnabled(pageEnabled);
@@ -123,6 +134,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         DeparturePlaceData.setText(delivery.getDeparturePlace());
         NumberData.setText(String.valueOf(delivery.getNbPackages()));
         ClientData.setText(delivery.getClientName());
+        nextCheckpoint.setText(delivery.getNextPlaceToGo().getName() + " - " + delivery.getNextPlaceToGo().getLocation().getLocation());
         finalDestinationData.setText(delivery.getFinalDestination());
     }
 

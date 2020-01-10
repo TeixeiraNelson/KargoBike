@@ -154,7 +154,11 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            DateData.setText(dayOfMonth + "." + (monthOfYear + 1) + "." + year);
+                            String str ="";
+                            if((monthOfYear+1)<10){
+                                str="0";
+                            }
+                            DateData.setText(dayOfMonth + "." + str+(monthOfYear + 1) + "." + year);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
