@@ -1,7 +1,6 @@
 package ch.ribeironelson.kargobike.ui.Riders;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Application;
@@ -16,20 +15,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.ribeironelson.kargobike.R;
-import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.RoleEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
@@ -269,7 +264,6 @@ public class RiderDetails extends BaseActivity {
     }
 
     private void saveChanges(String firstname, String lastname, String email, String phonenumber, String workingzone, String role) {
-        // TO DO : working zone get id && Role get id + set
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setEmail(email);
