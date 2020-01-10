@@ -310,7 +310,6 @@ public class AddDeliveryActivity extends BaseActivity implements View.OnClickLis
         DeparturePlaceData.setText("");
         finalDestinationData.setText("");
         NumberData.setText("");
-        ClientData.setText("");
 
         spinnerWorkingZones.setSelection(0);
         spinnerProducts.setSelection(0);

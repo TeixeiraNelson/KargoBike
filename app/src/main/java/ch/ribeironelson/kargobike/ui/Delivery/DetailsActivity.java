@@ -1,24 +1,39 @@
 package ch.ribeironelson.kargobike.ui.Delivery;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
+import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.entity.TripEntity;
+import ch.ribeironelson.kargobike.database.entity.UserEntity;
 import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
 import ch.ribeironelson.kargobike.database.repository.DeliveryRepository;
+import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.ui.BaseActivity;
+import ch.ribeironelson.kargobike.ui.DeliveryCompleteActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
+import ch.ribeironelson.kargobike.util.TimeStamp;
+import ch.ribeironelson.kargobike.viewmodel.CheckpointListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
+import ch.ribeironelson.kargobike.viewmodel.SchedulesListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.UserViewModel;
+import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.WorkingZoneListViewModel;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +42,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +61,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private List<WorkingZoneEntity> workingZoneEntities;
     private Spinner spinnerWorkingZones;
     private Spinner spinnerProducts;
-    private List<String> products = new ArrayList<String>();
+
+    private CheckpointEntity selectedCheckpoint;
+    private String selectedNextRider;
 
     private EditText DateData;
     private EditText DescriptionData;
@@ -53,9 +73,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private EditText ClientData;
     private EditText TimeData;
     private TextView nextCheckpoint;
+    private SchedulesEntity riderSchedule;
 
     private Button nextCheckpointModify;
-    private ImageView proofImage;
+    private Button deleteButton;
 
     private DeliveryEntity delivery;
 
@@ -73,12 +94,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private DeliveryViewModel deliveryViewModel;
 
     private Button addDeliveryBtn;
+    private EditText commentData;
     private Button btnDatePicker, btnTimePicker;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private WorkingZoneEntity workingZoneEntity;
 
     private String deliveryId;
     final Calendar myCalender = Calendar.getInstance();
+    private SchedulesListViewModel schedulesListViewModel;
+    private List<SchedulesEntity> mSchedules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +111,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         DateData = findViewById(R.id.DateData);
         TimeData = findViewById(R.id.DateTime);
+        deleteButton = findViewById(R.id.btn_delete_delivery);
         nextCheckpoint = findViewById(R.id.nextCheckpoint);
         nextCheckpointModify = findViewById(R.id.btn_update_checkpoint);
-        proofImage = findViewById(R.id.proofimageview);
-        proofImage.setVisibility(View.INVISIBLE);
         DescriptionData = findViewById(R.id.DescriptionText2);
         DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
         finalDestinationData = findViewById(R.id.finalDestinationData);
@@ -105,20 +128,49 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
         deliveryId = getIntent().getStringExtra("deliveryId");
-        products.add("Product 1");
-        products.add("Product 2");
-        products.add("Product 3");
-        products.add("Product 4");
-        products.add("Product 5");
-        products.add("Product 6");
+
 
         requestData();
         disableButtons();
+
+        deleteButton.setOnClickListener(v-> {deleteButtonAction();});
+    }
+
+    private void deleteButtonAction() {
+        UserViewModel.Factory factory3 = new UserViewModel.Factory(getApplication(), FirebaseAuth.getInstance().getCurrentUser().getUid());
+        UserViewModel userviewmodel = ViewModelProviders.of(this,factory3).get(UserViewModel.class);
+
+        userviewmodel.getUser().observe(this, user -> {
+            if (user != null) {
+                // Getting user role
+                verifyCredentials(user);
+            }
+        });
+    }
+
+    private void verifyCredentials(UserEntity user) {
+        if(Integer.valueOf(user.getIdRole())>=2){
+            DeliveryRepository.getInstance().delete(delivery, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(DetailsActivity.this, "Delivery deleted !", Toast.LENGTH_LONG).show();
+                    DetailsActivity.this.finish();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            });
+        } else {
+            Toast.makeText(DetailsActivity.this, "You have not permission to delete a delivery!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void disableButtons() {
         DateData.setEnabled(pageEnabled);
         TimeData.setEnabled(pageEnabled);
+        deleteButton.setEnabled(pageEnabled);
         nextCheckpointModify.setEnabled(pageEnabled);
         DescriptionData.setEnabled(pageEnabled);
         DeparturePlaceData.setEnabled(pageEnabled);
@@ -128,14 +180,204 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void assignValues() {
+        String str ="";
+
+        if(delivery.getNextPlaceToGo().getLocation()!=null)
+            str = " - " + delivery.getNextPlaceToGo().getLocation().getLocation();
+
         DateData.setText(delivery.getDeliveryDate());
         TimeData.setText(delivery.getDeliveryTime());
         DescriptionData.setText(delivery.getDescription());
         DeparturePlaceData.setText(delivery.getDeparturePlace());
         NumberData.setText(String.valueOf(delivery.getNbPackages()));
         ClientData.setText(delivery.getClientName());
-        nextCheckpoint.setText(delivery.getNextPlaceToGo().getName() + " - " + delivery.getNextPlaceToGo().getLocation().getLocation());
+        nextCheckpoint.setText(delivery.getNextPlaceToGo().getName());
         finalDestinationData.setText(delivery.getFinalDestination());
+
+        nextCheckpointModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // custom dialog
+                final Dialog dialog = new Dialog(DetailsActivity.this);
+                dialog.setContentView(R.layout.popup_window);
+                dialog.setTitle("Next step");
+
+                // set the custom dialog components - text, image and button
+                Button dialogButton = (Button) dialog.findViewById(R.id.button_popup);
+                CheckBox checkBox = dialog.findViewById(R.id.checkBox);
+                Spinner nextRider = dialog.findViewById(R.id.spinner_next_rider);
+                Spinner nextCheckpoint = dialog.findViewById(R.id.spinner_checkpoint);
+                commentData = dialog.findViewById(R.id.comment_content);
+
+                if(!delivery.isLoaded()){
+                    checkBox.setVisibility(View.INVISIBLE);
+                }
+
+                checkBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean checked = ((CheckBox) v).isChecked();
+                        if(checked){
+                            nextRider.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+
+
+                // Adding values to spinners
+                loadDataCheckpoints(nextCheckpoint);
+                loadDataNextRider(nextRider);
+
+
+
+                // if button is clicked, update delivery
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateActualCheckpoint(v);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+
+
+            }
+        });
+    }
+
+    private void loadDataSchedules() {
+        SchedulesListViewModel.Factory factory2 = new SchedulesListViewModel.Factory(
+                getApplication());
+        schedulesListViewModel = ViewModelProviders.of(this, factory2).get(SchedulesListViewModel.class);
+        schedulesListViewModel.getSchedules().observe(this, schedulesEntities -> {
+            if (schedulesEntities != null) {
+                Log.d(TAG,"Deliveries Not null");
+                mSchedules = schedulesEntities;
+                verificateSchedule();
+            }
+        });
+    }
+
+    private void updateActualCheckpoint(View v) {
+        if(delivery!=null){
+            if(selectedCheckpoint!=null){
+                delivery.setNextPlaceToGo(selectedCheckpoint);
+            }
+            if(selectedNextRider!=null && selectedNextRider.length()>1)
+                delivery.setActuallyAssignedUser(selectedNextRider);
+
+            if(delivery.getNextPlaceToGo().getName().equals("Final Destination") && !delivery.isLoaded()){
+                delivery.setActuallyAssignedUser("Delivery Finished");
+            }
+
+
+            DeliveryRepository.getInstance().update(delivery, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d("Delivery status", "Delivery checkpoint added !");
+                    if(delivery.getActuallyAssignedUser().equals("Delivery Finished")){
+                        riderSchedule.addDelivery();
+                        SchedulesRepository.getInstance().updateSchedules(riderSchedule, new OnAsyncEventListener() {
+                            @Override
+                            public void onSuccess() {
+                                Intent intent = new Intent(DetailsActivity.this, DeliveryCompleteActivity.class);
+                                intent.putExtra("DeliveryEntity",delivery);
+                                DetailsActivity.this.startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d("Delivery status", "Delivery checkpoint add attempt fail !");
+                }
+            });
+
+        }
+    }
+
+
+    private void loadDataCheckpoints(Spinner nextCheckpoint) {
+        CheckpointListViewModel.Factory factory = new CheckpointListViewModel.Factory(
+                DetailsActivity.this.getApplication());
+        CheckpointListViewModel viewModel = ViewModelProviders.of((DetailsActivity) DetailsActivity.this, factory).get(CheckpointListViewModel.class);
+        viewModel.getCheckpoints().observe((LifecycleOwner) DetailsActivity.this, deliveryEntities -> {
+            if (deliveryEntities != null) {
+                addToSpinner(deliveryEntities, nextCheckpoint);
+            }
+        });
+    }
+
+    private void addToSpinnerRider(List<UserEntity> deliveryEntities, Spinner nextRider) {
+        List<String> list = new ArrayList<>();
+        for(UserEntity c : deliveryEntities){
+            list.add(c.getFirstname()+ " " + c.getLastname());
+        }
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(DetailsActivity.this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nextRider.setAdapter(dataAdapter);
+        nextRider.setSelection(0);
+
+        nextRider.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(nextRider.getVisibility() == View.VISIBLE)
+                    selectedNextRider = deliveryEntities.get(position).getIdUser();
+                else
+                    selectedNextRider = null;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void addToSpinner(List<CheckpointEntity> deliveryEntities, Spinner nextCheckpoint) {
+        List<String> list = new ArrayList<>();
+        for(CheckpointEntity c : deliveryEntities){
+            list.add(c.getName());
+        }
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(DetailsActivity.this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nextCheckpoint.setAdapter(dataAdapter);
+        nextCheckpoint.setSelection(0);
+
+        nextCheckpoint.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCheckpoint = deliveryEntities.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void loadDataNextRider(Spinner nextRider) {
+        UsersListViewModel.Factory factory = new UsersListViewModel.Factory(
+                DetailsActivity.this.getApplication());
+        UsersListViewModel viewModel = ViewModelProviders.of((DetailsActivity) DetailsActivity.this, factory).get(UsersListViewModel.class);
+        viewModel.getAllUsers().observe((LifecycleOwner) DetailsActivity.this, deliveryEntities -> {
+            if (deliveryEntities != null) {
+                addToSpinnerRider(deliveryEntities, nextRider);
+            }
+        });
     }
 
     private void requestData() {
@@ -167,6 +409,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         });
+
+        loadDataSchedules();
 
 
     }
@@ -289,6 +533,43 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             ClientData.setError("You must enter the client name !");
             return true;
         }
+        return false;
+    }
+
+    private boolean isMySchedule(SchedulesEntity sch) {
+        if(sch.getUserID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+            return true;
+
+        return false;
+    }
+
+    private boolean verificateSchedule() {
+
+        for(SchedulesEntity sch : mSchedules){
+            if(isTodaySchedule(sch) && isMySchedule(sch)){
+                riderSchedule = sch;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isTodaySchedule(SchedulesEntity sch) {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = df.format(c);
+
+        Date c2 = null;
+        try {
+            c2 = df.parse(sch.getBeginningDateTime().substring(0,sch.getBeginningDateTime().indexOf("-")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String scheduleDate = df.format(c2);
+        if(scheduleDate.equals(formattedDate))
+            return true;
+
         return false;
     }
 
