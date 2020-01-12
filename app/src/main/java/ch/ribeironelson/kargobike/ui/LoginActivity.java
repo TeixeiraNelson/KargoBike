@@ -11,6 +11,7 @@ import ch.ribeironelson.kargobike.database.entity.WorkingZoneEntity;
 import ch.ribeironelson.kargobike.database.repository.SchedulesRepository;
 import ch.ribeironelson.kargobike.database.repository.UserRepository;
 import ch.ribeironelson.kargobike.database.repository.WorkingZoneRepository;
+import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
 
@@ -229,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(u.getIdRole().equals("0")){
                     showNoRolePopup();
                 } else {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
                     startActivity(intent);
                     finish();
                 }

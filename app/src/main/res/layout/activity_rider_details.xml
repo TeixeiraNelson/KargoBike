@@ -18,6 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:ems="9"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
             android:fontFamily="sans-serif-medium"
             android:text="Firstname"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -28,6 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
             android:ems="9"
             android:fontFamily="sans-serif-medium"
             android:text="Lastname"
@@ -48,7 +54,12 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="firstname"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_account_24dp"
+            android:drawablePadding="10dp"
+            android:hint="Firstname"
             android:textSize="17sp" />
 
         <EditText
@@ -58,7 +69,12 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="lastname"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:drawableStart="@drawable/ic_account_24dp"
+            android:drawablePadding="10dp"
+            android:hint="Lastname"
             android:textSize="17sp" />
     </LinearLayout>
 
@@ -67,6 +83,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
         android:text="E-Mail"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/primary_text_light"
@@ -77,14 +96,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_email_24dp"
+        android:drawablePadding="10dp"
         android:inputType="textEmailAddress"
-        android:text="E-Mail" />
+        android:hint="E-Mail" />
 
     <TextView
         android:id="@+id/phoneNumberText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Phone number"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="17sp" />
 
@@ -92,6 +119,11 @@
         android:id="@+id/phoneNumberData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:drawableStart="@drawable/ic_phone_24dp"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@android:string/emptyPhoneNumber"
         android:inputType="phone" />
@@ -100,6 +132,9 @@
         android:id="@+id/workingZoneText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
         android:text="Working Zone"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="17sp" />
@@ -114,6 +149,9 @@
         android:id="@+id/roleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
         android:text="Role"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="17sp" />
@@ -127,11 +165,21 @@
         android:id="@+id/modifyRiderButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="64dp"
+        android:background="@drawable/round_bg"
+        android:enabled="true"
         android:text="Modify" />
 
     <Button
         android:id="@+id/cancelSaveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="64dp"
+        android:background="@drawable/round_bg"
+        android:enabled="true"
         android:text="Cancel" />
 </LinearLayout>

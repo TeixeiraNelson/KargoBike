@@ -4,17 +4,14 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_baseline_home_24px"
-            android:title="Home" />
+            android:id="@+id/nav_delivery"
+            android:icon="@drawable/ic_assignment_black_24dp"
+            android:title="Deliveries" />
         <item
             android:id="@+id/nav_riders"
             android:icon="@drawable/ic_bike_black_24dp"
             android:title="Riders" />
-        <item
-            android:id="@+id/nav_delivery"
-            android:icon="@drawable/ic_assignment_black_24dp"
-            android:title="Deliveries" />
+
         <item
             android:id="@+id/nav_add_delivery"
             android:icon="@drawable/ic_assignment_black_24dp"
@@ -27,10 +24,6 @@
             android:id="@+id/nav_working_zones"
             android:icon="@drawable/ic_my_location_black_24dp"
             android:title="Working Zone" />
-        <item
-            android:id="@+id/nav_users"
-            android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="Users" />
         <item
             android:id="@+id/nav_products"
             android:icon="@drawable/ic_business_center_primary_24dp"

@@ -83,7 +83,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
         DeliveryEntity delivery = mDeliveries.get(position);
 
         holder.bindItem(delivery, mContext, position, DeliveriesRecyclerViewAdapter.this, mDeliveries, app);
-        holder.productName.setText(delivery.getIdProduct());
+        holder.productName.setText(String.valueOf(delivery.getNbPackages()));
         holder.clientName.setText(delivery.getNextPlaceToGo().getName());
         holder.deliveryDate.setText(delivery.getDeliveryTime());
 
@@ -153,6 +153,7 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
     }
 
     public void bindSchedule(SchedulesEntity sch) {
+        System.out.println(sch.toString());
         riderSchedule = sch;
     }
 
@@ -374,21 +375,9 @@ public class DeliveriesRecyclerViewAdapter extends RecyclerView.Adapter<Deliveri
                     public void onSuccess() {
                         Log.d("Delivery status", "Delivery checkpoint added !");
                         if(deliveryEntity.getActuallyAssignedUser().equals("Delivery Finished")){
-                            riderSchedule.addDelivery();
-                            SchedulesRepository.getInstance().updateSchedules(riderSchedule, new OnAsyncEventListener() {
-                                @Override
-                                public void onSuccess() {
-                                    Intent intent = new Intent(mContext, DeliveryCompleteActivity.class);
-                                    intent.putExtra("DeliveryEntity",deliveryEntity);
-                                    mContext.startActivity(intent);
-                                }
-
-                                @Override
-                                public void onFailure(Exception e) {
-
-                                }
-                            });
-
+                            Intent intent = new Intent(mContext, DeliveryCompleteActivity.class);
+                            intent.putExtra("DeliveryEntity",deliveryEntity);
+                            mContext.startActivity(intent);
                         }
                     }
 

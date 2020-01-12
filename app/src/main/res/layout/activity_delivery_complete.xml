@@ -40,6 +40,7 @@
         android:drawableStart="@drawable/ic_details_24dp"
         android:paddingLeft="30dip"
         android:text="Delivery details"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView5"

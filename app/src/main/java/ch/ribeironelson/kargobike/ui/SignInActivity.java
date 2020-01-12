@@ -89,6 +89,7 @@ public class SignInActivity extends AppCompatActivity {
         usersListViewModel = ViewModelProviders.of(this, factory).get(UsersListViewModel.class);
         usersListViewModel.getAllUsers().observe(this, userEntities -> {
             if (userEntities != null) {
+                System.out.println("Users loaded");
                 users = userEntities;
             }
         });

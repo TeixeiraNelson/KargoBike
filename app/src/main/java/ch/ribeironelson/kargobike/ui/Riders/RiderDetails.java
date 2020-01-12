@@ -269,11 +269,11 @@ public class RiderDetails extends BaseActivity {
         user.setEmail(email);
         user.setPhoneNumber(phonenumber);
         for(RoleEntity r : rolesL){
-            if(role.equals(r.getRoleId())){
-                role = r.getRole();
+            if(role.equals(r.getRole())){
+                user.setIdRole(r.getRoleId());
             }
         }
-        user.setIdRole(role);
+
 
         userViewModel.updateUser(user, new OnAsyncEventListener() {
             @Override

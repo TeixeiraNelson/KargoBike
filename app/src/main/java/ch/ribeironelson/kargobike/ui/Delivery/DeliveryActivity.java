@@ -57,9 +57,7 @@ public class DeliveryActivity extends BaseActivity {
         searchEditText = findViewById(R.id.search_deliveries);
         recyclerView = findViewById(R.id.recyclerView_deliveries);
 
-        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this, DeliveryActivity.this.getApplication());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeliveryActivity.this));
+
 
         setupViewModel();
 
@@ -81,6 +79,7 @@ public class DeliveryActivity extends BaseActivity {
 
         for(SchedulesEntity sch : mSchedules){
             if(isTodaySchedule(sch) && isMySchedule(sch)){
+                System.out.println("BINDIN SCHEDULE");
                 adapter.bindSchedule(sch);
                 return true;
             }
@@ -221,7 +220,7 @@ public class DeliveryActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setCheckedItem(R.id.nav_delivery);
     }
 
     private void filterDeliveriesByUserAndDate(List<DeliveryEntity> deliveryEntities) {
@@ -237,6 +236,9 @@ public class DeliveryActivity extends BaseActivity {
             }
         }
 
+        adapter = new DeliveriesRecyclerViewAdapter(mdeliveryEntities,DeliveryActivity.this, DeliveryActivity.this.getApplication());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DeliveryActivity.this));
     }
 
     private boolean isMyDelivery(String assignedUser) {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -204,6 +205,8 @@ public class ModifyWorkingZoneActivity extends BaseActivity {
 
             if(mode.equals("add")){
                 WorkingZoneEntity workingZoneEntity1 = new WorkingZoneEntity(workingzonename);
+                workingZoneEntity1.setAssignedDispatcherId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
                 viewModelWorkingZone.createWorkingZone(workingZoneEntity1, new OnAsyncEventListener()
                     {
                     @Override

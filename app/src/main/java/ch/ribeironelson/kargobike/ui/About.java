@@ -21,6 +21,5 @@ public class About extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        navigationView.setCheckedItem(R.id.nav_home);
     }
 }

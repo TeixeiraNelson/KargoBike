@@ -6,6 +6,7 @@ import ch.ribeironelson.kargobike.R;
 import ch.ribeironelson.kargobike.adapter.ListAdapter;
 import ch.ribeironelson.kargobike.database.entity.CheckpointEntity;
 import ch.ribeironelson.kargobike.database.entity.DeliveryEntity;
+import ch.ribeironelson.kargobike.database.entity.ProductEntity;
 import ch.ribeironelson.kargobike.database.entity.SchedulesEntity;
 import ch.ribeironelson.kargobike.database.entity.TripEntity;
 import ch.ribeironelson.kargobike.database.entity.UserEntity;
@@ -17,7 +18,9 @@ import ch.ribeironelson.kargobike.ui.DeliveryCompleteActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.util.TimeStamp;
 import ch.ribeironelson.kargobike.viewmodel.CheckpointListViewModel;
+import ch.ribeironelson.kargobike.viewmodel.CustomerViewModel;
 import ch.ribeironelson.kargobike.viewmodel.DeliveryViewModel;
+import ch.ribeironelson.kargobike.viewmodel.ProductListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.SchedulesListViewModel;
 import ch.ribeironelson.kargobike.viewmodel.UserViewModel;
 import ch.ribeironelson.kargobike.viewmodel.UsersListViewModel;
@@ -97,12 +100,16 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private EditText commentData;
     private Button btnDatePicker, btnTimePicker;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private EditText productname;
     private WorkingZoneEntity workingZoneEntity;
 
     private String deliveryId;
     final Calendar myCalender = Calendar.getInstance();
     private SchedulesListViewModel schedulesListViewModel;
     private List<SchedulesEntity> mSchedules;
+    private ProductListViewModel listViewModelProduct;
+    private ArrayList<ProductEntity> productEntities;
+    private String productNameStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +120,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         TimeData = findViewById(R.id.DateTime);
         deleteButton = findViewById(R.id.btn_delete_delivery);
         nextCheckpoint = findViewById(R.id.nextCheckpoint);
+        productname = findViewById(R.id.product_name);
         nextCheckpointModify = findViewById(R.id.btn_update_checkpoint);
         DescriptionData = findViewById(R.id.DescriptionText2);
         DeparturePlaceData = findViewById(R.id.DeparturePlaceData);
@@ -193,6 +201,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         ClientData.setText(delivery.getClientName());
         nextCheckpoint.setText(delivery.getNextPlaceToGo().getName());
         finalDestinationData.setText(delivery.getFinalDestination());
+        productname.setText(productNameStr);
 
         nextCheckpointModify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,7 +396,21 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         deliveryViewModel.getDelivery().observe(this, deliveryEntity -> {
             if (deliveryEntity != null) {
                 this.delivery = deliveryEntity;
+
+                CustomerViewModel.Factory factory7 = new CustomerViewModel.Factory(getApplication(), this.delivery.getClientName());
+                CustomerViewModel cv = ViewModelProviders.of(this,factory7).get(CustomerViewModel.class);
+
+                cv.getCustomer().observe(this, customerEntity -> {
+                    if(customerEntity!=null){
+                        this.delivery.setClientName(customerEntity.getFirstname() + " " + customerEntity.getLastname());
+
+                        System.out.println("Customer not null...");
+                    }
+
+                });
+
                 assignValues();
+
             }
         });
 
@@ -410,9 +433,41 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
+        ProductListViewModel.Factory factory5 = new ProductListViewModel.Factory(getApplication());
+        listViewModelProduct = ViewModelProviders.of(this,factory5).get(ProductListViewModel.class);
+
+        listViewModelProduct.getProducts().observe(this, productEntityList -> {
+            if (productEntityList != null) {
+                //Array
+                ArrayList<String> productNames = new ArrayList<String>();
+                productEntities = new ArrayList<>();
+                for (ProductEntity u : productEntityList) {
+                    productEntities.add(u);
+
+                }
+                loadProductName();
+            }
+        });
+
         loadDataSchedules();
 
 
+
+
+    }
+
+    private void loadProductName() {
+        for(ProductEntity p : productEntities){
+            if(p.getIdProduct().equals(delivery.getIdProduct())){
+                String pName = p.getName();
+
+                if(pName.length()>20){
+                    pName = pName.substring(0,16)+"... ";
+                }
+                productNameStr = pName + p.getPrice() + " CHF. ";
+                productname.setText(productNameStr);
+            }
+        }
     }
 
     @Override
