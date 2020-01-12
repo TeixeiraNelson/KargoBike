@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -114,6 +115,13 @@ public class DeliveryCompleteActivity extends AppCompatActivity {
 
 
     private void saveDelivery() {
+
+        if(imageBitmap==null){
+            Toast.makeText(this,"Please take a proof picture or signature from customer!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         String fileName =delivery.getIdDelivery()+".jpg";
