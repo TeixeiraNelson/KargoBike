@@ -97,8 +97,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent=new Intent (BaseActivity.this, DeliveryActivity.class);
         } else if (id == R.id.nav_riders){
             intent = new Intent(BaseActivity.this, RidersList.class);
-        }else if (id == R.id.nav_about) {
-            intent=new Intent (BaseActivity.this, About.class);
         } else if (id == R.id.nav_logout){
             intent= new Intent(BaseActivity.this, LoginActivity.class);
             finishSchedule();

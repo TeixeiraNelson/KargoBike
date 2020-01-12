@@ -10,7 +10,6 @@ public class About extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_about, frameLayout);
-        navigationView.setCheckedItem(R.id.nav_about);
     }
 
     @Override

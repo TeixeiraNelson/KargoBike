@@ -16,9 +16,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:inputType="textMultiLine"
-            android:text="About"
-            android:textStyle="bold"
-            />
+            android:text="A travers un ensemble de services logistiques et de solutions de mobilité, Kargobike veut participer à la construction de la mobilité de demain en milieu urbain et en périphérie.  Concrètement, nous vous simplifions la vie et celle de votre clientèle en optimisant votre mobilité et votre logistique dans une approche de développement durable."
+            android:textStyle="bold" />
 
 
 </LinearLayout>
