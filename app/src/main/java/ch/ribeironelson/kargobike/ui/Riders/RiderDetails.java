@@ -3,8 +3,6 @@ package ch.ribeironelson.kargobike.ui.Riders;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,8 +57,6 @@ public class RiderDetails extends BaseActivity {
 
     private boolean isEditable ;
 
-    private Application mApp;
-    private Context mContext;
     private DatabaseReference mRoleRef ;
     private DatabaseReference mWorkingZoneRef;
 
@@ -74,8 +70,6 @@ public class RiderDetails extends BaseActivity {
 
         mRoleRef = FirebaseDatabase.getInstance().getReference().child("roles");
         mWorkingZoneRef = FirebaseDatabase.getInstance().getReference().child("workingZone");
-        mApp = getApplication();
-        mContext = RiderDetails.this;
 
         userid = getIntent().getStringExtra("userid");
 
