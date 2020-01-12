@@ -21,6 +21,7 @@ import ch.ribeironelson.kargobike.ui.Customer.ModifyCustomerActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.AddDeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Delivery.DeliveryActivity;
 import ch.ribeironelson.kargobike.ui.Product.ModifyProductActivity;
+import ch.ribeironelson.kargobike.ui.Riders.RidersList;
 import ch.ribeironelson.kargobike.ui.WorkingZones.ModifyWorkingZoneActivity;
 import ch.ribeironelson.kargobike.util.OnAsyncEventListener;
 import ch.ribeironelson.kargobike.util.TimeStamp;
@@ -96,8 +97,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent=new Intent (BaseActivity.this, MainActivity.class);
         } else if (id == R.id.nav_delivery) {
             intent=new Intent (BaseActivity.this, DeliveryActivity.class);
-        } else if (id == R.id.nav_users) {
-            intent=new Intent (BaseActivity.this, AccountActivity.class);
+        } else if (id == R.id.nav_riders) {
+            intent=new Intent (BaseActivity.this, RidersList.class);
         } else if (id == R.id.nav_about) {
             intent=new Intent (BaseActivity.this, About.class);
         } else if (id == R.id.nav_logout){

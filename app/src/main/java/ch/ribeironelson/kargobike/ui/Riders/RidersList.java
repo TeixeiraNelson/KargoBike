@@ -38,6 +38,7 @@ public class RidersList extends BaseActivity {
     private List<UserEntity> users ;
     private List<WorkingZoneEntity> workingZones;
     private List<RoleEntity> roles;
+
     private WorkingZoneListViewModel listViewModelWorkingZone;
     private RoleListViewModel roleListViewModel;
 
@@ -93,13 +94,14 @@ public class RidersList extends BaseActivity {
                 listViewModelWorkingZone.getAllWorkingZones().observe(this, workingZoneEntityList -> {
                     if (workingZoneEntityList != null) {
                         //Array
-
+                        System.out.println("WorkingZones");
                         workingZones = workingZoneEntityList;
 
                         RoleListViewModel.Factory factoryR = new RoleListViewModel.Factory(getApplication());
                         roleListViewModel = ViewModelProviders.of(this, factoryR).get(RoleListViewModel.class);
                         roleListViewModel.getRoles().observe(this, roleEntities -> {
-                            if(roleEntities != null){
+                            if(roleEntities != null && workingZones != null){
+                                System.out.println("Roles");
                                 roles = roleEntities;
                                 updateNames();
                             }
